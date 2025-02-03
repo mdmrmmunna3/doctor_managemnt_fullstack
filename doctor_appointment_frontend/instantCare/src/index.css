@@ -15,6 +15,22 @@
    font-family: "Great Vibes", serif;
 */
 
+:root {
+    --primary-color: white;
+    --secondary-color: #000000;
+}
+
+.dark {
+    --primary-color: #000000;
+    --secondary-color: white;
+}
+
+body {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
 /* style for button  */
 /* From Uiverse.io by nikk7007 */
 .style_btn {

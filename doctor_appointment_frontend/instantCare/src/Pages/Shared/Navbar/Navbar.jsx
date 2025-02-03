@@ -1,34 +1,41 @@
 import React, { useState } from 'react';
+import { GiBoomerangSun } from 'react-icons/gi';
+import { MdNightsStay } from 'react-icons/md';
 import { Link, NavLink } from 'react-router-dom';
+import useToogleTheme from '../../../Hooks/useToogleTheme';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isDarkMode, handleToggleTheme] = useToogleTheme();
 
     const navOptions = (
         <>
-            <li><NavLink to='/' className="hover:text-white active:text-blue-700">Home</NavLink></li>
-            <li><NavLink to='/about' className="hover:text-white active:text-blue-700">About</NavLink></li>
-            <li><NavLink to='/service' className="hover:text-white active:text-blue-700">Service</NavLink></li>
-            <li><NavLink to='/blogs' className="hover:text-white active:text-blue-700">Blogs</NavLink></li>
-            <li><NavLink to='/contact' className="hover:text-white active:text-blue-700">Contact</NavLink></li>
+            <li><NavLink to='/' className="hover:bg-transparent ">Home</NavLink></li>
+            <li><NavLink to='/about' className="hover:bg-transparent ">About</NavLink></li>
+            <li><NavLink to='/service' className="hover:bg-transparent ">Service</NavLink></li>
+            <li><NavLink to='/blogs' className="hover:bg-transparent ">Blogs</NavLink></li>
+            <li><NavLink to='/contact' className="hover:bg-transparent ">Contact</NavLink></li>
+            <li onClick={handleToggleTheme} className='hover:bg-transparent'>
+                <p>{isDarkMode ? <GiBoomerangSun className='w-6 h-6' /> : <MdNightsStay className='w-6 h-6' />}</p>
+            </li>
             <li><NavLink to='/login' className="style_btn">Login</NavLink></li>
             <li><NavLink to='/register' className="style_btn">Register</NavLink></li>
         </>
     );
 
     return (
-        <div className="bg-black shadow-md">
+        <div className="bg-[--primary-color] text-[--secondary-color] shadow-md">
             <div className="navbar max-w-screen-xl mx-auto py-4 px-6">
                 {/* Left side logo */}
                 <div className="navbar-start w-full">
-                    <Link to='/' className="text-white text-3xl font-semibold titel">InstantCare Doct</Link>
+                    <Link to='/' className="text-[--secondary-color] text-3xl font-semibold titel">InstantCare Doct</Link>
                 </div>
 
                 {/* Hamburger menu - Only visible on small screens */}
                 <div className="lg:hidden mt-2">
                     <button
                         aria-label="Toggle menu"
-                        className="btn btn-ghost text-white p-2"
+                        className="btn btn-ghost text-[--secondary-color] p-2"
                         onClick={() => setIsOpen(!isOpen)}
                     >
                         <svg
@@ -51,21 +58,27 @@ const Navbar = () => {
                 {/* Mobile Overlay */}
                 {isOpen && (
                     <div
-                        className="fixed inset-0 bg-black bg-opacity-70 z-20"
+
+                        className="fixed inset-0 bg-[--primary-color] bg-opacity-70 z-20"
                         onClick={() => setIsOpen(false)}
                     ></div>
                 )}
 
                 {/* Fullscreen mobile menu (Stacked Layout) */}
-                <div
-                    className={`fixed top-0 left-0 w-full pb-10 bg-black bg-opacity-95 z-30 transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'
+                <div style={{
+                    // boxShadow: `rgba(0, 0, 0, 0.24) 0px 3px 8px`
+                    // boxShadow: `rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px`
+                    boxShadow: `#17c3b226 0px 2px 4px 0px, #17c3b226 0px 2px 16px 0px`
+
+                }}
+                    className={`fixed top-0 left-0 w-full pb-10 bg-[--primary-color]  bg-opacity-95 z-30 transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'
                         } flex flex-col items-start justify-start pt-6`}
                 >
                     <div className="flex justify-between items-center px-6 w-full">
-                        <Link to='/' className="text-white text-3xl font-semibold titel pb-10 lg:pb-0">InstantCare Doct</Link>
+                        <Link to='/' className="text-[--secondary-color] text-3xl font-semibold titel pb-10 lg:pb-0">InstantCare Doct</Link>
                         <button
                             aria-label="Close menu"
-                            className="text-white text-3xl pb-10 lg:pb-0"
+                            className="text-[--secondary-color] text-3xl pb-10 lg:pb-0"
                             onClick={() => setIsOpen(false)}
                         >
                             &times;
@@ -73,14 +86,14 @@ const Navbar = () => {
                     </div>
 
                     {/* Mobile Navigation Links */}
-                    <ul className="flex flex-col space-y-6 ps-8 text-white text-lg font-medium w-full">
+                    <ul className="flex flex-col space-y-2 ps-8 text-[--secondary-color] text-lg font-medium w-full menu titel_content">
                         {navOptions}
                     </ul>
                 </div>
 
                 {/* Desktop Navigation */}
                 <div className="navbar-center hidden lg:flex items-center mt-4">
-                    <ul className="menu menu-horizontal space-x-8 text-white text-lg font-medium">
+                    <ul className="menu menu-horizontal space-x-5 text-[--secondary-color] text-lg font-medium titel_content">
                         {navOptions}
                     </ul>
                 </div>
