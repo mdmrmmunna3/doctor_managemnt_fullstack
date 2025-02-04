@@ -29,3 +29,35 @@
 .roate_img3 {
     animation: bounce 5s ease-in-out infinite;
 }
+
+.swiper-slide .zoom-effect {
+    transform: scale(.95);
+    transition: transform 3s ease-in-out;
+}
+
+.swiper-slide-active .zoom-effect {
+    transform: scale(1);
+    transition: transform 3s ease-in-out;
+}
+
+/* .zoom-effect {
+    animation: zoomOutIn 2.5s ease-in-out;
+}
+
+@keyframes zoomOutIn {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(1.1);
+    }
+
+    60% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+} */
