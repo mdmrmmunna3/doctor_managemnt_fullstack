@@ -8,7 +8,7 @@ import serviceImg6 from "../../../assets/services/prescription.png"
 
 const WeProvide = () => {
     return (
-        <div>
+        <div className='px-16'>
             <div className='py-5'>
                 <h3 className='text-3xl md:text-4xl lg:text-5xl text-center titel'>Our Services</h3>
                 <p className='titel_content md:text-5xl text-3xl text-center'>our madical service</p>
