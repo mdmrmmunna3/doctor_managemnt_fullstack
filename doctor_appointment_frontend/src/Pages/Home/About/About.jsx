@@ -5,6 +5,7 @@ import aboutImg1 from "../../../assets/about/about-img3.jpg"
 import aboutImg2 from "../../../assets/about/about-img2.jpg"
 import aboutImg3 from "../../../assets/about/about-img1.jpg"
 import circle from "../../../assets/banner/circle.png"
+import ShareButton from '../../../components/ShareButton/ShareButton';
 
 const About = () => {
 
@@ -30,9 +31,11 @@ const About = () => {
                 <div className='titel_content'>
                     <h3 className='lg:text-4xl md:text-3xl text-2xl '>We Are Always Ensure Best Medical Treatment For Your Health</h3>
                     <p className='leading-8 py-5 text-xl '>At Instant Care, our mission is to transform healthcare accessibility by simplifying the process of finding and booking appointments with qualified professionals, ensuring timely and efficient care when you need it most.</p>
-                    <p className='leading-8 text-xl flex md:hidden lg:flex'>Our envision a world where healthcare is seamlessly accessible to all. Whether you need
+                    <p className='leading-8 text-xl flex md:hidden lg:flex pb-5'>Our envision a world where healthcare is seamlessly accessible to all. Whether you need
                         routine check-ups, specialized consultations, or urgent care, we are committed to connecting
                         you with the right medical professionals quickly and easily.</p>
+
+                    <ShareButton> Discover More</ShareButton>
                 </div>
             </div>
             <div
