@@ -85,4 +85,16 @@ body {
     font-family: "Crimson Text", serif;
 }
 
+.swiper-button-prev:after, .swiper-button-next:after {
+    font-family: swiper-icons;
+    font-size: 24px !important;
+    text-transform: none !important;
+    letter-spacing: 0;
+    font-variant: initial;
+    line-height: 1; 
+    color: white;
+    padding: 10px;
+    background-color: #17C3B2;
+    border-radius: 50%;
+}
 /* navbar style end  */
