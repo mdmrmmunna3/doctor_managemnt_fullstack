@@ -1,6 +1,5 @@
 import React from 'react';
 import bannerBg from "../../../assets/banner/doctor-shape-img1.png"
-import bannerBg2 from "../../../assets/banner/doctor-shape-img2.png"
 import aboutImg1 from "../../../assets/about/about-img3.jpg"
 import aboutImg2 from "../../../assets/about/about-img2.jpg"
 import aboutImg3 from "../../../assets/about/about-img1.jpg"
