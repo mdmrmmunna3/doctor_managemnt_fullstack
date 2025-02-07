@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import "./SharedButton.css";
 import { GiArrowWings } from 'react-icons/gi';
 
-const ShareButton = ({ children }) => {
+const ShareButton = ({ children, width }) => {
     return (
-        <div>
-            <Link to='/' className='share_btn px-8 py-4'><span className='pr-3'><GiArrowWings /></span>
+        <div className="w-full">
+            <div className="share_btn" style={{ width: width }}>
+                <span className='pr-3'><GiArrowWings /></span>
                 <i className="animation"></i>{children}<i className="animation"></i>
-            </Link>
+            </div>
         </div>
     );
 };
