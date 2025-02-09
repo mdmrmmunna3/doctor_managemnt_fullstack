@@ -1,9 +1,10 @@
 import React from 'react';
-
+import ShareBanner from '../../components/ShareBanner/ShareBanner';
+import contactBg from "../../assets/banner/cont.jpeg";
 const ContactUs = () => {
     return (
         <div>
-            <h2>This is contact page</h2>
+            <ShareBanner bgImage={contactBg} title='Contact Us'>Contact</ShareBanner>
         </div>
     );
 };

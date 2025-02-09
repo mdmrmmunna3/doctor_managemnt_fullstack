@@ -5,6 +5,7 @@ import aboutImg2 from "../../../assets/about/about-img2.jpg"
 import aboutImg3 from "../../../assets/about/about-img1.jpg"
 import circle from "../../../assets/banner/circle.png"
 import ShareButton from '../../../components/ShareButton/ShareButton';
+import { Link } from 'react-router-dom';
 
 const About = () => {
 
@@ -34,7 +35,7 @@ const About = () => {
                         routine check-ups, specialized consultations, or urgent care, we are committed to connecting
                         you with the right medical professionals quickly and easily.</p>
 
-                    <ShareButton> Discover More</ShareButton>
+                    <Link to='/about'><ShareButton> Discover More</ShareButton></Link>
                 </div>
             </div>
             <div

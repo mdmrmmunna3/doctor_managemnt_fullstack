@@ -1,6 +1,6 @@
 import React from 'react';
 import ShareButton from '../../../components/ShareButton/ShareButton';
-import doctor1 from "../../../assets/work/find.png"
+import doctor1 from "../../../assets/doctor/doct1.jpg"
 import { FaGraduationCap } from 'react-icons/fa';
 import { MdLocationPin } from 'react-icons/md';
 import { Link } from 'react-router-dom';
@@ -29,12 +29,14 @@ const Doctor = () => {
                             alt="doctor img" />
                     </div>
                     <div className="titel_content">
-                        <div className='pb-2'>
-                            <h4 className='text-2xl'>Munna</h4>
-                            <p className='text-xl py-2'>Orthopedic</p>
+                        <div className='pb-2 flex justify-between'>
+                            <div>
+                                <h4 className='text-2xl'>Munna</h4>
+                                <p className='text-xl py-2'>Orthopedic</p>
 
-                            <p className='flex items-center space-x-2 text-xl'><span><FaGraduationCap /></span> <span className=''>MBBS, FCPS, FRCS</span></p>
-
+                                <p className='flex items-center space-x-2 text-xl'><span><FaGraduationCap /></span> <span className=''>MBBS, FCPS, FRCS</span></p>
+                            </div>
+                            <h4 className='text-xl'>Fees: <span>$250</span></h4>
                         </div>
                         <div className='flex justify-between items-center pb-5'>
                             <p className='flex items-center space-x-2'><span><MdLocationPin /></span><span>Dhaka, Bangaldesh</span></p>
@@ -57,12 +59,14 @@ const Doctor = () => {
                             alt="doctor img" />
                     </div>
                     <div className="titel_content">
-                        <div className='pb-2'>
-                            <h4 className='text-2xl'>Munna</h4>
-                            <p className='text-xl py-2'>Orthopedic</p>
+                        <div className='pb-2 flex justify-between'>
+                            <div>
+                                <h4 className='text-2xl'>Munna</h4>
+                                <p className='text-xl py-2'>Orthopedic</p>
 
-                            <p className='flex items-center space-x-2 text-xl'><span><FaGraduationCap /></span> <span className=''>MBBS, FCPS, FRCS</span></p>
-
+                                <p className='flex items-center space-x-2 text-xl'><span><FaGraduationCap /></span> <span className=''>MBBS, FCPS, FRCS</span></p>
+                            </div>
+                            <h4 className='text-xl'>Fees: <span>$400</span></h4>
                         </div>
                         <div className='flex justify-between items-center pb-5'>
                             <p className='flex items-center space-x-2'><span><MdLocationPin /></span><span>Dhaka, Bangaldesh</span></p>
@@ -85,12 +89,14 @@ const Doctor = () => {
                             alt="doctor img" />
                     </div>
                     <div className="titel_content">
-                        <div className='pb-2'>
-                            <h4 className='text-2xl'>Munna</h4>
-                            <p className='text-xl py-2'>Orthopedic</p>
+                        <div className='pb-2 flex justify-between'>
+                            <div>
+                                <h4 className='text-2xl'>Munna</h4>
+                                <p className='text-xl py-2'>Orthopedic</p>
 
-                            <p className='flex items-center space-x-2 text-xl'><span><FaGraduationCap /></span> <span className=''>MBBS, FCPS, FRCS</span></p>
-
+                                <p className='flex items-center space-x-2 text-xl'><span><FaGraduationCap /></span> <span className=''>MBBS, FCPS, FRCS</span></p>
+                            </div>
+                            <h4 className='text-xl'>Fees: <span>$300</span></h4>
                         </div>
                         <div className='flex justify-between items-center pb-5'>
                             <p className='flex items-center space-x-2'><span><MdLocationPin /></span><span>Dhaka, Bangaldesh</span></p>

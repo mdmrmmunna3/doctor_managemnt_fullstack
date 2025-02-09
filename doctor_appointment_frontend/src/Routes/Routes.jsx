@@ -3,8 +3,8 @@ import Main from "../Layout/Main";
 import Home from "../Pages/Home/Home/Home";
 import AboutUs from "../Pages/AboutUs/AboutUs";
 import Services from "../Pages/Services/Services";
-import Blogs from "../Pages/Blogs/Blogs";
 import ContactUs from "../Pages/ContactUs/ContactUs";
+import OurBlogs from "../Pages/OurBlogs/OurBlogs";
 // import Gallery from "../Pages/Home/Gallery/Gallery";
 
 export const router = createBrowserRouter([
@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "blogs",
-                element: <Blogs></Blogs>
+                element: <OurBlogs></OurBlogs>
             },
             {
                 path: "contact",
