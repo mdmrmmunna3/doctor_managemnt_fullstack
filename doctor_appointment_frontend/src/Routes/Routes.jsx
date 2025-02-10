@@ -5,6 +5,7 @@ import AboutUs from "../Pages/AboutUs/AboutUs";
 import Services from "../Pages/Services/Services";
 import ContactUs from "../Pages/ContactUs/ContactUs";
 import OurBlogs from "../Pages/OurBlogs/OurBlogs";
+import Register from "../auth/Register";
 // import Gallery from "../Pages/Home/Gallery/Gallery";
 
 export const router = createBrowserRouter([
@@ -31,11 +32,15 @@ export const router = createBrowserRouter([
             {
                 path: "contact",
                 element: <ContactUs></ContactUs>
-            }
+            },
             // {
             //     path: "gallery",
             //     element: <Gallery></Gallery>
             // }
+            {
+                path: "register",
+                element: <Register></Register>
+            }
         ]
     }
 ]);
