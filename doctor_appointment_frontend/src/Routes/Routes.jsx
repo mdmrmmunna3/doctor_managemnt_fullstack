@@ -8,6 +8,9 @@ import OurBlogs from "../Pages/OurBlogs/OurBlogs";
 import Register from "../auth/Register";
 import Login from "../auth/Login";
 import DashboardLayout from "../Layout/DashboardLayout";
+import AdminDashboard from "../DashboardPages/AdminDashboard/AdminDashboard";
+import DoctorDashboard from "../DashboardPages/DoctorDashboard/DoctorDashboard";
+import PatientDashboard from "../DashboardPages/PatientDashboard/PatientDashboard";
 // import Gallery from "../Pages/Home/Gallery/Gallery";
 
 export const router = createBrowserRouter([
@@ -53,8 +56,20 @@ export const router = createBrowserRouter([
         path: '/dashboard',
         element: <DashboardLayout></DashboardLayout>,
         children: [
+            // Admin Dashboard
             {
-
+                path: 'adminDashboard',
+                element: <AdminDashboard />
+            },
+            // Doctor Dashboard
+            {
+                path: 'doctorDashboard',
+                element: <DoctorDashboard />
+            },
+            // Patient Dashboard
+            {
+                path: 'patientDashboard',
+                element: <PatientDashboard />
             }
         ]
     }

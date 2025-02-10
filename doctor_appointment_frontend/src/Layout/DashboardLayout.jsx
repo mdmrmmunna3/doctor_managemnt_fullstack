@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { AiOutlineMessage } from "react-icons/ai"
 import { CiSettings } from "react-icons/ci"
 import { FaFileInvoice, FaNotesMedical, FaUserPlus } from "react-icons/fa"
@@ -6,7 +6,7 @@ import { FaUserDoctor } from "react-icons/fa6"
 import { IoMdNotifications } from "react-icons/io"
 import { MdOutlineDateRange, MdOutlineFolderSpecial, MdPayments } from "react-icons/md"
 import { RxDashboard } from "react-icons/rx"
-import { Outlet, useLocation } from "react-router-dom"
+import { Link, Outlet, useLocation } from "react-router-dom"
 
 export default function DashboardLayout() {
     const [isSideNavOpen, setIsSideNavOpen] = useState(false);
@@ -14,7 +14,12 @@ export default function DashboardLayout() {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const role = params.get("role") || "patient";
-
+    useEffect(() => {
+        console.log("Current Role:", role);
+    }, [role]);
+    const handleNavigation = (path) => {
+        navigate(`${path}?role=${role}`);
+    };
 
     return (
         <>
@@ -93,8 +98,8 @@ export default function DashboardLayout() {
                             {role === 'patient' &&
                                 <>
                                     <li className="px-3">
-                                        <a
-                                            href="#"
+                                        <Link
+                                            to='/dashboard/patientDashboard?role=patient'
                                             className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
                                         >
                                             <div className="flex items-center self-center">
@@ -103,7 +108,7 @@ export default function DashboardLayout() {
                                             <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
                                                 Dashboard
                                             </div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="px-3">
                                         <a
@@ -179,12 +184,13 @@ export default function DashboardLayout() {
                                     </li>
                                 </>
                             }
+                            {/* for doctor  */}
                             {
                                 role === 'doctor' &&
                                 <>
                                     <li className="px-3">
-                                        <a
-                                            href="#"
+                                        <Link
+                                            to='/dashboard/doctorDashboard?role=doctor'
                                             className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
                                         >
                                             <div className="flex items-center self-center">
@@ -193,7 +199,7 @@ export default function DashboardLayout() {
                                             <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
                                                 Dashboard
                                             </div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="px-3">
                                         <a
@@ -282,12 +288,13 @@ export default function DashboardLayout() {
                                     </li>
                                 </>
                             }
+                            {/* for admin  */}
                             {
                                 role === 'admin' &&
                                 <>
                                     <li className="px-3">
-                                        <a
-                                            href="#"
+                                        <Link
+                                            to='/dashboard/adminDashboard?role=admin'
                                             className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
                                         >
                                             <div className="flex items-center self-center">
@@ -296,11 +303,11 @@ export default function DashboardLayout() {
                                             <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
                                                 Dashboard
                                             </div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="px-3">
-                                        <a
-                                            href="#"
+                                        <Link
+                                            to='#'
                                             className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
                                         >
                                             <div className="flex items-center self-center">
@@ -309,11 +316,11 @@ export default function DashboardLayout() {
                                             <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
                                                 Appointments
                                             </div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="px-3">
-                                        <a
-                                            href="#"
+                                        <Link
+                                            to='#'
                                             className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
                                         >
                                             <div className="flex items-center self-center">
@@ -322,11 +329,11 @@ export default function DashboardLayout() {
                                             <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
                                                 Specialities
                                             </div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="px-3">
-                                        <a
-                                            href="#"
+                                        <Link
+                                            to=''
                                             className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
                                         >
                                             <div className="flex items-center self-center">
@@ -335,11 +342,11 @@ export default function DashboardLayout() {
                                             <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
                                                 Doctors
                                             </div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="px-3">
-                                        <a
-                                            href="#"
+                                        <Link
+                                            to=''
                                             className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
                                         >
                                             <div className="flex items-center self-center">
@@ -348,11 +355,11 @@ export default function DashboardLayout() {
                                             <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
                                                 Patients
                                             </div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="px-3">
-                                        <a
-                                            href="#"
+                                        <Link
+                                            to=''
                                             className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
                                         >
                                             <div className="flex items-center self-center">
@@ -361,11 +368,11 @@ export default function DashboardLayout() {
                                             <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
                                                 Transations
                                             </div>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="px-3">
-                                        <a
-                                            href="#"
+                                        <Link
+                                            to=''
                                             className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
                                         >
                                             <div className="flex items-center self-center">
@@ -374,12 +381,12 @@ export default function DashboardLayout() {
                                             <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
                                                 Invoice Reports
                                             </div>
-                                        </a>
+                                        </Link>
                                     </li>
 
                                     <li className="px-3">
-                                        <a
-                                            href="#"
+                                        <Link
+                                            to=''
                                             className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
                                         >
                                             <div className="flex items-center self-center">
@@ -388,7 +395,7 @@ export default function DashboardLayout() {
                                             <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
                                                 Profile Setting
                                             </div>
-                                        </a>
+                                        </Link>
                                     </li>
                                 </>
                             }
@@ -399,8 +406,8 @@ export default function DashboardLayout() {
                 </nav>
 
                 <footer className="border-t border-slate-200 p-3">
-                    <a
-                        href="#"
+                    <Link
+                        to=''
                         className="flex items-center gap-3 rounded p-3 text-slate-900 transition-colors hover:text-emerald-500 "
                     >
                         <div className="flex items-center self-center ">
@@ -424,7 +431,7 @@ export default function DashboardLayout() {
                         <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm font-medium">
                             Logout
                         </div>
-                    </a>
+                    </Link>
                 </footer>
             </aside>
 
