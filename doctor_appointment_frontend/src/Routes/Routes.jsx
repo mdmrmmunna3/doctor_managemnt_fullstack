@@ -6,6 +6,8 @@ import Services from "../Pages/Services/Services";
 import ContactUs from "../Pages/ContactUs/ContactUs";
 import OurBlogs from "../Pages/OurBlogs/OurBlogs";
 import Register from "../auth/Register";
+import Login from "../auth/Login";
+import DashboardLayout from "../Layout/DashboardLayout";
 // import Gallery from "../Pages/Home/Gallery/Gallery";
 
 export const router = createBrowserRouter([
@@ -38,8 +40,21 @@ export const router = createBrowserRouter([
             //     element: <Gallery></Gallery>
             // }
             {
+                path: "login",
+                element: <Login></Login>
+            },
+            {
                 path: "register",
                 element: <Register></Register>
+            }
+        ]
+    },
+    {
+        path: '/dashboard',
+        element: <DashboardLayout></DashboardLayout>,
+        children: [
+            {
+
             }
         ]
     }

@@ -13,7 +13,7 @@ const AboutUs = () => {
         { icon: "⭐", end: 4.9, label: "Average Rating", decimals: 1 },
     ];
     return (
-        <div>
+        <div className='pt-16'>
             <ShareBanner bgImage={aboutBg} title='About Us'>About Us</ShareBanner>
             <About></About>
             <div className="grid lg:grid-cols-4 md:grid-cols-2 lg:px-16 md:p-10 p-5">

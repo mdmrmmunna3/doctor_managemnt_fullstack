@@ -18,7 +18,7 @@ import "./Banner.css";
 import ShareButton from '../../../components/ShareButton/ShareButton';
 const Banner = () => {
     return (
-        <div>
+        <div className='pt-16'>
             <Swiper
                 loop={true}
                 effect='fade'

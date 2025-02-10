@@ -4,7 +4,7 @@ import blogBg from "../../assets/banner/service.jpg";
 import Blogs from '../Home/Blogs/Blogs';
 const OurBlogs = () => {
     return (
-        <div>
+        <div className='pt-16'>
             <ShareBanner bgImage={blogBg} title='Our Blogs'>Blogs</ShareBanner>
             <Blogs></Blogs>
         </div>

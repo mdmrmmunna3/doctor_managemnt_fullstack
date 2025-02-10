@@ -24,7 +24,7 @@ const Navbar = () => {
     );
 
     return (
-        <div className="bg-[--primary-color] text-[--secondary-color] shadow-md">
+        <div className="bg-[--primary-color] text-[--secondary-color] shadow-md fixed z-[1000] w-full">
             <div className="navbar max-w-screen-xl mx-auto py-4 px-6">
                 {/* Left side logo */}
                 <div className="navbar-start w-full">
