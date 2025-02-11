@@ -7,8 +7,8 @@ const AdminDashboard = () => {
     const stats = [
         { icon: "👥", end: 1000, label: "Happy Patients", formattedEnd: "1k" },
         { icon: "👨‍⚕️", end: 150, label: "Expert Doctors" },
-        { icon: "🏆", end: 90, label: "Award Winning" },
-        { icon: "⭐", end: 4.9, label: "Average Rating", decimals: 1 },
+        { icon: "🎟️", end: 450, label: "Appointment" },
+        { icon: "💵", end: 65723, label: "Revenue", decimals: 1 },
     ];
     const [state, setState] = React.useState({
 
@@ -90,6 +90,7 @@ const AdminDashboard = () => {
     });
     return (
         <div>
+            <h1 className="text-4xl font-semibold mb-6 text-center titel">Welcome To Admin Dashboard</h1>
             <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-5  p-5">
                 {stats.map((stat, index) => (
                     <div
@@ -100,7 +101,7 @@ const AdminDashboard = () => {
                         <span className="text-4xl">{stat.icon}</span>
                         <h2 className="text-3xl font-bold mt-2">
                             {/* {stat.formattedEnd ? stat.formattedEnd : <CountUp end={stat.end} duration={2.5} decimals={stat.decimals || 0} />}+ */}
-                            <CountUp end={stat.end} duration={2.5} decimals={stat.decimals || 0} />+
+                            <CountUp end={stat.end} duration={2.5} decimals={stat.decimals || 0} />
                         </h2>
                         <p className=" mt-1 text-lg">{stat.label}</p>
                     </div>

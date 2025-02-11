@@ -13,6 +13,7 @@ const Login = () => {
     const [password, setPassword] = useState('123');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -23,6 +24,7 @@ const Login = () => {
     // Handle role selection via button clicks
     const handleRoleSelect = (role) => {
         setSelectedRole(role);
+        setError(""); // Clear error when switching roles
     };
 
     const handleSubmit = (e) => {
@@ -32,26 +34,34 @@ const Login = () => {
             (selectedRole === 'doctor' && email === 'doctor@gmail.com' && password === '123') ||
             (selectedRole === 'admin' && email === 'admin@gmail.com' && password === '123')
         ) {
-            // Redirect to dashboard and pass the selectedRole via URL
-            navigate(`/dashboard?role=${selectedRole}`);
-        }
-
-        else {
+            // Store role and authentication token
+            localStorage.setItem('role', selectedRole);
+            // localStorage.setItem('authToken', 'your_auth_token_here'); // This would be the real token in a real app
+            // navigate(`/dashboard?role=${selectedRole}`);
+            if (selectedRole === "patient") {
+                navigate("/dashboard/patientDashboard");
+            } else if (selectedRole === "doctor") {
+                navigate("/dashboard/doctorDashboard");
+            } else if (selectedRole === "admin") {
+                navigate("/dashboard/adminDashboard");
+            }
+        } else {
             setError('Invalid email or password');
         }
     };
 
+    const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
     // Render registration form based on selected role
     const renderRegistrationForm = () => {
         switch (selectedRole) {
             case "doctor":
-                return <DoctorForm selectedRole={selectedRole} handleSubmit={handleSubmit} setEmail={setEmail} setPassword={setPassword} />;  // Pass selectedRole as prop
+                return <DoctorForm selectedRole={selectedRole} handleSubmit={handleSubmit} setEmail={setEmail} setPassword={setPassword} email={email} password={password} error={error} togglePasswordVisibility={togglePasswordVisibility} showPassword={showPassword} />;
             case "admin":
-                return <AdminForm selectedRole={selectedRole} handleSubmit={handleSubmit} setEmail={setEmail} setPassword={setPassword} />;
+                return <AdminForm selectedRole={selectedRole} handleSubmit={handleSubmit} setEmail={setEmail} setPassword={setPassword} email={email} password={password} error={error} togglePasswordVisibility={togglePasswordVisibility} showPassword={showPassword} />;
             case "patient":
             default:
-                return <PatientForm selectedRole={selectedRole} handleSubmit={handleSubmit} setEmail={setEmail} setPassword={setPassword} />;
+                return <PatientForm selectedRole={selectedRole} handleSubmit={handleSubmit} setEmail={setEmail} setPassword={setPassword} email={email} password={password} error={error} togglePasswordVisibility={togglePasswordVisibility} showPassword={showPassword} />;
         }
     };
 
@@ -61,9 +71,8 @@ const Login = () => {
                 <img src={animationGif} className="" alt="animation" />
             </div>
             <div className="bg-white shadow-lg rounded-xl w-full p-6">
-
                 <h2 className="flex justify-center items-center text-3xl font-semibold mb-4 titel_content text-black">
-                    <Link to='/' className="pe-3" title="go to home"><FcUndo /></Link>
+                    <Link to="/" className="pe-3" title="go to home"><FcUndo /></Link>
                     {selectedRole === "patient"
                         ? "Patient Login"
                         : selectedRole === "doctor"
@@ -110,8 +119,7 @@ const Login = () => {
 };
 
 // Patient Registration Form
-const PatientForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email, password, error }) => (
-
+const PatientForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email, password, error, togglePasswordVisibility, showPassword }) => (
     <form onSubmit={handleSubmit} className="space-y-4 titel_content">
         <input
             type="email"
@@ -120,13 +128,18 @@ const PatientForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email,
             value={email}
             onChange={(e) => setEmail(e.target.value)}
         />
-        <input
-            type="password"
-            className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-600"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="relative">
+            <input
+                type={showPassword ? "text" : "password"}
+                className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-600"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="button" onClick={togglePasswordVisibility} className="absolute right-3 top-3 text-teal-500">
+                {showPassword ? "Hide" : "Show"}
+            </button>
+        </div>
         {error && <span className="text-red-500">{error}</span>}
         <span className="text-black">Forgot Password?</span>
         <button
@@ -143,7 +156,6 @@ const PatientForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email,
                 <Link to='/'> <img src={facebookIcon} alt="facebook" className="w-10" /></Link>
                 <Link to='/'> <img src={twiterIcon} alt="twitter" className="w-10" /></Link>
             </div>
-            {/* Link to the registration page with the selected role */}
             <div className="text-center pt-3">
                 <span className="text-black">You have no account?{" "}
                     <Link to={`/register?role=${selectedRole}`}>
@@ -156,7 +168,7 @@ const PatientForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email,
 );
 
 // Doctor Registration Form
-const DoctorForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email, password }) => (
+const DoctorForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email, password, error, togglePasswordVisibility, showPassword }) => (
     <form onSubmit={handleSubmit} className="space-y-4 titel_content">
         <input
             type="email"
@@ -165,13 +177,19 @@ const DoctorForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email, 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
         />
-        <input
-            type="password"
-            className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-600"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="relative">
+            <input
+                type={showPassword ? "text" : "password"}
+                className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-600"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="button" onClick={togglePasswordVisibility} className="absolute right-3 top-3 text-teal-500">
+                {showPassword ? "Hide" : "Show"}
+            </button>
+        </div>
+        {error && <span className="text-red-500">{error}</span>}
         <span className="text-black">Forgot Password?</span>
         <button
             type="submit"
@@ -182,12 +200,10 @@ const DoctorForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email, 
         <div className="text-center">
             <span className="text-black">---- Login With Social Account ----</span>
             <div className="flex justify-center items-center space-x-5 py-3">
-                {/* social icons  */}
                 <Link to='/'><img src={googleIcon} alt="google" className="w-10" /></Link>
                 <Link to='/'> <img src={facebookIcon} alt="facebook" className="w-10" /></Link>
-                <Link to='/'> <img src={twiterIcon} alt="twiter" className="w-10" /></Link>
+                <Link to='/'> <img src={twiterIcon} alt="twitter" className="w-10" /></Link>
             </div>
-            {/* Link to the registration page with the selected role */}
             <div className="text-center pt-3">
                 <span className="text-black">You have no account?{" "}
                     <Link to={`/register?role=${selectedRole}`}>
@@ -200,7 +216,7 @@ const DoctorForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email, 
 );
 
 // Admin Registration Form
-const AdminForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email, password }) => (
+const AdminForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email, password, error, togglePasswordVisibility, showPassword }) => (
     <form onSubmit={handleSubmit} className="space-y-4 titel_content">
         <input
             type="email"
@@ -209,13 +225,19 @@ const AdminForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email, p
             value={email}
             onChange={(e) => setEmail(e.target.value)}
         />
-        <input
-            type="password"
-            className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-600"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="relative">
+            <input
+                type={showPassword ? "text" : "password"}
+                className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-600"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="button" onClick={togglePasswordVisibility} className="absolute right-3 top-3 text-teal-500">
+                {showPassword ? "Hide" : "Show"}
+            </button>
+        </div>
+        {error && <span className="text-red-500">{error}</span>}
         <span className="text-black">Forgot Password?</span>
         <button
             type="submit"
@@ -226,12 +248,10 @@ const AdminForm = ({ selectedRole, handleSubmit, setEmail, setPassword, email, p
         <div className="text-center">
             <span className="text-black">---- Login With Social Account ----</span>
             <div className="flex justify-center items-center space-x-5 py-3">
-                {/* social icons  */}
                 <Link to='/'><img src={googleIcon} alt="google" className="w-10" /></Link>
                 <Link to='/'> <img src={facebookIcon} alt="facebook" className="w-10" /></Link>
-                <Link to='/'> <img src={twiterIcon} alt="twiter" className="w-10" /></Link>
+                <Link to='/'> <img src={twiterIcon} alt="twitter" className="w-10" /></Link>
             </div>
-            {/* Link to the registration page with the selected role */}
             <div className="text-center pt-3">
                 <span className="text-black">You have no account?{" "}
                     <Link to={`/register?role=${selectedRole}`}>

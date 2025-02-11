@@ -11,6 +11,11 @@ import DashboardLayout from "../Layout/DashboardLayout";
 import AdminDashboard from "../DashboardPages/AdminDashboard/AdminDashboard";
 import DoctorDashboard from "../DashboardPages/DoctorDashboard/DoctorDashboard";
 import PatientDashboard from "../DashboardPages/PatientDashboard/PatientDashboard";
+import DoctorList from "../DashboardPages/AdminDashboard/DoctorList";
+import PatientList from "../DashboardPages/AdminDashboard/PatientList";
+import Appointments from "../DashboardPages/AdminDashboard/Appointments";
+import Specialities from "../DashboardPages/AdminDashboard/Specialities";
+import DoctorAppointment from "../DashboardPages/DoctorDashboard/DoctorAppointment";
 // import Gallery from "../Pages/Home/Gallery/Gallery";
 
 export const router = createBrowserRouter([
@@ -54,23 +59,51 @@ export const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <DashboardLayout></DashboardLayout>,
+        element: <DashboardLayout />,
         children: [
-            // Admin Dashboard
+            // For Admin Dashboard 
             {
                 path: 'adminDashboard',
-                element: <AdminDashboard />
+                element: <AdminDashboard />,
+                // children: [
+                //     {
+                //         path: 'doctorList',
+                //         element: <DoctorList />,
+                //     },
+                // ],
             },
-            // Doctor Dashboard
+            {
+                path: 'adminDashboard/appointments',
+                element: <Appointments />,
+            },
+            {
+                path: 'adminDashboard/specialities',
+                element: <Specialities />,
+            },
+            {
+                path: 'adminDashboard/doctorList',
+                element: <DoctorList />,
+            },
+            {
+                path: 'adminDashboard/patientList',
+                element: <PatientList />,
+            },
+
+            // For DoctorDashboard 
             {
                 path: 'doctorDashboard',
-                element: <DoctorDashboard />
+                element: <DoctorDashboard />,
             },
-            // Patient Dashboard
+            {
+                path: 'doctorDashboard/doctorAppoint',
+                element: <DoctorAppointment />,
+            },
+
+            // For PatientDashboard 
             {
                 path: 'patientDashboard',
-                element: <PatientDashboard />
-            }
-        ]
-    }
+                element: <PatientDashboard />,
+            },
+        ],
+    },
 ]);

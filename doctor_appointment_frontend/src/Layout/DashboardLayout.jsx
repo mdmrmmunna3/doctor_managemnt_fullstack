@@ -6,20 +6,85 @@ import { FaUserDoctor } from "react-icons/fa6"
 import { IoMdNotifications } from "react-icons/io"
 import { MdOutlineDateRange, MdOutlineFolderSpecial, MdPayments } from "react-icons/md"
 import { RxDashboard } from "react-icons/rx"
-import { Link, Outlet, useLocation } from "react-router-dom"
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
+import DashboardNavbar from "../Pages/Shared/DashboardNavbar/DashboardNavbar"
 
 export default function DashboardLayout() {
     const [isSideNavOpen, setIsSideNavOpen] = useState(false);
+    const [role, setRole] = useState(localStorage.getItem("role"));
+    const navigate = useNavigate();
 
-    const location = useLocation();
-    const params = new URLSearchParams(location.search);
-    const role = params.get("role") || "patient";
     useEffect(() => {
-        console.log("Current Role:", role);
-    }, [role]);
-    const handleNavigation = (path) => {
-        navigate(`${path}?role=${role}`);
-    };
+        const storedRole = localStorage.getItem("role");
+        if (!storedRole) {
+            navigate("/login"); // Redirect to login if no role found
+        } else {
+            setRole(storedRole);
+        }
+    }, [navigate]);
+
+    const handleLogout = () => {
+        navigate('/login');
+    }
+
+    const NavItem = ({ to, icon: Icon, title, notifications = 0, onClick }) => (
+        <li className="px-3">
+            <Link
+                to={to}
+                onClick={onClick}
+                className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500"
+            >
+                <div className="flex items-center self-center">
+                    <Icon className="h-6 w-6" />
+                </div>
+                <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
+                    {title}
+                </div>
+                {notifications > 0 && (
+                    <span className="inline-flex items-center justify-center rounded-full bg-pink-100 px-2 text-xs text-pink-500">
+                        {notifications}
+                        <span className="sr-only"> new notifications</span>
+                    </span>
+                )}
+            </Link>
+        </li>
+    );
+
+    const AdminMenu = () => (
+        <>
+            <NavItem to="/dashboard/adminDashboard" icon={RxDashboard} title="Dashboard" />
+            <NavItem to="/dashboard/adminDashboard/appointments" icon={MdOutlineDateRange} title="Appointments" />
+            <NavItem to="/dashboard/adminDashboard/specialities" icon={MdOutlineFolderSpecial} title="Specialities" />
+            <NavItem to="/dashboard/adminDashboard/doctorList" icon={FaUserDoctor} title="Doctors" />
+            <NavItem to="/dashboard/adminDashboard/patientList" icon={FaUserPlus} title="Patients" />
+            <NavItem to="/dashboard/adminDashboard/transactions" icon={MdPayments} title="Transactions" />
+            <NavItem to="/dashboard/adminDashboard/invoiceReports" icon={FaFileInvoice} title="Invoice Reports" />
+            <NavItem to="/dashboard/adminDashboard/settings" icon={CiSettings} title="Profile Setting" />
+        </>
+    );
+
+    const DoctorMenu = () => (
+        <>
+            <NavItem to="/dashboard/doctorDashboard" icon={RxDashboard} title="Dashboard" />
+            <NavItem to="/dashboard/doctorDashboard/doctorAppoint" icon={MdOutlineDateRange} title="Appointment" />
+            <NavItem to="/dashboard/doctorDashboard/requests" icon={IoMdNotifications} title="Request" notifications={7} />
+            <NavItem to="/dashboard/doctorDashboard/messages" icon={AiOutlineMessage} title="Messages" notifications={2} />
+            <NavItem to="/dashboard/doctorDashboard/timing" icon={FaNotesMedical} title="Available Timing" />
+            <NavItem to="/dashboard/doctorDashboard/patients" icon={FaNotesMedical} title="My Patients" />
+            <NavItem to="/dashboard/doctorDashboard/settings" icon={CiSettings} title="Profile Setting" />
+        </>
+    );
+
+    const PatientMenu = () => (
+        <>
+            <NavItem to="/dashboard/patientDashboard" icon={RxDashboard} title="Dashboard" />
+            <NavItem to="/dashboard/patientDashboard/appointments" icon={MdOutlineDateRange} title="My Appointment" />
+            <NavItem to="/dashboard/patientDashboard/messages" icon={AiOutlineMessage} title="Messages" notifications={2} />
+            <NavItem to="/dashboard/patientDashboard/notifications" icon={IoMdNotifications} title="Notifications" notifications={7} />
+            <NavItem to="/dashboard/patientDashboard/reports" icon={FaNotesMedical} title="Medical Report" />
+            <NavItem to="/dashboard/patientDashboard/settings" icon={CiSettings} title="Profile Setting" />
+        </>
+    );
 
     return (
         <>
@@ -54,6 +119,10 @@ export default function DashboardLayout() {
                 </div>
             </button>
 
+            {/* <div className="">
+
+                <DashboardNavbar></DashboardNavbar>
+            </div> */}
             {/*  <!-- Side Navigation --> */}
             <aside
                 id="nav-menu-4"
@@ -95,310 +164,9 @@ export default function DashboardLayout() {
                 >
                     <div>
                         <ul className="flex flex-1 flex-col gap-1 py-3">
-                            {role === 'patient' &&
-                                <>
-                                    <li className="px-3">
-                                        <Link
-                                            to='/dashboard/patientDashboard?role=patient'
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <RxDashboard className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Dashboard
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="px-3">
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <MdOutlineDateRange className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                My Appointment
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li className="px-3">
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center ">
-                                                <AiOutlineMessage className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Messages
-                                            </div>
-                                            <span className="inline-flex items-center justify-center rounded-full bg-pink-100 px-2 text-xs text-pink-500 ">
-                                                2<span className="sr-only"> new notifications</span>
-                                            </span>
-                                        </a>
-                                    </li>
-
-                                    <li className="px-3">
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center ">
-                                                <IoMdNotifications className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                notifications
-                                            </div>
-                                            <span className="inline-flex items-center justify-center rounded-full bg-pink-100 px-2 text-xs text-pink-500 ">
-                                                7<span className="sr-only"> new notifications</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li className="px-3">
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <FaNotesMedical className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Medical Report
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li className="px-3">
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <CiSettings className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Setting
-                                            </div>
-                                        </a>
-                                    </li>
-                                </>
-                            }
-                            {/* for doctor  */}
-                            {
-                                role === 'doctor' &&
-                                <>
-                                    <li className="px-3">
-                                        <Link
-                                            to='/dashboard/doctorDashboard?role=doctor'
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <RxDashboard className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Dashboard
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="px-3">
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <MdOutlineDateRange className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Appointment
-                                            </div>
-                                        </a>
-                                    </li>
-
-                                    <li className="px-3">
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center ">
-                                                <IoMdNotifications className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Request
-                                            </div>
-                                            <span className="inline-flex items-center justify-center rounded-full bg-pink-100 px-2 text-xs text-pink-500 ">
-                                                7<span className="sr-only"> new notifications</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li className="px-3">
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center ">
-                                                <AiOutlineMessage className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Messages
-                                            </div>
-                                            <span className="inline-flex items-center justify-center rounded-full bg-pink-100 px-2 text-xs text-pink-500 ">
-                                                2<span className="sr-only"> new notifications</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li className="px-3">
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <FaNotesMedical className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Available Timing
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li className="px-3">
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <FaNotesMedical className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                My Patients
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li className="px-3">
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <CiSettings className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Profile Setting
-                                            </div>
-                                        </a>
-                                    </li>
-                                </>
-                            }
-                            {/* for admin  */}
-                            {
-                                role === 'admin' &&
-                                <>
-                                    <li className="px-3">
-                                        <Link
-                                            to='/dashboard/adminDashboard?role=admin'
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <RxDashboard className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Dashboard
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="px-3">
-                                        <Link
-                                            to='#'
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <MdOutlineDateRange className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Appointments
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="px-3">
-                                        <Link
-                                            to='#'
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <MdOutlineFolderSpecial className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Specialities
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="px-3">
-                                        <Link
-                                            to=''
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <FaUserDoctor className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Doctors
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="px-3">
-                                        <Link
-                                            to=''
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <FaUserPlus className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Patients
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="px-3">
-                                        <Link
-                                            to=''
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <MdPayments className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Transations
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="px-3">
-                                        <Link
-                                            to=''
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <FaFileInvoice className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Invoice Reports
-                                            </div>
-                                        </Link>
-                                    </li>
-
-                                    <li className="px-3">
-                                        <Link
-                                            to=''
-                                            className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-                                        >
-                                            <div className="flex items-center self-center">
-                                                <CiSettings className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-                                                Profile Setting
-                                            </div>
-                                        </Link>
-                                    </li>
-                                </>
-                            }
+                            {role === 'patient' && <PatientMenu />}
+                            {role === 'doctor' && <DoctorMenu />}
+                            {role === 'admin' && <AdminMenu />}
 
                         </ul>
                     </div>
@@ -428,16 +196,17 @@ export default function DashboardLayout() {
                                 />
                             </svg>
                         </div>
-                        <div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm font-medium">
+                        <div onClick={handleLogout} className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm font-medium">
                             Logout
                         </div>
                     </Link>
                 </footer>
             </aside>
 
-            <main className="flex-1 p-6 lg:ml-72">
+            <main className="flex-1 p-6 lg:ml-72 overflow-x-auto">
                 <Outlet /> {/* Dynamic content will be rendered here */}
             </main>
+            {/* <DashboardFooter></DashboardFooter> */}
 
             {/*  <!-- Backdrop --> */}
             <div
