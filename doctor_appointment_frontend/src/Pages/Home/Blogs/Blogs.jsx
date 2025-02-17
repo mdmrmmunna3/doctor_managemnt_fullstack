@@ -20,10 +20,10 @@ const Blogs = () => {
                         boxShadow: `rgba(0, 131, 141, 0.16) 0px 3px 6px, rgba(0, 131, 141, 0.23) 0px 3px 6px`
                     }}
                     className="grid md:grid-cols-2 gap-3 p-5 titel_content ">
-                    <div className='relative'>
+                    <div className='relative overflow-hidden'>
                         <img
                             src={work}
-                            className=" rounded-lg w-full h-full " />
+                            className=" rounded-lg w-full h-full scaleImg" />
                         <p className='bg-white absolute text-2xl top-5 left-5 px-2 rounded-md'><span>8</span> <span>Feb</span></p>
                     </div>
                     <div>
@@ -42,10 +42,10 @@ const Blogs = () => {
                         boxShadow: `rgba(0, 131, 141, 0.16) 0px 3px 6px, rgba(0, 131, 141, 0.23) 0px 3px 6px`
                     }}
                     className="grid md:grid-cols-2 gap-3 p-5 titel_content ">
-                    <div className='relative'>
+                    <div className='relative overflow-hidden'>
                         <img
                             src={work}
-                            className=" rounded-lg w-full h-full " />
+                            className=" rounded-lg w-full h-full scaleImg" />
                         <p className='bg-white absolute text-2xl top-5 left-5 px-2 rounded-md'><span>8</span> <span>Feb</span></p>
                     </div>
                     <div>
@@ -64,10 +64,10 @@ const Blogs = () => {
                         boxShadow: `rgba(0, 131, 141, 0.16) 0px 3px 6px, rgba(0, 131, 141, 0.23) 0px 3px 6px`
                     }}
                     className="grid md:grid-cols-2 gap-3 p-5 titel_content ">
-                    <div className='relative'>
+                    <div className='relative overflow-hidden'>
                         <img
                             src={work}
-                            className=" rounded-lg w-full h-full " />
+                            className=" rounded-lg w-full h-full scaleImg" />
                         <p className='bg-white absolute text-2xl top-5 left-5 px-2 rounded-md'><span>8</span> <span>Feb</span></p>
                     </div>
                     <div>
@@ -86,10 +86,10 @@ const Blogs = () => {
                         boxShadow: `rgba(0, 131, 141, 0.16) 0px 3px 6px, rgba(0, 131, 141, 0.23) 0px 3px 6px`
                     }}
                     className="grid md:grid-cols-2 gap-3 p-5 titel_content ">
-                    <div className='relative'>
+                    <div className='relative overflow-hidden'>
                         <img
                             src={work}
-                            className=" rounded-lg w-full h-full " />
+                            className=" rounded-lg w-full h-full scaleImg" />
                         <p className='bg-white absolute text-2xl top-5 left-5 px-2 rounded-md'><span>8</span> <span>Feb</span></p>
                     </div>
                     <div>

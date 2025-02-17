@@ -22,9 +22,9 @@ const Doctor = () => {
                     style={{
                         boxShadow: `rgba(0, 131, 141, 0.16) 0px 3px 6px, rgba(0, 131, 141, 0.23) 0px 3px 6px`
                     }}
-                    className="card shadow-xl p-5">
+                    className="card shadow-xl p-5 transform transition-transform duration-500 hover:-translate-y-2">
                     <div className='flex justify-center items-center'>
-                        <img className='h-[200px] w-full'
+                        <img className='h-[200px] w-full '
                             src={doctor1}
                             alt="doctor img" />
                     </div>
@@ -52,7 +52,7 @@ const Doctor = () => {
                     style={{
                         boxShadow: `rgba(0, 131, 141, 0.16) 0px 3px 6px, rgba(0, 131, 141, 0.23) 0px 3px 6px`
                     }}
-                    className="card shadow-xl p-5">
+                    className="card shadow-xl p-5 transform transition-transform duration-500 hover:-translate-y-2">
                     <div className='flex justify-center items-center'>
                         <img className='h-[200px] w-full'
                             src={doctor1}
@@ -82,7 +82,7 @@ const Doctor = () => {
                     style={{
                         boxShadow: `rgba(0, 131, 141, 0.16) 0px 3px 6px, rgba(0, 131, 141, 0.23) 0px 3px 6px`
                     }}
-                    className="card shadow-xl p-5">
+                    className="card shadow-xl p-5 transform transition-transform duration-500 hover:-translate-y-2">
                     <div className='flex justify-center items-center'>
                         <img className='h-[200px] w-full'
                             src={doctor1}

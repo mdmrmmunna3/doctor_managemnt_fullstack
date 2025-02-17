@@ -75,11 +75,11 @@ const DoctorList = () => {
     ]
 
     return (
-        <div className='overflow-x-auto'>
+        <div className='pt-[100px] overflow-x-auto'>
             <h1 className="text-4xl font-semibold mb-6 text-center titel">Doctor Information</h1>
             <table className="min-w-full table-auto border-collapse border text-center border-gray-300 titel_content">
                 <thead>
-                    <tr className="bg-gray-100 ">
+                    <tr className="bg-[#17C3B2] ">
                         <th className="py-2 px-4 border-b">Name</th>
                         <th className="py-2 px-4 border-b">Speciality</th>
                         <th className="py-2 px-4 border-b">Member Since</th>
@@ -89,7 +89,7 @@ const DoctorList = () => {
                 </thead>
                 <tbody>
                     {doctors.map((doctor, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
+                        <tr key={index} className="hover:bg-[#17C3B2] transform transition-transform duration-200 cursor-pointer">
                             <td className="py-2 px-4 border-b">{doctor.name}</td>
                             <td className="py-2 px-4 border-b">{doctor.speciality}</td>
                             <td className="py-2 px-4 border-b">{doctor.member_since}</td>

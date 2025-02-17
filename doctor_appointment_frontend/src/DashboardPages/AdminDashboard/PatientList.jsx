@@ -96,11 +96,11 @@ const PatientList = () => {
 
 
     return (
-        <div className='overflow-x-auto'>
+        <div className='pt-[100px] overflow-x-auto'>
             <h1 className="text-4xl font-semibold mb-6 text-center titel">Patients Information</h1>
             <table className="min-w-full table-auto border-collapse border text-center border-gray-300 titel_content">
                 <thead>
-                    <tr className="bg-gray-100">
+                    <tr className="bg-[#17C3B2]">
                         <th className="px-4 py-2  border-b">Patient ID</th>
                         <th className="px-4 py-2  border-b">Name</th>
                         <th className="px-4 py-2  border-b">Age</th>
@@ -112,7 +112,7 @@ const PatientList = () => {
                 </thead>
                 <tbody>
                     {patients.map(patient => (
-                        <tr key={patient.patientId} className="border-b hover:bg-gray-50">
+                        <tr key={patient.patientId} className="border-b hover:bg-[#17C3B2] transform transition-transform duration-200 cursor-pointer">
                             <td className="px-4 py-2">{patient.patientId}</td>
                             <td className="px-4 py-2">{patient.patientName}</td>
                             <td className="px-4 py-2">{patient.age}</td>

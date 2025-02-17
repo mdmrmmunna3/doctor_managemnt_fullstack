@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react"
-import { AiOutlineMessage } from "react-icons/ai"
-import { CiSettings } from "react-icons/ci"
-import { FaFileInvoice, FaNotesMedical, FaUserPlus } from "react-icons/fa"
-import { FaUserDoctor } from "react-icons/fa6"
-import { IoMdNotifications } from "react-icons/io"
-import { MdOutlineDateRange, MdOutlineFolderSpecial, MdPayments } from "react-icons/md"
-import { RxDashboard } from "react-icons/rx"
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
-import DashboardNavbar from "../Pages/Shared/DashboardNavbar/DashboardNavbar"
+import React, { useEffect, useState } from "react";
+import { AiOutlineMessage, AiOutlineClose } from "react-icons/ai"; // Added close icon
+import { CiSettings } from "react-icons/ci";
+import { FaFileInvoice, FaNotesMedical, FaUserPlus } from "react-icons/fa";
+import { FaUserDoctor } from "react-icons/fa6";
+import { IoMdNotifications } from "react-icons/io";
+import { MdOutlineDateRange, MdOutlineFolderSpecial, MdPayments } from "react-icons/md";
+import { RxDashboard } from "react-icons/rx";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import DashboardNavbar from "../Pages/Shared/DashboardNavbar/DashboardNavbar";
 
 export default function DashboardLayout() {
     const [isSideNavOpen, setIsSideNavOpen] = useState(false);
@@ -25,7 +25,7 @@ export default function DashboardLayout() {
 
     const handleLogout = () => {
         navigate('/login');
-    }
+    };
 
     const NavItem = ({ to, icon: Icon, title, notifications = 0, onClick }) => (
         <li className="px-3">
@@ -88,7 +88,6 @@ export default function DashboardLayout() {
 
     return (
         <>
-            {/*  <!-- Component: Side navigation menu with user profile and alert message --> */}
             {/*  <!-- Mobile trigger --> */}
             <button
                 title="Side navigation"
@@ -119,10 +118,6 @@ export default function DashboardLayout() {
                 </div>
             </button>
 
-            {/* <div className="">
-
-                <DashboardNavbar></DashboardNavbar>
-            </div> */}
             {/*  <!-- Side Navigation --> */}
             <aside
                 id="nav-menu-4"
@@ -130,6 +125,15 @@ export default function DashboardLayout() {
                 className={`fixed top-0 bottom-0 left-0 z-40 flex w-72 flex-col border-r border-r-slate-200 bg-white transition-transform lg:translate-x-0 ${isSideNavOpen ? "translate-x-0" : " -translate-x-full"
                     }`}
             >
+                {/* Close Icon Button */}
+                <button
+                    onClick={() => setIsSideNavOpen(false)}
+                    className="lg:hidden absolute top-4 right-4 z-50 p-2 rounded-full bg-gray-200 text-slate-700"
+                    aria-label="Close sidebar"
+                >
+                    <AiOutlineClose className="h-6 w-6" />
+                </button>
+
                 <div className="flex flex-col items-center gap-4 border-b border-slate-200 p-6">
                     <div className="shrink-0">
                         <a
@@ -167,10 +171,8 @@ export default function DashboardLayout() {
                             {role === 'patient' && <PatientMenu />}
                             {role === 'doctor' && <DoctorMenu />}
                             {role === 'admin' && <AdminMenu />}
-
                         </ul>
                     </div>
-
                 </nav>
 
                 <footer className="border-t border-slate-200 p-3">
@@ -179,6 +181,7 @@ export default function DashboardLayout() {
                         className="flex items-center gap-3 rounded p-3 text-slate-900 transition-colors hover:text-emerald-500 "
                     >
                         <div className="flex items-center self-center ">
+
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -203,18 +206,17 @@ export default function DashboardLayout() {
                 </footer>
             </aside>
 
-            <main className="flex-1 p-6 lg:ml-72 overflow-x-auto">
+            <DashboardNavbar />
+            <main className="flex-1 px-6 lg:ml-72 overflow-x-auto">
                 <Outlet /> {/* Dynamic content will be rendered here */}
             </main>
-            {/* <DashboardFooter></DashboardFooter> */}
 
-            {/*  <!-- Backdrop --> */}
+            {/* Backdrop */}
             <div
                 className={`fixed top-0 bottom-0 left-0 right-0 z-30 bg-slate-900/20 transition-colors sm:hidden ${isSideNavOpen ? "block" : "hidden"
                     }`}
                 onClick={() => setIsSideNavOpen(false)}
             ></div>
-            {/*  <!-- End Side navigation menu with user profile and alert message --> */}
         </>
-    )
+    );
 }

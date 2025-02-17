@@ -89,7 +89,7 @@ const AdminDashboard = () => {
 
     });
     return (
-        <div>
+        <div className='pt-[100px]'>
             <h1 className="text-4xl font-semibold mb-6 text-center titel">Welcome To Admin Dashboard</h1>
             <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-5  p-5">
                 {stats.map((stat, index) => (
@@ -113,7 +113,7 @@ const AdminDashboard = () => {
                     <ReactApexChart options={state.options} series={state.series} type="area" height={350} />
                 </div>
                 <div>
-                    <Chart options={state.options2} series={state.series2} type="line" height={350} />;
+                    <Chart options={state.options2} series={state.series2} type="line" height={350} />
                 </div>
             </div>
 

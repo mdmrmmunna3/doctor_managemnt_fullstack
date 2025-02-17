@@ -16,120 +16,135 @@
 */
 
 :root {
-    --primary-color: white;
-    --secondary-color: #000000;
+  --primary-color: white;
+  --secondary-color: #000000;
 }
 
 .dark {
-    --primary-color: #000000;
-    --secondary-color: white;
+  --primary-color: #000000;
+  --secondary-color: white;
 }
 
 body {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    transition: background-color 1s ease, color 1s ease;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  transition: background-color 1s ease, color 1s ease;
 }
 
 /* style for button  */
 /* From Uiverse.io by nikk7007 */
 .style_btn {
-    padding: 5px 10px;
-    border: 2px solid #17C3B2;
-    position: relative;
-    overflow: hidden;
-    background-color: transparent;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 16px;
-    transition: .3s;
-    z-index: 1;
-    font-family: inherit;
-    color: #17C3B2;
+  padding: 5px 10px;
+  border: 2px solid #17C3B2;
+  position: relative;
+  overflow: hidden;
+  background-color: transparent;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 16px;
+  transition: .3s;
+  z-index: 1;
+  font-family: inherit;
+  color: #17C3B2;
 }
 
 .style_btn::before {
-    content: '';
-    width: 0;
-    height: 300%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
-    background: #17C3B2;
-    transition: .5s ease;
-    display: block;
-    z-index: -1;
+  content: '';
+  width: 0;
+  height: 300%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: #17C3B2;
+  transition: .5s ease;
+  display: block;
+  z-index: -1;
 }
 
 .style_btn:hover::before {
-    width: 105%;
+  width: 105%;
 }
 
 .style_btn:hover {
-    /* color: #111; */
-    color: white;
+  /* color: #111; */
+  color: white;
 }
 
 .menu li>*:not(ul, .menu-title, details, .btn):active,
 .menu li>*:not(ul, .menu-title, details, .btn).active,
 .menu li>details>summary:active {
-    background-color: #17C3B2;
+  background-color: #17C3B2;
 }
 
 .titel {
-    font-family: "Great Vibes", serif;
+  font-family: "Great Vibes", serif;
 }
 
 .titel_content {
-    font-family: "Crimson Text", serif;
+  font-family: "Crimson Text", serif;
 }
 
 /* navbar style end  */
 /* swiper  */
 .swiper-button-prev:after,
 .swiper-button-next:after {
-    font-family: swiper-icons;
-    font-size: 24px !important;
-    text-transform: none !important;
-    letter-spacing: 0;
-    font-variant: initial;
-    line-height: 1;
-    color: white;
-    padding: 10px;
-    background-color: #17C3B2;
-    border-radius: 50%;
+  font-family: swiper-icons;
+  font-size: 24px !important;
+  text-transform: none !important;
+  letter-spacing: 0;
+  font-variant: initial;
+  line-height: 1;
+  color: white;
+  padding: 10px;
+  background-color: #17C3B2;
+  border-radius: 50%;
 }
 
 /* animate pluse part */
 @keyframes pulse {
-    from {
-      transform: scale(0.9);
-      opacity: 1;
-    }
-  
-    to {
-      transform: scale(1.8);
-      opacity: 0;
-    }
-  }
-  
-  .animate-pulse-custom {
-    animation: pulse 1s linear infinite;
+  from {
+    transform: scale(0.9);
+    opacity: 1;
   }
 
-  @keyframes label-focus {
-    from {
-      top: 0;
-      font-size: 1em;
-    }
-    to {
-      top: -10px;
-      font-size: 0.75em;
-    }
+  to {
+    transform: scale(1.8);
+    opacity: 0;
   }
-  
-  .input-focus {
-    animation: label-focus 0.3s ease-out forwards;
+}
+
+.animate-pulse-custom {
+  animation: pulse 1s linear infinite;
+}
+
+@keyframes label-focus {
+  from {
+    top: 0;
+    font-size: 1em;
   }
-  
+
+  to {
+    top: -10px;
+    font-size: 0.75em;
+  }
+}
+
+.input-focus {
+  animation: label-focus 0.3s ease-out forwards;
+}
+
+/* scale img  */
+.scaleImg {
+  transition: all .5s linear;
+}
+
+.scaleImg:hover {
+  transform: scale(1.1);
+  transition: all .5s linear;
+}
+
+/* datetimepciker  */
+.react-date-picker__wrapper {
+  border: none;
+}
