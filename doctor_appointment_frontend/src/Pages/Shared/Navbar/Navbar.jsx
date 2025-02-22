@@ -12,7 +12,7 @@ const Navbar = () => {
         <>
             <li><NavLink to='/' className="hover:bg-transparent ">Home</NavLink></li>
             <li><NavLink to='/about' className="hover:bg-transparent ">About</NavLink></li>
-            <li><NavLink to='/service' className="hover:bg-transparent ">Service</NavLink></li>
+            {/* <li><NavLink to='/service' className="hover:bg-transparent ">Service</NavLink></li> */}
             <li><NavLink to='/blogs' className="hover:bg-transparent ">Blogs</NavLink></li>
             <li><NavLink to='/contact' className="hover:bg-transparent ">Contact</NavLink></li>
             <li onClick={handleToggleTheme} className='hover:bg-transparent'>
@@ -25,7 +25,7 @@ const Navbar = () => {
 
     return (
         <div className="bg-[--primary-color] text-[--secondary-color] shadow-md fixed z-[1000] w-full">
-            <div className="navbar max-w-screen-xl mx-auto py-4 px-6">
+            <div className="navbar max-w-screen-xl mx-auto py-3 px-6">
                 {/* Left side logo */}
                 <div className="navbar-start w-full">
                     <Link to='/' className="text-[--secondary-color] text-3xl font-semibold titel">InstantCare Doct</Link>
@@ -92,7 +92,7 @@ const Navbar = () => {
                 </div>
 
                 {/* Desktop Navigation */}
-                <div className="navbar-center hidden lg:flex items-center mt-4">
+                <div className="navbar-center hidden lg:flex items-center ">
                     <ul className="menu menu-horizontal space-x-5 text-[--secondary-color] text-lg font-medium titel_content">
                         {navOptions}
                     </ul>

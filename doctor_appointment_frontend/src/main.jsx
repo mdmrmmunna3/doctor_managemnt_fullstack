@@ -13,11 +13,15 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import { router } from './Routes/Routes'
+import AxiosProvider from './Hooks/AxiosProvider';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <StrictMode>
     <div>
-      <RouterProvider router={router} />
+      <AxiosProvider>
+
+        <RouterProvider router={router} />
+      </AxiosProvider>
     </div>
   </StrictMode>,
 )
