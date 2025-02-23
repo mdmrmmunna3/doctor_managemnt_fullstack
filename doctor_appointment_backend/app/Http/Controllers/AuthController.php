@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -50,6 +51,8 @@ class AuthController extends Controller
 
         // Create an authentication token for the user
         $token = $user->createToken('auth_token')->plainTextToken;
+        $user->api_token = $token;
+        $user->save();
 
         // Return the success response
         return response()->json([
@@ -57,7 +60,60 @@ class AuthController extends Controller
             'token' => $token,
             'role' => $user->role,
             'image' => $user->image
-        ], 201);
+        ], 200);
+    }
+
+    // login 
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+            'role' => 'required|string', // Ensure role is provided
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+
+        // ✅ Check if the user's role matches the requested role
+        if ($user->role !== $request->role) {
+            return response()->json(['error' => 'Unauthorized: Incorrect role'], 403);
+        }
+
+        // Generate the token
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'User Login successfully',
+            'token' => $token,
+            'role' => $user->role,
+        ], 200);
+    }
+
+
+    // logout 
+    public function logout(Request $request)
+    {
+        try {
+            $user = $request->user();
+
+            if ($user) {
+                // Check if the user has a valid token
+                if ($user->currentAccessToken()) {
+                    $user->currentAccessToken()->delete();
+                }
+
+                return response()->json(['message' => 'Logged out successfully'], 200);
+            }
+
+            return response()->json(['error' => 'Unauthorized'], 401);
+        } catch (\Exception $e) {
+            \Log::error('Logout failed: ' . $e->getMessage());
+            return response()->json(['error' => 'Something went wrong'], 500);
+        }
     }
 
 

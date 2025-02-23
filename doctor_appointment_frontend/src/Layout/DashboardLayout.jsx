@@ -8,11 +8,13 @@ import { MdOutlineDateRange, MdOutlineFolderSpecial, MdPayments } from "react-ic
 import { RxDashboard } from "react-icons/rx";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import DashboardNavbar from "../Pages/Shared/DashboardNavbar/DashboardNavbar";
+import { useAuthApi } from "../Hooks/useAuthApi";
 
 export default function DashboardLayout() {
     const [isSideNavOpen, setIsSideNavOpen] = useState(false);
     const [role, setRole] = useState(localStorage.getItem("role"));
     const navigate = useNavigate();
+    const { logout } = useAuthApi();
 
     useEffect(() => {
         const storedRole = localStorage.getItem("role");
@@ -23,9 +25,15 @@ export default function DashboardLayout() {
         }
     }, [navigate]);
 
-    const handleLogout = () => {
-        navigate('/login');
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate('/login', { replace: true });
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
     };
+
 
     const NavItem = ({ to, icon: Icon, title, notifications = 0, onClick }) => (
         <li className="px-3">

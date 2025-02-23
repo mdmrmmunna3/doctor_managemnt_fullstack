@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FcUndo } from 'react-icons/fc';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import googleIcon from '../assets/social/google.png';
 import facebookIcon from '../assets/social/facebook.png';
@@ -9,8 +9,9 @@ import animationGif from '../assets/work/—Pngtree—female and male doctors po
 import { useAuthApi } from '../Hooks/useAuthApi';
 
 const Register = () => {
-  const [selectedRole, setSelectedRole] = useState('patient');
+  const [selectedRole, setSelectedRole] = useState(localStorage.getItem('selectedRole') || 'patient'); // Use localStorage to persist the role
   const { register } = useAuthApi();
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     name: '',
     email: '',
@@ -19,6 +20,7 @@ const Register = () => {
     image: null,
   });
 
+  // Handle form field changes
   const handleOnChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
@@ -26,20 +28,24 @@ const Register = () => {
     } else {
       setUser((prevData) => ({ ...prevData, [name]: value }));
     }
-
   };
 
+  // Role selection handling
   const handleRoleSelect = (role) => {
     setSelectedRole(role);
+    localStorage.setItem('selectedRole', role);
   };
 
+  // Use URL params to determine the role if coming from the URL
   const location = useLocation();
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const role = params.get('role') || 'patient'; // Default to "patient" if no role is found
     setSelectedRole(role);
+    localStorage.setItem('selectedRole', role); // Save the role to localStorage on page load
   }, [location]);
 
+  // Handle form submission
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
@@ -47,13 +53,21 @@ const Register = () => {
     formData.append('name', user.name);
     formData.append('email', user.email);
     formData.append('password', user.password);
-    formData.append('role', selectedRole); // Add the selected role to the form data
+    formData.append('role', selectedRole);
     if (user.specialty) formData.append('specialty', user.specialty);
     if (user?.image) formData.append('image', user.image); // Append the image file
 
     try {
       const res = await register(formData);
       console.log(res); // Handle successful registration
+      // Redirect based on the selected role
+      if (selectedRole === 'admin') {
+        navigate('/login?role=admin');
+      } else if (selectedRole === 'doctor') {
+        navigate('/login?role=doctor');
+      } else {
+        navigate('/login?role=patient');
+      }
     } catch (err) {
       console.error("Error:", err.response?.data || err);
       if (err.response?.data?.errors) {
@@ -145,6 +159,7 @@ const Register = () => {
                   />
                 </label>
               </div>
+              {user && <p className="mt-2 text-sm text-gray-700">{user?.image?.name}</p>}
             </div>
             <button
               type="submit"
