@@ -1,12 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GiBoomerangSun } from 'react-icons/gi';
 import { MdNightsStay } from 'react-icons/md';
 import { Link, NavLink } from 'react-router-dom';
 import useToogleTheme from '../../../Hooks/useToogleTheme';
+import { useAxios } from '../../../Hooks/AxiosProvider';
+import { useAuthApi } from '../../../Hooks/useAuthApi';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isDarkMode, handleToggleTheme] = useToogleTheme();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const axiosInstantApi = useAxios();
+    const [userRole, setUserRole] = useState(null);
+    const { getUserData } = useAuthApi();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsLoggedIn(true);
+            const fetchUserData = async () => {
+                try {
+                    const res = await getUserData(token);  // API response
+                    console.log('Fetched User Data:', res);
+                    const role = res[0];
+                    // console.log(role)
+                    // // const role = Array.isArray(res.role) ? res.role[0] : res.role;
+                    // setUserRole(role);
+
+                } catch (error) {
+                    console.error('Error fetching user data', error);
+                    setIsLoggedIn(false);
+                }
+            };
+            fetchUserData();
+        } else {
+            setIsLoggedIn(false);
+        }
+    }, [getUserData]);
+
+
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+        setUserRole(null);
+    }
 
     const navOptions = (
         <>
@@ -18,8 +56,37 @@ const Navbar = () => {
             <li onClick={handleToggleTheme} className='hover:bg-transparent'>
                 <p>{isDarkMode ? <GiBoomerangSun className='w-6 h-6' /> : <MdNightsStay className='w-6 h-6' />}</p>
             </li>
-            <li><NavLink to='/login' className="style_btn">Login</NavLink></li>
-            <li><NavLink to='/register' className="style_btn">Register</NavLink></li>
+            {isLoggedIn ? (
+                <>
+                    {userRole === 'admin' && (
+                        <li>
+                            <NavLink to='/dashboard/adminDashboard' className="style_btn">
+                                Admin Dashboard
+                            </NavLink>
+                        </li>
+                    )}
+                    {userRole === 'doctor' && (
+                        <li>
+                            <NavLink to='/dashboard/doctorDashboard' className="style_btn">
+                                Doctor Dashboard
+                            </NavLink>
+                        </li>
+                    )}
+                    {userRole === 'patient' && (
+                        <li>
+                            <NavLink to='/dashboard/patientDashboard' className="style_btn">
+                                Patient Dashboard
+                            </NavLink>
+                        </li>
+                    )}
+                    <li><NavLink to='/login' className="style_btn" onClick={handleLogout}>Logout</NavLink></li>
+                </>
+            ) : (
+                <>
+                    <li><NavLink to='/login' className="style_btn">Login</NavLink></li>
+                    <li><NavLink to='/register' className="style_btn">Register</NavLink></li>
+                </>
+            )}
         </>
     );
 

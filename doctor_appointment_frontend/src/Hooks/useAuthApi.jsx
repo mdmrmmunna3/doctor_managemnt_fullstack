@@ -47,9 +47,20 @@ export const useAuthApi = () => {
 
 
     const getUserData = async (token) => {
-        return axiosInstantApi.get('users', {
-            headers: { Authorization: `Bearer ${token}` },
-        });
+        try {
+            const res = await axiosInstantApi.get('users', {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            // console.log(res);
+            const getuser = res?.data.map((role) => {
+                return role;
+            })
+            return getuser;
+        } catch (error) {
+            console.error('Error fetching user data', error);
+            return null;
+        }
+
     };
 
     return { register, login, logout, getUserData };

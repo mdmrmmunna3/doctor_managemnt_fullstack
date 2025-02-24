@@ -7,11 +7,13 @@ import facebookIcon from '../assets/social/facebook.png';
 import twiterIcon from '../assets/social/twitter.png';
 import animationGif from '../assets/work/—Pngtree—female and male doctors pointing_20287153.png';
 import { useAuthApi } from '../Hooks/useAuthApi';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = () => {
   const [selectedRole, setSelectedRole] = useState(localStorage.getItem('selectedRole') || 'patient'); // Use localStorage to persist the role
   const { register } = useAuthApi();
   const navigate = useNavigate();
+  const [showPass, setShowPass] = useState(false);
   const [user, setUser] = useState({
     name: '',
     email: '',
@@ -76,6 +78,11 @@ const Register = () => {
     }
   };
 
+  // visible password handler
+  const showPasswordHandler = () => {
+    setShowPass(!showPass);
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 grid lg:grid-cols-2 gap-5 lg:px-16 pb-8 md:px-10 p-5">
       <div>
@@ -119,15 +126,20 @@ const Register = () => {
               value={user?.email}
               onChange={handleOnChange}
             />
-            <input
-              type="password"
-              className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="Password"
-              name="password"
-              id="password"
-              value={user?.password}
-              onChange={handleOnChange}
-            />
+            <div className='relative'>
+              <input
+                type={showPass ? "text" : "password"}
+                className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                placeholder="Password"
+                name="password"
+                id="password"
+                value={user?.password}
+                onChange={handleOnChange}
+              />
+              <button type="button" onClick={showPasswordHandler} className="absolute right-3 top-3 text-xl">
+                {showPass ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
             {selectedRole !== 'patient' && selectedRole !== 'admin' && (
               <div>
                 <input
