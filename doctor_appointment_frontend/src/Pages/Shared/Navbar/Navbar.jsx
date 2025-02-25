@@ -3,48 +3,42 @@ import { GiBoomerangSun } from 'react-icons/gi';
 import { MdNightsStay } from 'react-icons/md';
 import { Link, NavLink } from 'react-router-dom';
 import useToogleTheme from '../../../Hooks/useToogleTheme';
-import { useAxios } from '../../../Hooks/AxiosProvider';
 import { useAuthApi } from '../../../Hooks/useAuthApi';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isDarkMode, handleToggleTheme] = useToogleTheme();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const axiosInstantApi = useAxios();
     const [userRole, setUserRole] = useState(null);
     const { getUserData } = useAuthApi();
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
+        const role = localStorage.getItem('role');
+        if (role) {
             setIsLoggedIn(true);
+            setUserRole(role); 
+
             const fetchUserData = async () => {
                 try {
-                    const res = await getUserData(token);  // API response
+                    const res = await getUserData(role);  
                     console.log('Fetched User Data:', res);
-                    const role = res[0];
-                    // console.log(role)
-                    // // const role = Array.isArray(res.role) ? res.role[0] : res.role;
-                    // setUserRole(role);
-
                 } catch (error) {
                     console.error('Error fetching user data', error);
                     setIsLoggedIn(false);
                 }
             };
-            fetchUserData();
+
+            fetchUserData(); 
         } else {
             setIsLoggedIn(false);
         }
-    }, [getUserData]);
-
-
+    }, [getUserData]); 
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('role'); 
         setIsLoggedIn(false);
-        setUserRole(null);
-    }
+        setUserRole(null); 
+    };
 
     const navOptions = (
         <>
@@ -170,13 +164,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
-
-
-
-
-
-
 
 // bg-gradient-to-r from-blue-500 via-teal-500 to-green-500

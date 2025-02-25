@@ -14,7 +14,25 @@ export default function DashboardLayout() {
     const [isSideNavOpen, setIsSideNavOpen] = useState(false);
     const [role, setRole] = useState(localStorage.getItem("role"));
     const navigate = useNavigate();
-    const { logout } = useAuthApi();
+    const { logout, getEamilUserData } = useAuthApi();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // const [userRole, setUserRole] = useState(null);
+    const [user, setUser] = useState(null); // Store user data
+
+    const fetchUserData = async () => {
+        try {
+            const res = await getEamilUserData(email); // Fetch data using email
+            console.log(res);
+            // setUser(res.data); // Set the fetched user data
+        } catch (error) {
+            console.error('Error fetching user data', error);
+            setIsLoggedIn(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
 
     useEffect(() => {
         const storedRole = localStorage.getItem("role");
@@ -33,7 +51,6 @@ export default function DashboardLayout() {
             console.error("Logout failed:", error);
         }
     };
-
 
     const NavItem = ({ to, icon: Icon, title, notifications = 0, onClick }) => (
         <li className="px-3">
@@ -149,9 +166,9 @@ export default function DashboardLayout() {
                             className="relative flex h-12 w-12 items-center justify-center rounded-full text-white"
                         >
                             <img
-                                src="https://i.pravatar.cc/40?img=7"
-                                alt="user name"
-                                title="user name"
+                                src={user?.image || "https://i.pravatar.cc/40?img=7"} // Use user avatar if available
+                                alt={user?.name || "User"} // Fallback to "User" if name is not available
+                                title={user?.name || "User"}
                                 width="48"
                                 height="48"
                                 className="max-w-full rounded-full"
@@ -163,10 +180,10 @@ export default function DashboardLayout() {
                     </div>
                     <div className="flex min-h-[2rem] w-full min-w-0 flex-col items-start justify-center gap-0 text-center">
                         <h4 className="w-full truncate text-base text-slate-700">
-                            Mustafijur
+                            {user?.name || "Mustafijur"}
                         </h4>
                         <p className="w-full truncate text-sm text-slate-500">
-                            Patient
+                            {role || "Patient"}
                         </p>
                     </div>
                 </div>
@@ -189,7 +206,6 @@ export default function DashboardLayout() {
                         className="flex items-center gap-3 rounded p-3 text-slate-900 transition-colors hover:text-emerald-500 "
                     >
                         <div className="flex items-center self-center ">
-
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"

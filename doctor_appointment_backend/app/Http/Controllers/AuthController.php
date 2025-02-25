@@ -49,15 +49,11 @@ class AuthController extends Controller
             $user->save();
         }
 
-        // Create an authentication token for the user
-        $token = $user->createToken('auth_token')->plainTextToken;
-        $user->api_token = $token;
-        $user->save();
+        // $user->save();
 
         // Return the success response
         return response()->json([
             'message' => 'User registered successfully',
-            'token' => $token,
             'role' => $user->role,
             'image' => $user->image
         ], 200);
@@ -84,11 +80,9 @@ class AuthController extends Controller
         }
 
         // Generate the token
-        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'User Login successfully',
-            'token' => $token,
             'role' => $user->role,
         ], 200);
     }
@@ -96,25 +90,23 @@ class AuthController extends Controller
 
     // logout 
     public function logout(Request $request)
-    {
-        try {
-            $user = $request->user();
+{
+    try {
+        $user = $request->user();
 
-            if ($user) {
-                // Check if the user has a valid token
-                if ($user->currentAccessToken()) {
-                    $user->currentAccessToken()->delete();
-                }
+        if ($user) {
+            // You can perform any other logout logic here if needed
 
-                return response()->json(['message' => 'Logged out successfully'], 200);
-            }
-
-            return response()->json(['error' => 'Unauthorized'], 401);
-        } catch (\Exception $e) {
-            \Log::error('Logout failed: ' . $e->getMessage());
-            return response()->json(['error' => 'Something went wrong'], 500);
+            return response()->json(['message' => 'Logged out successfully'], 200);
         }
+
+        return response()->json(['error' => 'Unauthorized'], 401);
+    } catch (\Exception $e) {
+        \Log::error('Logout failed: ' . $e->getMessage());
+        return response()->json(['error' => 'Something went wrong'], 500);
     }
+}
+
 
 
 }

@@ -46,11 +46,11 @@ const Login = () => {
 
         try {
             const response = await login(credentials);
-            const token = response.data.token;
+            // const token = response.data.token;
             const role = response.data.role;
 
             // Save the token and role to localStorage
-            localStorage.setItem('token', token);
+            // localStorage.setItem('token', token);
             localStorage.setItem('role', role);
 
             // Redirect to the correct dashboard

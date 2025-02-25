@@ -18,6 +18,9 @@ return new class extends Migration {
             $table->string('password')->nullable();
             $table->string('specialty')->nullable();
             $table->string('role')->nullable();
+            $table->string('age')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
             $table->string('image')->nullable();
             $table->string('api_token')->nullable();
             $table->rememberToken();

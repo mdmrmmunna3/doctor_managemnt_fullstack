@@ -9,13 +9,13 @@ const axiosInstantApi = axios.create({
 });
 
 // This function will add the Authorization header dynamically from localStorage or any state management
-const setAuthToken = (token) => {
-    if (token) {
-        axiosInstantApi.defaults.headers['Authorization'] = `Bearer ${token}`;
-    } else {
-        delete axiosInstantApi.defaults.headers['Authorization'];
-    }
-};
+// const setAuthToken = (token) => {
+//     if (token) {
+//         axiosInstantApi.defaults.headers['Authorization'] = `Bearer ${token}`;
+//     } else {
+//         delete axiosInstantApi.defaults.headers['Authorization'];
+//     }
+// };
 
 const AxiosContext = createContext();
 
@@ -24,8 +24,8 @@ export const useAxios = () => {
 };
 
 const AxiosProvider = ({ children }) => {
-    const token = localStorage.getItem('token');
-    if (token) setAuthToken(token);
+    // const token = localStorage.getItem('token');
+    // if (token) setAuthToken(token);
 
     return (
         <AxiosContext.Provider value={axiosInstantApi}>
