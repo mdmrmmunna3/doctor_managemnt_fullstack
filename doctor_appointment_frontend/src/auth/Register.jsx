@@ -114,64 +114,53 @@ const Register = () => {
           </div>
 
           <form onSubmit={handleOnSubmit} className="space-y-4">
-            <input
-              type="text"
-              className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="Full Name"
-              name="name"
-              id="name"
-              value={user?.name}
-              onChange={handleOnChange}
-            />
-            <input
-              type="text"
-              className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="Full Name"
-              name="age"
-              id="age"
-              value={user?.age}
-              onChange={handleOnChange}
-            />
-            <input
-              type="text"
-              className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="Full Name"
-              name="phone"
-              id="phone"
-              value={user?.phone}
-              onChange={handleOnChange}
-            />
-            <input
-              type="text"
-              className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="Full Name"
-              name="address"
-              id="address"
-              value={user?.address}
-              onChange={handleOnChange}
-            />
-            <input
-              type="email"
-              className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="Email"
-              name="email"
-              id="email"
-              value={user?.email}
-              onChange={handleOnChange}
-            />
-            <div className='relative'>
+            <div className='grid md:grid-cols-2 gap-3'>
               <input
-                type={showPass ? "text" : "password"}
+                type="text"
                 className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-                placeholder="Password"
-                name="password"
-                id="password"
-                value={user?.password}
+                placeholder="Full Name"
+                name="name"
+                id="name"
+                value={user?.name}
                 onChange={handleOnChange}
               />
-              <button type="button" onClick={showPasswordHandler} className="absolute right-3 top-3 text-xl">
-                {showPass ? <FaEyeSlash /> : <FaEye />}
-              </button>
+
+              <input
+                type="email"
+                className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                placeholder="Email"
+                name="email"
+                id="email"
+                value={user?.email}
+                onChange={handleOnChange}
+              />
+            </div>
+
+            <div className='grid md:grid-cols-2 gap-3'>
+              <div className='relative'>
+                <input
+                  type={showPass ? "text" : "password"}
+                  className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  placeholder="Password"
+                  name="password"
+                  id="password"
+                  value={user?.password}
+                  onChange={handleOnChange}
+                />
+                <button type="button" onClick={showPasswordHandler} className="absolute right-3 top-3 text-xl">
+                  {showPass ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+
+              <input
+                type="text"
+                className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                placeholder="Enter Age"
+                name="age"
+                id="age"
+                value={user?.age}
+                onChange={handleOnChange}
+              />
             </div>
             {selectedRole !== 'patient' && selectedRole !== 'admin' && (
               <div>
@@ -186,6 +175,29 @@ const Register = () => {
                 />
               </div>
             )}
+
+            <div className='grid grid-cols-2 gap-3'>
+              <input
+                type="text"
+                className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                placeholder="Enter Phone"
+                name="phone"
+                id="phone"
+                value={user?.phone}
+                onChange={handleOnChange}
+              />
+
+              <textarea
+                className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                placeholder="Enter Address"
+                name="address" id="address"
+                value={user?.address}
+                onChange={handleOnChange}
+                rows={1}
+              />
+
+
+            </div>
 
             <div className="border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center w-full">
               <div className="text-gray-600 flex flex-col items-center">

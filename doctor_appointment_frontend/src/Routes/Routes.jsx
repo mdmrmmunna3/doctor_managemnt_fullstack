@@ -16,6 +16,7 @@ import PatientList from "../DashboardPages/AdminDashboard/PatientList";
 import Appointments from "../DashboardPages/AdminDashboard/Appointments";
 import Specialities from "../DashboardPages/AdminDashboard/Specialities";
 import DoctorAppointment from "../DashboardPages/DoctorDashboard/DoctorAppointment";
+import EditProfile from "../DashboardPages/DoctorDashboard/EditProfile";
 // import Gallery from "../Pages/Home/Gallery/Gallery";
 
 export const router = createBrowserRouter([
@@ -54,8 +55,8 @@ export const router = createBrowserRouter([
             {
                 path: "register",
                 element: <Register></Register>
-            }, 
-            
+            },
+
         ]
     },
     {
@@ -73,6 +74,7 @@ export const router = createBrowserRouter([
                 //     },
                 // ],
             },
+
             {
                 path: 'adminDashboard/appointments',
                 element: <Appointments />,
@@ -98,6 +100,10 @@ export const router = createBrowserRouter([
             {
                 path: 'doctorDashboard/doctorAppoint',
                 element: <DoctorAppointment />,
+            },
+            {
+                path: 'doctorDashboard/editProfile',
+                element: <EditProfile />,
             },
 
             // For PatientDashboard 

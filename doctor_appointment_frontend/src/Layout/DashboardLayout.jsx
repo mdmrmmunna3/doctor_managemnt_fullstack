@@ -22,13 +22,13 @@ export default function DashboardLayout() {
     const fetchUserData = async () => {
         try {
             const userData = await getUserData();
-            console.log("Authenticated User Data:", userData);
+            // console.log("Authenticated User Data:", userData);
             setUser(userData);
         } catch (error) {
             console.error("Error fetching authenticated user data:", error);
         }
     };
-    
+
 
     useEffect(() => {
         fetchUserData();
@@ -57,7 +57,7 @@ export default function DashboardLayout() {
             <Link
                 to={to}
                 onClick={onClick}
-                className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500"
+                className="flex items-center gap-3 rounded p-3 text-[--secondary-color] transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500"
             >
                 <div className="flex items-center self-center">
                     <Icon className="h-6 w-6" />
@@ -84,7 +84,7 @@ export default function DashboardLayout() {
             <NavItem to="/dashboard/adminDashboard/patientList" icon={FaUserPlus} title="Patients" />
             <NavItem to="/dashboard/adminDashboard/transactions" icon={MdPayments} title="Transactions" />
             <NavItem to="/dashboard/adminDashboard/invoiceReports" icon={FaFileInvoice} title="Invoice Reports" />
-            <NavItem to="/dashboard/adminDashboard/settings" icon={CiSettings} title="Profile Setting" />
+            <NavItem to="/dashboard/adminDashboard/profileedit" icon={CiSettings} title="Profile Setting" />
         </>
     );
 
@@ -96,7 +96,7 @@ export default function DashboardLayout() {
             <NavItem to="/dashboard/doctorDashboard/messages" icon={AiOutlineMessage} title="Messages" notifications={2} />
             <NavItem to="/dashboard/doctorDashboard/timing" icon={FaNotesMedical} title="Available Timing" />
             <NavItem to="/dashboard/doctorDashboard/patients" icon={FaNotesMedical} title="My Patients" />
-            <NavItem to="/dashboard/doctorDashboard/settings" icon={CiSettings} title="Profile Setting" />
+            <NavItem to="/dashboard/doctorDashboard/editProfile" icon={CiSettings} title="Profile Setting" />
         </>
     );
 
@@ -117,7 +117,7 @@ export default function DashboardLayout() {
             <button
                 title="Side navigation"
                 type="button"
-                className={`visible fixed left-6 top-6 z-40 order-10 block h-10 w-10 self-center rounded bg-white opacity-100 lg:hidden ${isSideNavOpen
+                className={`visible fixed left-6 top-6 z-40 order-10 block h-10 w-10 self-center rounded bg-[--primary-color] opacity-100 lg:hidden ${isSideNavOpen
                     ? "visible opacity-100 [&_span:nth-child(1)]:w-6 [&_span:nth-child(1)]:translate-y-0 [&_span:nth-child(1)]:rotate-45 [&_span:nth-child(3)]:w-0 [&_span:nth-child(2)]:-rotate-45 "
                     : ""
                     }`}
@@ -147,7 +147,7 @@ export default function DashboardLayout() {
             <aside
                 id="nav-menu-4"
                 aria-label="Side navigation"
-                className={`fixed top-0 bottom-0 left-0 z-40 flex w-72 flex-col border-r border-r-slate-200 bg-white transition-transform lg:translate-x-0 ${isSideNavOpen ? "translate-x-0" : " -translate-x-full"
+                className={`fixed top-0 bottom-0 left-0 z-40 flex w-72 flex-col border-r border-r-slate-200 bg-[--primary-color] transition-transform lg:translate-x-0 ${isSideNavOpen ? "translate-x-0" : " -translate-x-full"
                     }`}
             >
                 {/* Close Icon Button */}
@@ -161,28 +161,22 @@ export default function DashboardLayout() {
 
                 <div className="flex flex-col items-center gap-4 border-b border-slate-200 p-6">
                     <div className="shrink-0">
-                        <a
-                            href="#"
+                        <div
+
                             className="relative flex h-12 w-12 items-center justify-center rounded-full text-white"
                         >
-                            <img
-                                src={user?.image } // Use user avatar if available
-                                alt={user?.name || "User"} // Fallback to "User" if name is not available
-                                title={user?.name || "User"}
-                                width="48"
-                                height="48"
-                                className="max-w-full rounded-full"
-                            />
-                            <span className="absolute bottom-0 right-0 inline-flex items-center justify-center gap-1 rounded-full border-2 border-white bg-emerald-500 p-1 text-sm text-white">
-                                <span className="sr-only"> online </span>
-                            </span>
-                        </a>
+                            <div className="avatar online">
+                                <div className="w-16 rounded-full">
+                                    <img src={`http://localhost:8000/storage/${user?.image}`} />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div className="flex min-h-[2rem] w-full min-w-0 flex-col items-start justify-center gap-0 text-center">
-                        <h4 className="w-full truncate text-base text-slate-700">
+                        <h4 className="w-full truncate text-base text-[--secondary-color]">
                             {user?.name || "Mustafijur"}
                         </h4>
-                        <p className="w-full truncate text-sm text-slate-500">
+                        <p className="w-full truncate text-sm text-[--secondary-color]">
                             {role || "Patient"}
                         </p>
                     </div>
@@ -203,7 +197,7 @@ export default function DashboardLayout() {
                 <footer className="border-t border-slate-200 p-3">
                     <Link
                         to=''
-                        className="flex items-center gap-3 rounded p-3 text-slate-900 transition-colors hover:text-emerald-500 "
+                        className="flex items-center gap-3 rounded p-3 text-[--secondary-color] transition-colors hover:text-emerald-500 "
                     >
                         <div className="flex items-center self-center ">
                             <svg

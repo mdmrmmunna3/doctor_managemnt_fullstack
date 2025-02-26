@@ -8,10 +8,12 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-   public function roleUser() {
-        $roleUser = User::all();
-        return response()->json($roleUser);
+   public function roleUser()
+   {
+      $roleUser = User::all();
+      return response()->json($roleUser);
    }
+
 
 
 }

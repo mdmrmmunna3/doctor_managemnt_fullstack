@@ -1,10 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { GiBoomerangSun } from 'react-icons/gi';
 import { MdNightsStay } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import useToogleTheme from '../../../Hooks/useToogleTheme';
+import { useAuthApi } from '../../../Hooks/useAuthApi';
 
 const DashboardNavbar = () => {
+    const [user, setUser] = useState(null); // Store user data
+    const [isLoading, setIsLoading] = useState(true); // State to track loading
+    const { logout, getUserData } = useAuthApi();
+
+    // Fetch user data
+    const fetchUserData = async () => {
+        try {
+            const userData = await getUserData();
+            console.log("Authenticated User Data:", userData);
+            setUser(userData);
+            setIsLoading(false);
+        } catch (error) {
+            console.error("Error fetching authenticated user data:", error);
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
+
     const [isDarkMode, handleToggleTheme] = useToogleTheme();
     return (
         <div >
@@ -25,9 +48,7 @@ const DashboardNavbar = () => {
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                             <div className="w-10 rounded-full">
-                                <img
-                                    alt="Tailwind CSS Navbar component"
-                                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                <img src={`http://localhost:8000/storage/${user?.image}`} alt={user?.name} />
                             </div>
                         </div>
                         <ul
