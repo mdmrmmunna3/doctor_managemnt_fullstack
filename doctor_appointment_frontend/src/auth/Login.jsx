@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-// import axios from "axios";
 import googleIcon from "../assets/social/google.png";
 import facebookIcon from "../assets/social/facebook.png";
 import twiterIcon from "../assets/social/twitter.png";
@@ -32,7 +31,7 @@ const Login = () => {
     const handleRoleSelect = (role) => {
         setSelectedRole(role);
         localStorage.setItem('selectedRole', role);
-        setError("");
+        setError(""); // Clear error when role changes
     };
 
     const handleSubmit = async (e) => {
@@ -41,31 +40,42 @@ const Login = () => {
         const credentials = {
             email: user.email,
             password: user.password,
-            role: selectedRole,  // ✅ Ensure role is sent in request
+            role: selectedRole,  // Ensure role is sent in request
         };
 
         try {
             const response = await login(credentials);
-            // const token = response.data.token;
-            const role = response.data.role;
 
-            // Save the token and role to localStorage
-            // localStorage.setItem('token', token);
-            localStorage.setItem('role', role);
+            if (response.data?.token) {
+                // Save token and role in localStorage
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('role', response.data?.user?.role);
 
-            // Redirect to the correct dashboard
-            if (role === "patient") {
-                navigate("/dashboard/patientDashboard");
-            } else if (role === "doctor") {
-                navigate("/dashboard/doctorDashboard");
-            } else if (role === "admin") {
-                navigate("/dashboard/adminDashboard");
+                // Redirect to the correct dashboard based on the user's role
+                if (response.data?.user?.role === "patient") {
+                    navigate("/dashboard/patientDashboard");
+                } else if (response.data?.user?.role === "doctor") {
+                    navigate("/dashboard/doctorDashboard");
+                } else if (response.data?.user?.role === "admin") {
+                    navigate("/dashboard/adminDashboard");
+                }
+            } else {
+                setError("Invalid response data received.");
             }
         } catch (error) {
-            setError(error.response?.data?.error || "Login failed. Please check your credentials.");
+            // Handle different error responses based on status code
+            if (error.response) {
+                // If error response exists, handle accordingly
+                if (error.response.status === 401) {
+                    setError("Unauthorized: Incorrect credentials.");
+                } else {
+                    setError(error.response?.data?.error || "Login failed. Please check your credentials.");
+                }
+            } else {
+                setError("Network error. Please try again later.");
+            }
         }
     };
-
 
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
 

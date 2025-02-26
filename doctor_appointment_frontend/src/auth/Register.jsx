@@ -19,6 +19,9 @@ const Register = () => {
     email: '',
     password: '',
     specialty: '',
+    age: '',
+    phone: '',
+    address: '',
     image: null,
   });
 
@@ -55,6 +58,9 @@ const Register = () => {
     formData.append('name', user.name);
     formData.append('email', user.email);
     formData.append('password', user.password);
+    formData.append('age', user.age);
+    formData.append('phone', user.phone);
+    formData.append('address', user.address);
     formData.append('role', selectedRole);
     if (user.specialty) formData.append('specialty', user.specialty);
     if (user?.image) formData.append('image', user.image); // Append the image file
@@ -115,6 +121,33 @@ const Register = () => {
               name="name"
               id="name"
               value={user?.name}
+              onChange={handleOnChange}
+            />
+            <input
+              type="text"
+              className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+              placeholder="Full Name"
+              name="age"
+              id="age"
+              value={user?.age}
+              onChange={handleOnChange}
+            />
+            <input
+              type="text"
+              className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+              placeholder="Full Name"
+              name="phone"
+              id="phone"
+              value={user?.phone}
+              onChange={handleOnChange}
+            />
+            <input
+              type="text"
+              className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+              placeholder="Full Name"
+              name="address"
+              id="address"
+              value={user?.address}
               onChange={handleOnChange}
             />
             <input

@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { useAxios } from './AxiosProvider';
+import { useState } from 'react';
 
 export const useAuthApi = () => {
+    const [token, setToken] = useState(localStorage.getItem('token'))
+    const [user, setUser] = useState({});
     const axiosInstantApi = useAxios();
     const navigate = useNavigate();
 
@@ -17,72 +20,74 @@ export const useAuthApi = () => {
 
     // Log in an existing user
     const login = async (credentials) => {
-        return axiosInstantApi.post('login', credentials);
+        console.log("Credentials being sent:", credentials); // Debugging log
+        return axiosInstantApi.post('login', credentials)
+            .then(response => {
+                console.log("Login response:", response);
+                return response;
+            })
+            .catch(error => {
+                console.error("Error during login:", error);
+                throw error;
+            });
     };
+
 
     // Log out the user
     const logout = async () => {
         try {
-            // const token = localStorage.getItem('token');
-            // console.log("Token before logout:", token); // Debugging log
-
-            // if (!token) throw new Error("No token found");
+            const token = localStorage.getItem('token');
+            if (!token) throw new Error("No token found");
 
             const response = await axiosInstantApi.post('/logout', {}, {
-                // headers: { Authorization: `Bearer ${token}` }
+                headers: { Authorization: `Bearer ${token}` }
             });
 
             console.log("Logout response:", response.data); // Debugging log
 
-            // ✅ Clear storage after successful logout
-            // localStorage.removeItem('token');
+            // Clear storage after successful logout
+            localStorage.removeItem('token');
             localStorage.removeItem('role');
-            // localStorage.removeItem('selectedRole');
             sessionStorage.clear();
 
-            // ✅ Force reload the page to ensure cleanup
-            window.location.href = '/login';
+            // Redirect user to the login page
+            navigate('/login');
         } catch (error) {
             console.error("Logout error:", error.response?.data || error.message);
         }
     };
 
-    // Fetch user data
-    // const getUserData = async ( id ) => {
-    //     try {
-    //         const response = await axios.get(`roleUser/${id}`, {
-    //             // headers: {
-    //             //     Authorization: `Bearer ${token}`,
-    //             // },
-    //         });
-    //         return response.data;
-    //     } catch (error) {
-    //         console.error('Error fetching user data:', error);
-    //         throw error;
-    //     }
-    // };
+    // Fetch all users data
 
     const getUserData = async () => {
         try {
-            const res = await axiosInstantApi.get('users');
-            // console.log(res)
-            return res;
+            const token = localStorage.getItem('token');
+            if (!token) throw new Error("No token found");
+
+            const res = await axiosInstantApi.get('roleuser', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return res.data; // Or handle the response as needed
         } catch (error) {
             console.error('Error fetching user data:', error);
             throw error;
         }
-    }
+    };
 
-    const getEamilUserData = async () => {
+    const getAlluser = async () => {
         try {
-            const res = await axiosInstantApi.get(`users/${email}`);
-            // console.log(res)
-            return res;
+
+            const res = await axiosInstantApi.get('users')
+
+            return res.data; // Or handle the response as needed
         } catch (error) {
             console.error('Error fetching user data:', error);
             throw error;
         }
-    }
+    };
 
-    return { register, login, logout , getUserData, getEamilUserData};
+    return { register, login, logout, getUserData, getAlluser };
 };

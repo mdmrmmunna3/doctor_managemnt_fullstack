@@ -7,14 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
-
 class AuthController extends Controller
 {
     public function register(Request $request)
@@ -24,6 +16,9 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8',
+            'age' => 'required|string|min:1',
+            'phone' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
             'specialty' => 'string|max:255',
             'role' => 'required|in:patient,doctor,admin',
             'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',  // Ensure image validation
@@ -35,6 +30,9 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'specialty' => $request->specialty,
+            'age' => $request->age,
+            'phone' => $request->phone,
+            'address' => $request->address,
             'role' => $request->role,
         ]);
 
@@ -48,6 +46,9 @@ class AuthController extends Controller
             $user->image = $filename;
             $user->save();
         }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+        $user->update(['api_token' => $token]);
 
         // $user->save();
 
@@ -68,7 +69,9 @@ class AuthController extends Controller
             'role' => 'required|string', // Ensure role is provided
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)
+            ->where('role', $request->role)
+            ->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['error' => 'Invalid credentials'], 401);
@@ -79,11 +82,23 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized: Incorrect role'], 403);
         }
 
+                // Create new token and update user record
+                $token = $user->createToken('auth_token')->plainTextToken;
+                $user->update(['api_token' => $token]);        
+
         // Generate the token
 
         return response()->json([
             'message' => 'User Login successfully',
-            'role' => $user->role,
+            // 'role' => $user->role,
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role 
+            ]
+
         ], 200);
     }
 
@@ -96,12 +111,14 @@ class AuthController extends Controller
 
         if ($user) {
             // You can perform any other logout logic here if needed
-
+            $user->tokens->each(function ($token) {
+                $token->delete();
+            });
             return response()->json(['message' => 'Logged out successfully'], 200);
         }
 
         return response()->json(['error' => 'Unauthorized'], 401);
-    } catch (\Exception $e) {
+    }catch (\Exception $e) {
         \Log::error('Logout failed: ' . $e->getMessage());
         return response()->json(['error' => 'Something went wrong'], 500);
     }
