@@ -17,6 +17,7 @@ import Appointments from "../DashboardPages/AdminDashboard/Appointments";
 import Specialities from "../DashboardPages/AdminDashboard/Specialities";
 import DoctorAppointment from "../DashboardPages/DoctorDashboard/DoctorAppointment";
 import EditProfile from "../DashboardPages/DoctorDashboard/EditProfile";
+import EditSpecialiy from "../DashboardPages/AdminDashboard/EditSpecialiy";
 // import Gallery from "../Pages/Home/Gallery/Gallery";
 
 export const router = createBrowserRouter([
@@ -82,6 +83,10 @@ export const router = createBrowserRouter([
             {
                 path: 'adminDashboard/specialities',
                 element: <Specialities />,
+            },
+            {
+                path: 'adminDashboard/speciality/:id',
+                element: <EditSpecialiy />,
             },
             {
                 path: 'adminDashboard/doctorList',

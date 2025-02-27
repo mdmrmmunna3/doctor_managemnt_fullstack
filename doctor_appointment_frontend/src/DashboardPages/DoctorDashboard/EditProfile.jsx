@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthApi } from '../../Hooks/useAuthApi';
 import { FaCloudUploadAlt } from 'react-icons/fa';
+import Loader from '../../Pages/Shared/Loader/Loader';
 
 const EditProfile = () => {
     const [user, setUser] = useState(null); // Store user data
@@ -39,7 +40,7 @@ const EditProfile = () => {
         <div className="flex justify-center pt-[100px] pb-10">
             {
                 isLoading ? (
-                    <div>loading...</div>
+                    <div><Loader></Loader></div>
                 ) :
                     <div
                         style={{

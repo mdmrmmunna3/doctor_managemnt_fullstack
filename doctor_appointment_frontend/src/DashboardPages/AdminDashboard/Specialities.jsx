@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../Pages/Shared/Loader/Loader";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { useAxios } from "../../Hooks/AxiosProvider";
+import Swal from "sweetalert2";
 
 const Specialities = () => {
     const navigate = useNavigate();
@@ -31,17 +32,28 @@ const Specialities = () => {
         fetchSpecialities();
     }, [axiosInstantApi]);
 
-    const handleEdit = (id) => {
-        console.log(`Editing speciality with ID: ${id}`);
-        // You can add your editing logic here
-    };
 
+    // delete part 
     const handleDelete = async (id) => {
         try {
             await axiosInstantApi.delete(`specialities/${id}`);
             setSpecialities(specialities.filter((item) => item.id !== id));
+            // success message 
+            Swal.fire({
+                position: "top-middle",
+                icon: "success",
+                title: "speciality deleted successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
         } catch (error) {
             console.error("Error deleting speciality:", error);
+            Swal.fire({
+                icon: "error",
+                title: "There was an issue deleting the speciality",
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
 
@@ -55,31 +67,47 @@ const Specialities = () => {
     };
 
     const handleOnSubmit = async (e) => {
-        e.preventDefault(); 
-        
+        e.preventDefault();
+
         const data = new FormData();
         data.append("name", formData?.name);
         if (formData?.image) data.append("image", formData?.image);
-    
+
         try {
-            // Post the form data to your API
-            const response = await axiosInstantApi.post("specialities", data, {
+            // Post the form data to the API
+            await axiosInstantApi.post("specialities", data, {
                 headers: {
                     "Content-Type": "multipart/form-data", // For file uploads
                 },
             });
-    
-            // Add the newly added speciality to the state
-            setSpecialities((prevState) => [...prevState, response.data]);
-            setFormData({ name: "", image: null }); // Reset form data
-            navigate('/dashboard/adminDashboard/specialities'); 
-    
+
+            // Fetch the updated list of specialities immediately
+            const response = await axiosInstantApi.get("specialities");
+            setSpecialities(response.data);
+
+            setFormData({ name: "", image: null }); // Reset form data after submit
+            Swal.fire({
+                position: "top-middle",
+                icon: "success",
+                title: "Speciality Added Successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
+
+            navigate('/dashboard/adminDashboard/specialities');
+
         } catch (error) {
             console.error("Error creating speciality:", error);
-            alert('There was an error adding the speciality!');
+            Swal.fire({
+                icon: "error",
+                title: "There was an error adding the speciality!",
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
-    
+
+
 
     return (
         <div className="pt-[100px]">
@@ -89,7 +117,8 @@ const Specialities = () => {
                 }}
                 className="w-full max-w-4xl mx-auto bg-[--primary-color] shadow-lg rounded-xl p-8 space-y-6"
             >
-                <form onSubmit={handleOnSubmit} className="space-y-4">
+                <h2 className="text-center text-4xl titel font-medium">Add Speciality</h2>
+                <form onSubmit={handleOnSubmit} className="space-y-4 titel_content">
                     <div>
                         <input
                             type="text"
@@ -134,8 +163,8 @@ const Specialities = () => {
                     <Loader />
                 ) : (
                     <div>
-                        <h1 className="text-4xl font-semibold mb-2 text-center">Speciality Information</h1>
-                        <div className="container mx-auto p-4">
+                        <h1 className="text-4xl font-medium titel mb-2 text-center">Speciality Information</h1>
+                        <div className="container mx-auto p-4 titel_content">
                             <table className="min-w-full border border-gray-300 rounded-lg shadow">
                                 <thead>
                                     <tr className="bg-[#17C3B2] border-b text-left">
@@ -173,13 +202,13 @@ const Specialities = () => {
                                                     <td className="py-2 px-4">{speciality?.name}</td>
                                                     <td className="py-2 px-4 flex items-center">
                                                         <Link
-                                                            onClick={() => handleEdit(speciality.id)}
+                                                            to={`/dashboard/adminDashboard/speciality/${speciality?.id}`}
                                                             className="bg-teal-300 text-white px-4 py-2 rounded-lg mr-2 flex space-x-2 items-center"
                                                         >
                                                             <MdEditSquare /> Edit
                                                         </Link>
                                                         <Link
-                                                            onClick={() => handleDelete(speciality.id)}
+                                                            onClick={() => handleDelete(speciality?.id)}
                                                             className="bg-red-400 text-white px-4 py-2 rounded-lg flex space-x-2 items-center"
                                                         >
                                                             <FaTrashCan /> Delete

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAxios } from '../../Hooks/AxiosProvider';
+import Loader from '../../Pages/Shared/Loader/Loader';
 
 const DoctorList = () => {
+    const [isLoading, setIsLoading] = useState(true);
     // const doctors = [
     //     {
     //         "name": "Dr. Mustafijur Rahman",
@@ -77,58 +79,68 @@ const DoctorList = () => {
 
     const axiosInstantApi = useAxios();
 
-const [doctors, setDoctors] = useState([]); 
-const fetchDoctorData = async () => {
-    try {
-        const res = await axiosInstantApi.get('users');
-        console.log(res?.data);
-        const doctorData = res?.data?.filter(user => user.role === 'doctor')
-        setDoctors(doctorData);
-    } catch (error) {
-        console.error('Error fetching doctor data:', error);
+    const [doctors, setDoctors] = useState([]);
+    const fetchDoctorData = async () => {
+        try {
+            const res = await axiosInstantApi.get('users');
+            console.log(res?.data);
+            const doctorData = res?.data?.filter(user => user.role === 'doctor')
+            setDoctors(doctorData);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Error fetching doctor data:', error);
+            setIsLoading(false);
+        }
     }
-}
 
-useEffect(() => {
-    fetchDoctorData();
-}, []);
+    useEffect(() => {
+        fetchDoctorData();
+    }, []);
 
-return (
-    <div className='pt-[100px] overflow-x-auto'>
-        <h1 className="text-4xl font-semibold mb-6 text-center titel">Doctor Information</h1>
-        <table className="min-w-full table-auto border-collapse border text-center border-gray-300 titel_content">
-            <thead>
-                <tr className="bg-[#17C3B2] ">
-                <th className="px-4 py-2  border-b">Doctor ID</th>
-                    <th className="py-2 px-4 border-b">Name</th>
-                    <th className="py-2 px-4 border-b">Speciality</th>
-                    <th className="py-2 px-4 border-b">Member Since</th>
-                    <th className="py-2 px-4 border-b">Earned</th>
-                    <th className="py-2 px-4 border-b">Reviews</th>
-                </tr>
-            </thead>
-            <tbody>
-                {/* Check if doctors exists and has data */}
-                {doctors.length > 0 ? (
-                    doctors.map((doctor, index) => (
-                        <tr key={doctor?.id} className="hover:bg-[#17C3B2] transform transition-transform duration-200 cursor-pointer">
-                            <td className="py-2 px-4 border-b">{index + 1}</td>
-                            <td className="py-2 px-4 border-b">{doctor?.name}</td>
-                            <td className="py-2 px-4 border-b">{doctor?.specialty}</td>
-                            <td className="py-2 px-4 border-b">{doctor?.created_at}</td>
-                            {/* <td className="py-2 px-4 border-b">{doctor.earned}</td>
+    return (
+        <div className='pt-[100px] overflow-x-auto h-screen'>
+            {
+                isLoading ? (
+                    <Loader></Loader>
+                ) :
+                    <>
+                        <h1 className="text-4xl font-semibold mb-6 text-center titel">Doctor Information</h1>
+                        <table className="min-w-full table-auto border-collapse border text-center border-gray-300 titel_content">
+                            <thead>
+                                <tr className="bg-[#17C3B2] ">
+                                    <th className="px-4 py-2  border-b">Doctor ID</th>
+                                    <th className="py-2 px-4 border-b">Name</th>
+                                    <th className="py-2 px-4 border-b">Speciality</th>
+                                    <th className="py-2 px-4 border-b">Member Since</th>
+                                    <th className="py-2 px-4 border-b">Earned</th>
+                                    <th className="py-2 px-4 border-b">Reviews</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {/* Check if doctors exists and has data */}
+                                {doctors.length > 0 ? (
+                                    doctors.map((doctor, index) => (
+                                        <tr key={doctor?.id} className="hover:bg-[#17C3B2] transform transition-transform duration-200 cursor-pointer">
+                                            <td className="py-2 px-4 border-b">{index + 1}</td>
+                                            <td className="py-2 px-4 border-b">{doctor?.name}</td>
+                                            <td className="py-2 px-4 border-b">{doctor?.specialty}</td>
+                                            <td className="py-2 px-4 border-b">{doctor?.created_at}</td>
+                                            {/* <td className="py-2 px-4 border-b">{doctor.earned}</td>
                             <td className="py-2 px-4 border-b">{doctor.reviews}</td> */}
-                        </tr>
-                    ))
-                ) : (
-                    <tr>
-                        <td colSpan="5" className="py-2 px-4 text-center">No doctors available</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>
-    </div>
-);
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="5" className="py-2 px-4 text-center">No doctors available</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </>
+            }
+
+        </div>
+    );
 
 };
 

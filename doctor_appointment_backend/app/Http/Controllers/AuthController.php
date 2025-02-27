@@ -20,6 +20,8 @@ class AuthController extends Controller
             'phone' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'specialty' => 'nullable|string|max:255',
+            'qualification' => 'nullable|string|max:255',
+            'fees' => 'nullable|string|max:255',
             'role' => 'required|in:patient,doctor,admin',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',  // Validate image file
         ]);
@@ -42,6 +44,8 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'role' => $request->role,
+            'qualification ' => $request->qualification,
+            'fees' => $request->fees,
             'image' => $imagePath,
         ]);
 

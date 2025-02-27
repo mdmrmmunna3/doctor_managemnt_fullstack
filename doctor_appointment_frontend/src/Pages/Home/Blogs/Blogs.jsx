@@ -24,7 +24,7 @@ const Blogs = () => {
                         <img
                             src={work}
                             className=" rounded-lg w-full h-full scaleImg" />
-                        <p className='bg-white absolute text-2xl top-5 left-5 px-2 rounded-md'><span>8</span> <span>Feb</span></p>
+                        <p className='bg-white absolute text-2xl top-5 left-5 px-2 rounded-md text-black'><span>8</span> <span>Feb</span></p>
                     </div>
                     <div>
                         <p className='px-2 py-1 rounded-t-md text-xl bg-[#17C3B2] text-center font-medium text-white lg:w-44'>Neourology</p>
@@ -46,7 +46,7 @@ const Blogs = () => {
                         <img
                             src={work}
                             className=" rounded-lg w-full h-full scaleImg" />
-                        <p className='bg-white absolute text-2xl top-5 left-5 px-2 rounded-md'><span>8</span> <span>Feb</span></p>
+                        <p className='bg-white absolute text-2xl top-5 left-5 px-2 rounded-md text-black'><span>8</span> <span>Feb</span></p>
                     </div>
                     <div>
                         <p className='px-2 py-1 rounded-t-md text-xl bg-[#17C3B2] text-center font-medium text-white lg:w-44'>Cardiology</p>
@@ -68,7 +68,7 @@ const Blogs = () => {
                         <img
                             src={work}
                             className=" rounded-lg w-full h-full scaleImg" />
-                        <p className='bg-white absolute text-2xl top-5 left-5 px-2 rounded-md'><span>8</span> <span>Feb</span></p>
+                        <p className='bg-white absolute text-2xl top-5 left-5 px-2 rounded-md text-black'><span>8</span> <span>Feb</span></p>
                     </div>
                     <div>
                         <p className='px-2 py-1 rounded-t-md text-xl bg-[#17C3B2] text-center font-medium text-white lg:w-44'>Dentis</p>
@@ -90,7 +90,7 @@ const Blogs = () => {
                         <img
                             src={work}
                             className=" rounded-lg w-full h-full scaleImg" />
-                        <p className='bg-white absolute text-2xl top-5 left-5 px-2 rounded-md'><span>8</span> <span>Feb</span></p>
+                        <p className='bg-white absolute text-2xl top-5 left-5 px-2 rounded-md text-black'><span>8</span> <span>Feb</span></p>
                     </div>
                     <div>
                         <p className='px-2 py-1 rounded-t-md text-xl bg-[#17C3B2] text-center font-medium text-white lg:w-44'>Treatments</p>
