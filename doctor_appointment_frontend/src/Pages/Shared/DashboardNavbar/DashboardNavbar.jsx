@@ -14,7 +14,7 @@ const DashboardNavbar = () => {
     const fetchUserData = async () => {
         try {
             const userData = await getUserData();
-            console.log("Authenticated User Data:", userData);
+            // console.log("Authenticated User Data:", userData);
             setUser(userData);
             setIsLoading(false);
         } catch (error) {

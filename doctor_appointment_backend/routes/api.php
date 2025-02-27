@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SpecialityController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
 use Illuminate\Http\Request;
@@ -19,6 +20,6 @@ Route::middleware('auth:sanctum')->group(function () {
 // Route::post('/logout', [AuthController::class, 'logout']);
 Route::get('/users', [UserRoleController::class, 'getAllUsers']);
 // Route::get('/users/{email}', [UserController::class, 'individualEmailUser']);
-
-
+// specilality route
+Route::resource('specialities', SpecialityController::class);
 

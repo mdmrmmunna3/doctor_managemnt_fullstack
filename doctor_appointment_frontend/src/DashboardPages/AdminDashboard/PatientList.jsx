@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAxios } from '../../Hooks/AxiosProvider';
+import Loader from '../../Pages/Shared/Loader/Loader';
 
 const PatientList = () => {
+    const [isLoading, setIsLoading] = useState(true);
     // const patients = [
     //     {
     //         "patientId": "P001",
@@ -104,8 +106,10 @@ const PatientList = () => {
             console.log(res?.data);
             const patientData = res?.data?.filter(user => user.role === 'patient')
             setPatients(patientData);
+            setIsLoading(false);
         } catch (error) {
             console.error('Error fetching doctor data:', error);
+            setIsLoading(false);
         }
     }
 
@@ -114,29 +118,34 @@ const PatientList = () => {
     }, []);
 
     return (
-        <div className='pt-[100px] overflow-x-auto'>
-            <h1 className="text-4xl font-semibold mb-6 text-center titel">Patients Information</h1>
-            <table className="min-w-full table-auto border-collapse border text-center border-gray-300 titel_content">
-                <thead>
-                    <tr className="bg-[#17C3B2]">
-                        <th className="px-4 py-2  border-b">Patient ID</th>
-                        <th className="px-4 py-2  border-b">Name</th>
-                        <th className="px-4 py-2  border-b">Age</th>
-                        <th className="px-4 py-2  border-b">Phone</th>
-                        <th className="px-4 py-2  border-b">Address</th>
-                        <th className="px-4 py-2  border-b">Last Visit</th>
-                        <th className="px-4 py-2  border-b">Paid</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {patients.map((patient, index )=> (
-                        <tr key={patient.id} className="border-b hover:bg-[#17C3B2] transform transition-transform duration-200 cursor-pointer">
-                            <td className="px-4 py-2">{index + 1}</td>
-                            <td className="px-4 py-2">{patient?.name}</td>
-                            <td className="px-4 py-2">{patient?.age}</td>
-                            <td className="px-4 py-2">{patient?.phone}</td>
-                             <td className="px-4 py-2">{patient?.address}</td>
-                            {/*<td className="px-4 py-2">{patient.lastVisit}</td>
+        <div className='pt-[100px] overflow-x-auto h-screen'>
+            {
+                isLoading ? (
+                    <Loader></Loader>
+                ) :
+                    <div>
+                        <h1 className="text-4xl font-semibold mb-6 text-center titel">Patients Information</h1>
+                        <table className="min-w-full table-auto border-collapse border text-center border-gray-300 titel_content">
+                            <thead>
+                                <tr className="bg-[#17C3B2]">
+                                    <th className="px-4 py-2  border-b">Patient ID</th>
+                                    <th className="px-4 py-2  border-b">Name</th>
+                                    <th className="px-4 py-2  border-b">Age</th>
+                                    <th className="px-4 py-2  border-b">Phone</th>
+                                    <th className="px-4 py-2  border-b">Address</th>
+                                    <th className="px-4 py-2  border-b">Last Visit</th>
+                                    <th className="px-4 py-2  border-b">Paid</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {patients.map((patient, index) => (
+                                    <tr key={patient.id} className="border-b hover:bg-[#17C3B2] transform transition-transform duration-200 cursor-pointer">
+                                        <td className="px-4 py-2">{index + 1}</td>
+                                        <td className="px-4 py-2">{patient?.name}</td>
+                                        <td className="px-4 py-2">{patient?.age}</td>
+                                        <td className="px-4 py-2">{patient?.phone}</td>
+                                        <td className="px-4 py-2">{patient?.address}</td>
+                                        {/*<td className="px-4 py-2">{patient.lastVisit}</td>
                             <td className="px-4 py-2">
                                 <span
                                     className={`px-2 py-1 rounded-full ${patient.paid ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}
@@ -144,10 +153,13 @@ const PatientList = () => {
                                     {patient.paid ? 'Paid' : 'Unpaid'}
                                 </span>
                             </td> */}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+            }
+
         </div>
     );
 };
