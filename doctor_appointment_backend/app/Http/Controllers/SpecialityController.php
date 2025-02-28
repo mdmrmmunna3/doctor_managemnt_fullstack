@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Speciality;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Validator;
 class SpecialityController extends Controller
 {
     /**
@@ -24,9 +24,9 @@ class SpecialityController extends Controller
     public function store(Request $request)
     {
         // Validate incoming request
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image if exists
+        $request->validate(rules: [
+            'name' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         // Handle the image upload if provided
@@ -40,7 +40,7 @@ class SpecialityController extends Controller
         // Create new speciality
         $speciality = Speciality::create([
             'name' => $request->name,
-            'image' => $imagePath, 
+            'image' => $imagePath,
         ]);
 
         $token = $speciality->createToken('auth_token')->plainTextToken;
@@ -66,34 +66,40 @@ class SpecialityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Speciality $speciality)
+    public function update(Request $request, $id)
     {
-        // Validate incoming request
+        \Log::info('Updating speciality:', $request->all()); // Log request data for debugging
+
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Handle the image upload if provided
+        $speciality = Speciality::findOrFail($id);
+
+        // Handle image upload if a new one is provided
         if ($request->hasFile('image')) {
-            // Delete the old image if it exists
-            if ($speciality->image && Storage::exists('public/' . $speciality->image)) {
-                Storage::delete('public/' . $speciality->image);
+            // Delete old image if exists
+            if ($speciality->image) {
+                Storage::disk('public')->delete($speciality->image);
             }
 
-            // Store the new image
+            // Store new image
             $imagePath = $request->file('image')->store('specialities', 'public');
         } else {
-            $imagePath = $speciality->image; // Keep the current image if no new image is provided
+            $imagePath = $speciality->image; // Keep existing image if no new one is uploaded
         }
 
         // Update the speciality
         $speciality->update([
-            'name' => $request->name,
-            'image' => $imagePath, // Update image if changed
+            'name' => $request->name ?? $speciality->name,
+            'image' => $imagePath,
         ]);
 
-        return response()->json($speciality, 200); // Return the updated speciality
+        return response()->json([
+            'message' => 'Speciality updated successfully',
+            'speciality' => $speciality,
+        ], 200);
     }
 
     /**

@@ -62,8 +62,8 @@ const Register = () => {
     formData.append('phone', user.phone);
     formData.append('address', user.address);
     formData.append('role', selectedRole);
-    if (user.specialty) formData.append('specialty', user.specialty);
-    if (user?.image) formData.append('image', user.image); // Append the image file
+    if (user?.specialty) formData.append('specialty', user?.specialty);
+    if (user?.image) formData.append('image', user?.image); // Append the image file
 
     try {
       const res = await register(formData);

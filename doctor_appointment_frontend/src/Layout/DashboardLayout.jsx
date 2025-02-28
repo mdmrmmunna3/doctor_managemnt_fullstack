@@ -9,6 +9,7 @@ import { RxDashboard } from "react-icons/rx";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import DashboardNavbar from "../Pages/Shared/DashboardNavbar/DashboardNavbar";
 import { useAuthApi } from "../Hooks/useAuthApi";
+import Loader from "../Pages/Shared/Loader/Loader";
 
 export default function DashboardLayout() {
     const [isSideNavOpen, setIsSideNavOpen] = useState(false);
@@ -18,14 +19,19 @@ export default function DashboardLayout() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     // const [userRole, setUserRole] = useState(null);
     const [user, setUser] = useState(null); // Store user data
+    const [isLoading, setIsLoading] = useState(true);
 
     const fetchUserData = async () => {
         try {
             const userData = await getUserData();
             // console.log("Authenticated User Data:", userData);
             setUser(userData);
+            setIsLoading(false);
         } catch (error) {
             console.error("Error fetching authenticated user data:", error);
+        }
+        finally {
+            setIsLoading(false);
         }
     };
 
@@ -224,10 +230,17 @@ export default function DashboardLayout() {
                 </footer>
             </aside>
 
-            <DashboardNavbar />
-            <main className="flex-1 px-6 lg:ml-72 overflow-x-auto">
-                <Outlet /> {/* Dynamic content will be rendered here */}
-            </main>
+            {
+                isLoading ? (
+                    <> <Loader></Loader> </>
+                ) :
+                    <>
+                        <DashboardNavbar />
+                        <main className="flex-1 px-6 lg:ml-72 overflow-x-auto">
+                            <Outlet /> {/* Dynamic content will be rendered here */}
+                        </main>
+                    </>
+            }
 
             {/* Backdrop */}
             <div

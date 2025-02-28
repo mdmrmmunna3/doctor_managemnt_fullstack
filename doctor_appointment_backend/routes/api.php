@@ -15,6 +15,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/roleuser', function (Request $request) {
         return response()->json($request->user());
     });
+    // Route::post('/roleuser/{id}', function (Request $request) {
+    //     return response()->json($request->user());
+    // });
+    Route::put('roleuser/{id}', [AuthController::class, 'update']);
 });
 
 // Route::post('/logout', [AuthController::class, 'logout']);
@@ -22,4 +26,6 @@ Route::get('/users', [UserRoleController::class, 'getAllUsers']);
 // Route::get('/users/{email}', [UserController::class, 'individualEmailUser']);
 // specilality route
 Route::resource('specialities', SpecialityController::class);
+Route::post('specialities/{id}', [SpecialityController::class, 'update']);
+
 

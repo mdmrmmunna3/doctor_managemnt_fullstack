@@ -126,4 +126,54 @@ class AuthController extends Controller
             return response()->json(['error' => 'Something went wrong'], 500);
         }
     }
+
+
+
+    // update user profile 
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        \Log::info('Updating User Profile:', $request->all()); // Debugging log
+        $user = User::findOrFail($id);
+        $request->validate([
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|string|email|max:255|unique:users,email,' . $id, // Fixed unique rule
+            'age' => 'nullable|string|min:1',
+            'phone' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'specialty' => 'nullable|string|max:255',
+            'qualification' => 'nullable|string|max:255',
+            'fees' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Handle image upload if a new one is provided
+        $imagePath = $user->image; // Keep existing image if no new one is uploaded
+        if ($request->hasFile('image')) {
+            if ($user->image) {
+                Storage::disk('public')->delete($user->image);
+            }
+            $imagePath = $request->file('image')->store('images', 'public');
+        }
+        // Update user details
+        $user->update([
+            'name' => $request->name ?? $user->name,
+            'email' => $request->email,
+            'specialty' => $request->specialty,
+            'age' => $request->age,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'qualification' => $request->qualification,
+            'fees' => $request->fees,
+            'image' => $imagePath,
+        ]);
+
+        return response()->json([
+            'message' => 'User profile updated successfully',
+            'user' => $user,
+        ], 200);
+    }
+
 }

@@ -1,144 +1,158 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useAxios } from '../../Hooks/AxiosProvider';
-import { FaCloudUploadAlt } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAxios } from "../../Hooks/AxiosProvider";
+import { FaCloudUploadAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
 
-const EditSpecialiy = () => {
+const EditSpeciality = () => {
     const { id } = useParams();
-    const [editSpecilatity, setEditSpeciality] = useState(null);
     const axiosInstantApi = useAxios();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: "",
         image: null,
     });
+    const [preview, setPreview] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    const fetchSpecialityData = async () => {
-        try {
-            const res = await axiosInstantApi.get(`specialities/${id}`);
-            setEditSpeciality(res?.data);
-            setFormData({
-                name: res?.data?.name || '',
-                image: null, // start with no image in formData
-            });
-            setIsLoading(false);
-        }
-        catch (error) {
-            console.error("Error fetching specialities:", error);
-            setIsLoading(false);
-        }
-    }
-
+    // Fetch speciality data for editing
     useEffect(() => {
-        fetchSpecialityData();
-    }, [id]);
+        const fetchSpecialityData = async () => {
+            try {
+                const res = await axiosInstantApi.get(`specialities/${id}`);
+                setFormData({ name: res.data.name, image: res.data.image });
+                setPreview(res.data.image ? `http://localhost:8000/storage/${res.data.image}` : "/placeholder.png");
+            } catch (error) {
+                console.error("Error fetching speciality:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
 
+        fetchSpecialityData();
+    }, [id, axiosInstantApi]);
+
+    // Handle form input changes
     const handleOnChange = (e) => {
         const { name, value, type, files } = e.target;
-        if (type === "file") {
-            setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
+        if (type === "file" && files.length > 0) {
+            const file = files[0];
+            setFormData((prevData) => ({ ...prevData, image: file }));
+            setPreview(URL.createObjectURL(file)); // Update preview dynamically
         } else {
             setFormData((prevData) => ({ ...prevData, [name]: value }));
         }
     };
 
+    // Handle form submission
     const handleOnSubmit = async (e) => {
         e.preventDefault();
 
         const data = new FormData();
-        data.append("name", formData?.name);
-        if (formData?.image) data.append("image", formData?.image);
+        data.append("name", formData.name);
+        if (formData.image instanceof File) {
+            data.append("image", formData.image);
+        }
 
         try {
-            // put the form data to the API
-            await axiosInstantApi.put("specialities", data, {
-                headers: {
-                    "Content-Type": "multipart/form-data", // For file uploads
-                },
+            const response = await axiosInstantApi.post(`specialities/${id}?_method=PUT`, data, {
+                headers: { "Content-Type": "multipart/form-data" },
             });
 
-            // Fetch the updated list of specialities immediately
-            const response = await axiosInstantApi.get("specialities");
-            setSpecialities(response.data);
+            console.log("Response:", response.data); // Debug response
 
-            setFormData({ name: "", image: null }); // Reset form data after submit
             Swal.fire({
                 position: "top-middle",
                 icon: "success",
-                title: "Speciality Update Successfully",
+                title: "Speciality Updated Successfully",
                 showConfirmButton: false,
-                timer: 1500
+                timer: 1500,
             });
 
-            navigate('/dashboard/adminDashboard/specialities');
-
+            navigate("/dashboard/adminDashboard/specialities");
         } catch (error) {
-            console.error("Error Updating speciality:", error);
-            Swal.fire({
-                icon: "error",
-                title: "There was an error updating the speciality!",
-                showConfirmButton: false,
-                timer: 1500
-            });
+            console.error("Error updating speciality:", error);
+
+            if (error.response?.data?.errors) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Validation Error",
+                    text: Object.values(error.response.data.errors)[0][0],
+                    showConfirmButton: true,
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "There was an error updating the speciality!",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
         }
     };
+
     return (
         <div className="pt-[100px]">
-            <div
-                style={{
-                    boxShadow: `rgba(0, 131, 141, 0.16) 0px 3px 6px, rgba(0, 131, 141, 0.23) 0px 3px 6px`,
-                }}
-                className="w-full max-w-4xl mx-auto bg-[--primary-color] shadow-lg rounded-xl p-8 space-y-6"
-            >
-                <div className="avatar online mx-auto">
-                    <div className="w-24 rounded-full">
-                        <img src={`http://localhost:8000/storage/${editSpecilatity?.image}`} alt={editSpecilatity?.name} />
-                    </div>
-                </div>
-                <h2 className="text-center text-4xl titel font-medium">Edit Speciality</h2>
-                <form onSubmit={handleOnSubmit} className="space-y-4 titel_content">
-                    <div>
-                        <input
-                            type="text"
-                            className="w-full p-4 border bg-transparent rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-                            placeholder="Speciality Name"
-                            name="name"
-                            value={formData?.name || ''}
-                            onChange={handleOnChange}
-                        />
-                    </div>
-
-                    <div className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center w-full">
-                        <div className="text-gray-600 flex flex-col items-center">
-                            <div className="bg-gray-600 text-white p-2 rounded-full">
-                                <FaCloudUploadAlt />
+            {
+                isLoading ? (
+                    <div><Loader></Loader></div>
+                ) :
+                    <div className="w-full max-w-4xl mx-auto bg-[--primary-color] shadow-lg rounded-xl p-8 space-y-6">
+                        <div className="flex justify-center items-center avatar">
+                            <div className="h-28 w-28 rounded-full">
+                                <img
+                                    src={preview}
+                                    alt={formData.name}
+                                    className="object-cover h-full w-full rounded-full"
+                                />
                             </div>
-                            <label className="mt-2 px-6 py-2 bg-gray-700 text-white rounded cursor-pointer">
-                                Browse file
+                        </div>
+                        <h2 className="text-center text-4xl font-medium">Edit Speciality</h2>
+                        <form onSubmit={handleOnSubmit} className="space-y-4">
+                            <div>
                                 <input
-                                    type="file"
-                                    className="hidden"
-                                    name="image"
-                                    accept="image/jpeg, image/png, image/jpg, image/gif"
+                                    type="text"
+                                    className="w-full p-4 border bg-transparent rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                    placeholder="Speciality Name"
+                                    name="name"
+                                    value={formData.name}
                                     onChange={handleOnChange}
                                 />
-                            </label>
-                        </div>
-                        {editSpecilatity?.image && <p className="mt-2 text-sm text-[--secondary-color]">{editSpecilatity?.image?.name}</p>}
+                            </div>
+
+                            <div className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center w-full">
+                                <div className="text-gray-600 flex flex-col items-center">
+                                    <div className="bg-gray-600 text-white p-2 rounded-full">
+                                        <FaCloudUploadAlt />
+                                    </div>
+                                    <label className="mt-2 px-6 py-2 bg-gray-700 text-white rounded cursor-pointer">
+                                        Browse file
+                                        <input
+                                            type="file"
+                                            className="hidden"
+                                            name="image"
+                                            accept="image/jpeg, image/png, image/jpg, image/gif"
+                                            onChange={handleOnChange}
+                                        />
+                                    </label>
+                                </div>
+                                {formData.image instanceof File && (
+                                    <p className="mt-2 text-sm">{formData.image.name}</p>
+                                )}
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="w-full py-4 px-6 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition duration-200"
+                            >
+                                Update Speciality
+                            </button>
+                        </form>
                     </div>
+            }
 
-                    <button
-                        type="submit"
-                        className="w-full py-4 px-6 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition duration-200"
-                    >
-                        Add Speciality
-                    </button>
-                </form>
-            </div>
         </div>
-
     );
 };
 
-export default EditSpecialiy;
+export default EditSpeciality;

@@ -16,14 +16,16 @@ import PatientList from "../DashboardPages/AdminDashboard/PatientList";
 import Appointments from "../DashboardPages/AdminDashboard/Appointments";
 import Specialities from "../DashboardPages/AdminDashboard/Specialities";
 import DoctorAppointment from "../DashboardPages/DoctorDashboard/DoctorAppointment";
-import EditProfile from "../DashboardPages/DoctorDashboard/EditProfile";
 import EditSpecialiy from "../DashboardPages/AdminDashboard/EditSpecialiy";
+import DoctorEditProfile from "../DashboardPages/DoctorDashboard/DoctorEditProfile";
+import ErrorPage from "../Pages/Shared/ErrorPage/ErrorPage";
 // import Gallery from "../Pages/Home/Gallery/Gallery";
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <Main></Main>,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             {
                 path: "/",
@@ -63,6 +65,7 @@ export const router = createBrowserRouter([
     {
         path: '/dashboard',
         element: <DashboardLayout />,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             // For Admin Dashboard 
             {
@@ -108,7 +111,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'doctorDashboard/editProfile',
-                element: <EditProfile />,
+                element: <DoctorEditProfile />,
             },
 
             // For PatientDashboard 
