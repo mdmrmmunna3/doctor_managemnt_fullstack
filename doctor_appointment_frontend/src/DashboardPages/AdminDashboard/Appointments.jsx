@@ -105,7 +105,7 @@ const Appointments = () => {
     ];
 
     return (
-        <div className='pt-[100px]'>
+        <div className=''>
             <div className="overflow-x-auto  px-4">
                 <h1 className="text-4xl font-semibold mb-6 text-center titel">Appointment Information</h1>
                 <table className="min-w-full bg-white shadow-lg rounded-lg border-separate">

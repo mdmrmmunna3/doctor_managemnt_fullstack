@@ -118,7 +118,7 @@ const PatientList = () => {
     }, []);
 
     return (
-        <div className='pt-[100px] overflow-x-auto h-screen'>
+        <div className=' overflow-x-auto h-screen'>
             {
                 isLoading ? (
                     <Loader></Loader>

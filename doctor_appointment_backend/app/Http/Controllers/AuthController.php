@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
+use App\Models\Doctor;
+use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -48,6 +51,25 @@ class AuthController extends Controller
             'fees' => $request->fees,
             'image' => $imagePath,
         ]);
+
+        // Handle role-specific data storage
+        if ($user->role === 'doctor') {
+            Doctor::create([
+                'user_id' => $user->id,
+                'specialty' => $request->specialty,
+                'qualification' => $request->qualification,
+                'fees' => $request->fees,
+            ]);
+        } elseif ($user->role === 'patient') {
+            Patient::create([
+                'user_id' => $user->id,
+                'age' => $request->age,
+            ]);
+        } elseif ($user->role === 'admin') {
+            Admin::create([
+                'user_id' => $user->id,
+            ]);
+        }
 
         // Generate API token for the user
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -114,9 +136,9 @@ class AuthController extends Controller
 
             // Delete the user's tokens (log them out)
             if ($user) {
-                $user->tokens->each(function ($token) {
-                    $token->delete();
-                });
+                // Revoke the current access token (log out the user)
+                $request->user()->currentAccessToken()->delete();
+
                 return response()->json(['message' => 'Logged out successfully'], 200);
             }
 

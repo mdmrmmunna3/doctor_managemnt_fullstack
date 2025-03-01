@@ -46,12 +46,7 @@ export const useAuthApi = () => {
             console.log("Logout response:", response.data); // Debugging log
 
             // Clear storage after successful logout
-            localStorage.removeItem('token');
-            localStorage.removeItem('role');
-            sessionStorage.clear();
-
-            // Redirect user to the login page
-            navigate('/login');
+            return response?.data;
         } catch (error) {
             console.error("Logout error:", error.response?.data || error.message);
         }

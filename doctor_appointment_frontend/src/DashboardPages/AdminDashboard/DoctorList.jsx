@@ -83,7 +83,7 @@ const DoctorList = () => {
     const fetchDoctorData = async () => {
         try {
             const res = await axiosInstantApi.get('users');
-            console.log(res?.data);
+            // console.log(res?.data);
             const doctorData = res?.data?.filter(user => user.role === 'doctor')
             setDoctors(doctorData);
             setIsLoading(false);
@@ -98,7 +98,7 @@ const DoctorList = () => {
     }, []);
 
     return (
-        <div className='pt-[100px] overflow-x-auto h-screen'>
+        <div className=' overflow-x-auto h-screen'>
             {
                 isLoading ? (
                     <Loader></Loader>

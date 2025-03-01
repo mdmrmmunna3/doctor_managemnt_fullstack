@@ -92,7 +92,7 @@ const EditSpeciality = () => {
     };
 
     return (
-        <div className="pt-[100px]">
+        <div className="">
             {
                 isLoading ? (
                     <div><Loader></Loader></div>

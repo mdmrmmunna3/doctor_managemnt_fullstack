@@ -110,7 +110,7 @@ const Specialities = () => {
 
 
     return (
-        <div className="pt-[100px]">
+        <div className="">
             <div
                 style={{
                     boxShadow: `rgba(0, 131, 141, 0.16) 0px 3px 6px, rgba(0, 131, 141, 0.23) 0px 3px 6px`,

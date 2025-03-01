@@ -7,6 +7,7 @@ import { FcUndo } from "react-icons/fc";
 import animationGif from "../assets/work/—Pngtree—female and male doctors pointing_20287153.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useAuthApi } from "../Hooks/useAuthApi"; // Assuming you have a custom hook for API calls
+import Swal from "sweetalert2";
 
 const Login = () => {
     const [selectedRole, setSelectedRole] = useState(localStorage.getItem('selectedRole') || 'patient');
@@ -51,6 +52,14 @@ const Login = () => {
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('role', response.data?.user?.role);
 
+                Swal.fire({
+                    position: "top-middle",
+                    icon: "success",
+                    title: "Login Successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+
                 // Redirect to the correct dashboard based on the user's role
                 if (response.data?.user?.role === "patient") {
                     navigate("/dashboard/patientDashboard");
@@ -74,6 +83,12 @@ const Login = () => {
             } else {
                 setError("Network error. Please try again later.");
             }
+            Swal.fire({
+                icon: "error",
+                title: "There was an error To Login !",
+                showConfirmButton: false,
+                timer: 1500,
+            });
         }
     };
 
@@ -105,7 +120,7 @@ const Login = () => {
                 <form onSubmit={handleSubmit} className="space-y-4 titel_content">
                     <input
                         type="email"
-                        className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-600"
+                        className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 text-black"
                         placeholder="Email"
                         value={user.email}
                         onChange={(e) => setUser({ ...user, email: e.target.value })}
@@ -113,7 +128,7 @@ const Login = () => {
                     <div className="relative">
                         <input
                             type={showPassword ? "text" : "password"}
-                            className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-600"
+                            className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 text-black"
                             placeholder="Password"
                             value={user.password}
                             onChange={(e) => setUser({ ...user, password: e.target.value })}

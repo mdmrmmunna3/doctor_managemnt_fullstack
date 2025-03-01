@@ -8,6 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+use App\Models\Admin;
+use App\Models\Doctor;
+use App\Models\Patient;
+// use App\Models\Slot;
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -30,7 +35,30 @@ class User extends Authenticatable
         'qualification',
         'fees',
         'image',
+        'user_id'
     ];
+
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class);
+    }
+
+    // Relationship with the Patient model
+    public function patient()
+    {
+        return $this->hasOne(Patient::class);
+    }
+
+    // Relationship with the Admin model
+    public function admin()
+    {
+        return $this->hasOne(Admin::class);
+    }
+
+    // public function slots()
+    // {
+    //     return $this->hasMany(Slot::class);
+    // }
 
     /**
      * The attributes that should be hidden for serialization.

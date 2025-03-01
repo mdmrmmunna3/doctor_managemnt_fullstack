@@ -8,6 +8,7 @@ import twiterIcon from '../assets/social/twitter.png';
 import animationGif from '../assets/work/—Pngtree—female and male doctors pointing_20287153.png';
 import { useAuthApi } from '../Hooks/useAuthApi';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Swal from 'sweetalert2';
 
 const Register = () => {
   const [selectedRole, setSelectedRole] = useState(localStorage.getItem('selectedRole') || 'patient'); // Use localStorage to persist the role
@@ -69,6 +70,13 @@ const Register = () => {
       const res = await register(formData);
       console.log(res); // Handle successful registration
       // Redirect based on the selected role
+      Swal.fire({
+        position: "top-middle",
+        icon: "success",
+        title: "Register Successfully",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       if (selectedRole === 'admin') {
         navigate('/login?role=admin');
       } else if (selectedRole === 'doctor') {
@@ -81,6 +89,12 @@ const Register = () => {
       if (err.response?.data?.errors) {
         console.log("Validation Errors:", err.response?.data.errors);
       }
+      Swal.fire({
+        icon: "error",
+        title: "There was an error To Register !",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
@@ -117,7 +131,7 @@ const Register = () => {
             <div className='grid md:grid-cols-2 gap-3'>
               <input
                 type="text"
-                className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full p-3 border text-black  rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                 placeholder="Full Name"
                 name="name"
                 id="name"
@@ -127,7 +141,7 @@ const Register = () => {
 
               <input
                 type="email"
-                className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full p-3 border text-black  rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                 placeholder="Email"
                 name="email"
                 id="email"
@@ -140,7 +154,7 @@ const Register = () => {
               <div className='relative'>
                 <input
                   type={showPass ? "text" : "password"}
-                  className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full p-3 border text-black  rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                   placeholder="Password"
                   name="password"
                   id="password"
@@ -154,7 +168,7 @@ const Register = () => {
 
               <input
                 type="text"
-                className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full p-3 border text-black  rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                 placeholder="Enter Age"
                 name="age"
                 id="age"
@@ -166,7 +180,7 @@ const Register = () => {
               <div>
                 <input
                   type="text"
-                  className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full p-3 border text-black  rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                   placeholder="Specialization"
                   name="specialty"
                   id="specialty"
@@ -179,7 +193,7 @@ const Register = () => {
             <div className='grid grid-cols-2 gap-3'>
               <input
                 type="text"
-                className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full p-3 border text-black  rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                 placeholder="Enter Phone"
                 name="phone"
                 id="phone"
@@ -188,7 +202,7 @@ const Register = () => {
               />
 
               <textarea
-                className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full p-3 border text-black  rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                 placeholder="Enter Address"
                 name="address" id="address"
                 value={user?.address}
@@ -199,7 +213,7 @@ const Register = () => {
 
             </div>
 
-            <div className="border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center w-full">
+            <div className="border-2 border-dashed text-black  rounded-lg p-4 flex flex-col items-center justify-center w-full">
               <div className="text-gray-600 flex flex-col items-center">
                 <div className="bg-gray-600 text-white p-1 rounded-full">
                   <FaCloudUploadAlt />

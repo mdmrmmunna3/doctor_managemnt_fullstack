@@ -50,13 +50,20 @@ export default function DashboardLayout() {
     }, [navigate]);
 
     const handleLogout = async () => {
+        const token = localStorage.getItem('token');
         try {
             await logout();
-            navigate('/login', { replace: true });
+            if (token) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('role');
+                sessionStorage.clear();
+                navigate('/login', { replace: true });
+            }
         } catch (error) {
             console.error("Logout failed:", error);
         }
     };
+
 
     const NavItem = ({ to, icon: Icon, title, notifications = 0, onClick }) => (
         <li className="px-3">
@@ -100,7 +107,7 @@ export default function DashboardLayout() {
             <NavItem to="/dashboard/doctorDashboard/doctorAppoint" icon={MdOutlineDateRange} title="Appointment" />
             <NavItem to="/dashboard/doctorDashboard/requests" icon={IoMdNotifications} title="Request" notifications={7} />
             <NavItem to="/dashboard/doctorDashboard/messages" icon={AiOutlineMessage} title="Messages" notifications={2} />
-            <NavItem to="/dashboard/doctorDashboard/timing" icon={FaNotesMedical} title="Available Timing" />
+            <NavItem to="/dashboard/doctorDashboard/avilableSlot" icon={FaNotesMedical} title="Available Timing" />
             <NavItem to="/dashboard/doctorDashboard/patients" icon={FaNotesMedical} title="My Patients" />
             <NavItem to="/dashboard/doctorDashboard/editProfile" icon={CiSettings} title="Profile Setting" />
         </>
@@ -236,7 +243,7 @@ export default function DashboardLayout() {
                 ) :
                     <>
                         <DashboardNavbar />
-                        <main className="flex-1 px-6 lg:ml-72 overflow-x-auto">
+                        <main className="flex-1 px-6 pt-[110px] lg:ml-72 overflow-x-auto">
                             <Outlet /> {/* Dynamic content will be rendered here */}
                         </main>
                     </>

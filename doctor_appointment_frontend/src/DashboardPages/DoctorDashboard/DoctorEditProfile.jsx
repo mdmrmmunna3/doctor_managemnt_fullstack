@@ -131,7 +131,7 @@ const DoctorEditProfile = () => {
 
 
     return (
-        <div className="flex justify-center pt-[100px] pb-10">
+        <div className="flex justify-center pb-10">
             {
                 isLoading ? (
                     <div><Loader /></div>

@@ -10,7 +10,7 @@ const ErrorPage = () => {
             <div className='flex items-center justify-center'>
                 <div>
                     {/* <img src={errorImg} alt="" className='h-[350px]' /> */}
-                    <video className='h-[500px]' src={errorVideo} autoPlay
+                    <video className='h-[500px] w-full' src={errorVideo} autoPlay
                         loop
                         muted ></video>
                     <p className='text-red-500 text-center'>{error.statusText || error.message}</p>

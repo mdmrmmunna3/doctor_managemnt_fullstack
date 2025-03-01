@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\SlotController;
 use App\Http\Controllers\SpecialityController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
@@ -27,5 +29,9 @@ Route::get('/users', [UserRoleController::class, 'getAllUsers']);
 // specilality route
 Route::resource('specialities', SpecialityController::class);
 Route::post('specialities/{id}', [SpecialityController::class, 'update']);
-
+Route::resource('doctors', DoctorController::class);
+Route::post('slots', [SlotController::class, 'store']);
+Route::get('slots', [SlotController::class, 'index']);
+Route::get('slots/{day}', [SlotController::class, 'show']);
+Route::delete('slots/{day}', [SlotController::class, 'destroy']);
 
