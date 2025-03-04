@@ -958,3 +958,347 @@ export default function DashboardLayout() {
         )}
     </div>
 </div>
+
+
+import { useState, useEffect } from "react";
+import axios from "axios";
+import ShareButton from "../../components/ShareButton/ShareButton";
+import { useAxios } from "../../Hooks/AxiosProvider";
+
+function Specialty({ nextStep, specialty }) {
+    const axiosInstantApi = useAxios();
+    const [specialties, setSpecialties] = useState([]);
+    const [selectedSpecialty, setSelectedSpecialty] = useState(null);
+    // console.log(specialty)
+
+    useEffect(() => {
+        axiosInstantApi.get("specialities").then((res) => {
+            setSpecialties(res.data);
+        });
+    }, []);
+
+    return (
+        <div>
+            <h2 className="text-2xl font-bold">Select Specialty</h2>
+            <select
+                className="border p-2 w-full mt-4 bg-transparent"
+                value={selectedSpecialty || ''}
+                onChange={(e) => setSelectedSpecialty(e.target.value)}
+            >
+                <option className="bg-[--primary-color]" value="">Choose Specialty</option>
+                {specialties.map((specialty) => (
+                    <option className="bg-[--primary-color]" key={specialty.id} value={specialty.id}>
+                        {specialty.name}
+                    </option>
+                ))}
+            </select>
+
+            <button className="w-[20%]" onClick={nextStep} disabled={!selectedSpecialty}>
+                <ShareButton width="100%">Next</ShareButton>
+            </button>
+        </div>
+    );
+}
+
+// export default Specialty;
+
+import React from 'react';
+
+function Confirmation({ prevStep, formData }) {
+    const { specialty, appointmentType, dateTime, basicInfo, paymentDetails } = formData;
+
+    return (
+        <div>
+            <h2>Confirm Your Appointment</h2>
+            <div>
+                <h3>Specialty:</h3>
+                <p>{specialty}</p>
+            </div>
+            <div>
+                <h3>Appointment Type:</h3>
+                <p>{appointmentType}</p>
+            </div>
+            <div>
+                <h3>Date & Time:</h3>
+                <p>{dateTime}</p>
+            </div>
+            <div>
+                <h3>Basic Information:</h3>
+                <p>Name: {basicInfo.name}</p>
+                <p>Email: {basicInfo.email}</p>
+                <p>Phone: {basicInfo.phone}</p>
+            </div>
+            <div>
+                <h3>Payment Details:</h3>
+                <p>Card Number: {paymentDetails.cardNumber}</p>
+                <p>Expiry Date: {paymentDetails.expiryDate}</p>
+            </div>
+            <div className="buttons">
+                <button onClick={prevStep}>Back</button>
+                <button>Confirm Appointment</button>
+            </div>
+        </div>
+    );
+}
+
+// export default Confirmation;
+
+import React, { useState, useEffect } from 'react';
+
+function Payment({ nextStep, prevStep, updateFormData }) {
+    const [cardNumber, setCardNumber] = useState("");
+    const [expiryDate, setExpiryDate] = useState("");
+    const [cvv, setCvv] = useState("");
+
+    useEffect(() => {
+        updateFormData("paymentDetails", { cardNumber, expiryDate, cvv });
+    }, [cardNumber, expiryDate, cvv, updateFormData]);
+
+    return (
+        <div>
+            <h2>Payment Details</h2>
+            <div>
+                <label>Card Number:</label>
+                <input
+                    type="text"
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
+                    placeholder="Enter your card number"
+                />
+            </div>
+            <div>
+                <label>Expiry Date:</label>
+                <input
+                    type="month"
+                    value={expiryDate}
+                    onChange={(e) => setExpiryDate(e.target.value)}
+                    placeholder="MM/YYYY"
+                />
+            </div>
+            <div>
+                <label>CVV:</label>
+                <input
+                    type="text"
+                    value={cvv}
+                    onChange={(e) => setCvv(e.target.value)}
+                    placeholder="Enter CVV"
+                />
+            </div>
+            <div className="buttons">
+                <button onClick={prevStep}>Back</button>
+                <button onClick={nextStep}>Next</button>
+            </div>
+        </div>
+    );
+}
+
+// export default Payment;
+
+import React, { useEffect, useState } from 'react';
+import ShareButton from '../../components/ShareButton/ShareButton';
+import Calendar from 'react-calendar';
+import { useAxios } from '../../Hooks/AxiosProvider';
+import Swal from 'sweetalert2';
+
+// Function to format the time as 12-hour AM/PM format
+const formatTime = (time) => {
+    const [hour, minute] = time.split(":");
+    const formattedHour = (hour % 12) || 12;
+    const ampm = hour >= 12 ? "PM" : "AM";
+    return `${formattedHour}:${minute} ${ampm}`;
+};
+
+// Function to get the day of the week ( 'Monday', 'Tuesday')
+const getDayOfWeek = (date) => {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return daysOfWeek[date.getDay()];
+};
+
+// Function to format the date into the required format
+const formatDate = (date) => {
+    return date.toString();  // This gives the exact format you mentioned
+};
+
+const DateTime = ({ nextStep, prevStep, updateFormData }) => {
+    const axiosInstantApi = useAxios();
+    const [slots, setSlots] = useState([]);
+    const [value, onChange] = useState(new Date());
+    const [selectedSlot, setSelectedSlot] = useState(null);
+
+    // Fetch slots for the selected day
+    const fetchSlots = async (day) => {
+        try {
+            const response = await axiosInstantApi.get(`slots/${day}`);
+            setSlots(response.data);
+        } catch (error) {
+            console.error('Error fetching slots:', error);
+        }
+    };
+
+    // Fetch slots whenever the selected date changes
+    useEffect(() => {
+        const dayOfWeek = getDayOfWeek(value);
+        fetchSlots(dayOfWeek);
+    }, [value]);
+
+    // Handle slot selection
+    const handleSlotSelect = (slot) => {
+        // Create a new slot object with the formatted date
+        const formattedDate = formatDate(value);  // Get the formatted current date
+        const updatedSlot = {
+            ...slot,
+            selectedDate: formattedDate, // Add the formatted date to the slot
+        };
+        setSelectedSlot(updatedSlot);  // Update selected slot with the formatted date
+    };
+
+    const handleNext = () => {
+        if (selectedSlot) {
+            updateFormData('selectedSlot', selectedSlot);  // Pass the selected slot with the date
+            nextStep();
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Please select a slot first.",
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        }
+    };
+
+    return (
+        <div>
+            <h2 className="text-2xl font-bold">Select Date Time</h2>
+            <div className="flex gap-5">
+                <div>
+                    <Calendar
+                        style={{
+                            boxShadow: `rgba(149, 157, 165, 0.2) 0px 2px 12px`,
+                        }}
+                        onChange={onChange}
+                        value={value}
+                        className="bg-[--primary-color] border-none"
+                    />
+                </div>
+                <div className="mt-2 flex gap-2 flex-wrap">
+                    {slots.length > 0 ? (
+                        slots.map((slot, index) => (
+                            <span
+                                key={index}
+                                onClick={() => handleSlotSelect(slot)}
+                                style={{
+                                    boxShadow: `rgba(149, 157, 165, 0.2) 0px 2px 12px`,
+                                }}
+                                className={`px-3 py-1 rounded-lg h-16 ${selectedSlot === slot ? 'bg-blue-500 text-white' : 'bg-[--primary-color]'}`}
+                            >
+                                {formatTime(slot.start_time)} - {formatTime(slot.end_time)}<br />
+                                Space: {slot.space} | Fee: ${slot.appointment_fee}
+                            </span>
+                        ))
+                    ) : (
+                        <p className="text-gray-400">No Slots Available</p>
+                    )}
+                </div>
+            </div>
+            <div className="flex justify-between items-center">
+                <button className="w-[20%] mt-2" onClick={prevStep}>
+                    <ShareButton width="100%">Prev</ShareButton>
+                </button>
+                <button
+                    className="w-[20%] mt-2"
+                    onClick={handleNext}
+                >
+                    <ShareButton width="100%">Next</ShareButton>
+                </button>
+            </div>
+        </div>
+    );
+};
+
+// export default DateTime;
+const formatExpiryDateForDisplay = (expiryDate) => {
+    if (!expiryDate) return '';
+    const [year, month] = expiryDate.split('-');
+    const date = new Date(year, month - 1); // Month is zero-based
+    return date.toLocaleString('default', { month: 'long', year: 'numeric' });
+};
+
+// Example usage in the UI:
+const formattedExpiry = formatExpiryDateForDisplay(expiryDate);
+
+
+{/* Payment details */ }
+<div className="space-y-4">
+    {payments.map((payment, index) => {
+        // Parse selected_date_time, basic_info, and selected_service
+        const selectedDateTime = JSON.parse(payment.selected_date_time);
+        const basicInfo = JSON.parse(payment.basic_info);
+        const selectedService = JSON.parse(payment.selected_service);
+
+        return (
+            <div key={index} className="payment-details">
+                <h3 className="font-bold text-lg">Payment {index + 1}</h3>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <strong>Card Holder:</strong> {payment.card_holder}
+                    </div>
+                    <div>
+                        <strong>Card Number:</strong> {payment.card_number}
+                    </div>
+                    <div>
+                        <strong>Expiry Date:</strong> {payment.expiry_date}
+                    </div>
+                    <div>
+                        <strong>CVV:</strong> {payment.cvv}
+                    </div>
+                </div>
+
+                <div className="mt-4">
+                    <h4 className="font-semibold">Appointment Info:</h4>
+                    <p><strong>Selected Date:</strong> {selectedDateTime.date}</p>
+                    <p><strong>Slot Day:</strong> {selectedDateTime.slot.day}</p>
+                    <p><strong>Slot Time:</strong> {selectedDateTime.slot.start_time} - {selectedDateTime.slot.end_time}</p>
+                    <p><strong>Slot Interval:</strong> {selectedDateTime.slot.interval}</p>
+                    <p><strong>Slot Duration:</strong> {selectedDateTime.slot.duration}</p>
+                    <p><strong>Slot Space:</strong> {selectedDateTime.slot.space}</p>
+                    <p><strong>Appointment Fee:</strong> {selectedDateTime.slot.appointment_fee}</p>
+                </div>
+
+                <div className="mt-4">
+                    <h4 className="font-semibold">Patient Info:</h4>
+                    <p><strong>Patient ID:</strong> {basicInfo.patient_id}</p>
+                    <p><strong>Name:</strong> {basicInfo.name}</p>
+                    <p><strong>Email:</strong> {basicInfo.email}</p>
+                    <p><strong>Age:</strong> {basicInfo.age}</p>
+                    <p><strong>Phone:</strong> {basicInfo.phone}</p>
+                    <p><strong>Address:</strong> {basicInfo.address}</p>
+                    <p><strong>Reason:</strong> {basicInfo.reason}</p>
+                </div>
+
+                <div className="mt-4">
+                    <h4 className="font-semibold">Service Info:</h4>
+                    <p><strong>Specialty:</strong> {selectedService.specialty}</p>
+                    <p><strong>Service Name:</strong> {selectedService.service_name}</p>
+                    <p><strong>Service Price:</strong> {selectedService.service_price}</p>
+                </div>
+
+                <div className="mt-4">
+                    <p><strong>Total Cost:</strong> {payment.total_cost}</p>
+                    <p><strong>Payment Status:</strong> {payment.payment_status}</p>
+                    <p><strong>Created At:</strong> {payment.created_at}</p>
+                    <p><strong>Updated At:</strong> {payment.updated_at}</p>
+                </div>
+            </div>
+        );
+    })}
+</div>
+
+const fetchPayments = async () => {
+    try {
+        const res = await axiosInstantApi.get('payments');
+        setPayments(res?.data || []);  // Store payments data in state
+    } catch (error) {
+        console.error('Error fetching payments:', error);
+    }
+};

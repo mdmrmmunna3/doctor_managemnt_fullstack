@@ -104,7 +104,7 @@ const DoctorList = () => {
                     <Loader></Loader>
                 ) :
                     <>
-                        <h1 className="text-4xl font-semibold mb-6 text-center titel">Doctor Information</h1>
+                        <h1 className="text-4xl font-medium mb-6 text-center titel">Doctor Information</h1>
                         <table className="min-w-full table-auto border-collapse border text-center border-gray-300 titel_content">
                             <thead>
                                 <tr className="bg-[#17C3B2] ">

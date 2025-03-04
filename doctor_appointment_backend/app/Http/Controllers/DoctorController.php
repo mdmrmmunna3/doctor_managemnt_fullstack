@@ -13,7 +13,7 @@ class DoctorController extends Controller
     public function index()
     {
         $doctor = Doctor::with('user')->get();
-        return $doctor;
+        return response()->json($doctor);
     }
 
     /**
@@ -35,10 +35,18 @@ class DoctorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Doctor $doctor)
+    public function show($user_id)
     {
-        //
+        $doctor = Doctor::with('user')->where('user_id', $user_id)->first();
+
+        if (!$doctor) {
+            return response()->json(['message' => 'Doctor not found'], 404);
+        }
+
+        // Return the doctor data
+        return response()->json($doctor);
     }
+
 
     /**
      * Show the form for editing the specified resource.

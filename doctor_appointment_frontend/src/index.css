@@ -186,3 +186,8 @@ body {
 .react-date-picker__wrapper {
   border: none;
 }
+
+/* react calender  */
+.react-calendar__tile:enabled:hover {
+  background-color: #17C3B2;
+}

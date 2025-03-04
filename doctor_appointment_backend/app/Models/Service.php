@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Service;
+use App\Models\Speciality;
 
-class Speciality extends Model
+class Service extends Model
 {
     use HasFactory, HasApiTokens;
+    protected $fillable = ['name'];
 
-    protected $fillable = ['name', 'image'];
-
-    public function services()
+    public function specialists()
     {
-        return $this->belongsToMany(Service::class);
+        return $this->belongsToMany(Speciality::class);
     }
 }

@@ -20,10 +20,10 @@ export const useAuthApi = () => {
 
     // Log in an existing user
     const login = async (credentials) => {
-        console.log("Credentials being sent:", credentials); // Debugging log
+        // console.log("Credentials being sent:", credentials); // Debugging log
         return axiosInstantApi.post('login', credentials)
             .then(response => {
-                console.log("Login response:", response);
+                // console.log("Login response:", response);
                 return response;
             })
             .catch(error => {

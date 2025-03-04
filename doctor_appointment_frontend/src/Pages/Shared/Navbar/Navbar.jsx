@@ -16,28 +16,28 @@ const Navbar = () => {
         const role = localStorage.getItem('role');
         if (role) {
             setIsLoggedIn(true);
-            setUserRole(role); 
+            setUserRole(role);
 
             const fetchUserData = async () => {
                 try {
-                    const res = await getUserData(role);  
-                    console.log('Fetched User Data:', res);
+                    const res = await getUserData(role);
+                    // console.log('Fetched User Data:', res);
                 } catch (error) {
                     console.error('Error fetching user data', error);
                     setIsLoggedIn(false);
                 }
             };
 
-            fetchUserData(); 
+            fetchUserData();
         } else {
             setIsLoggedIn(false);
         }
-    }, [getUserData]); 
+    }, [getUserData]);
 
     const handleLogout = () => {
-        localStorage.removeItem('role'); 
+        localStorage.removeItem('role');
         setIsLoggedIn(false);
-        setUserRole(null); 
+        setUserRole(null);
     };
 
     const navOptions = (

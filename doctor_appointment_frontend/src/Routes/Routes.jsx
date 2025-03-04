@@ -20,6 +20,7 @@ import EditSpecialiy from "../DashboardPages/AdminDashboard/EditSpecialiy";
 import DoctorEditProfile from "../DashboardPages/DoctorDashboard/DoctorEditProfile";
 import ErrorPage from "../Pages/Shared/ErrorPage/ErrorPage";
 import AvailableSlotTiming from "../DashboardPages/DoctorDashboard/AvailableSlotTiming";
+import AppointmentSystem from "../Pages/AppointmentSystem/AppointmentSystem";
 // import Gallery from "../Pages/Home/Gallery/Gallery";
 
 export const router = createBrowserRouter([
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
                 path: "register",
                 element: <Register></Register>
             },
+            {
+                path: 'appointsystem/:id',
+                element: <AppointmentSystem></AppointmentSystem>
+            }
 
         ]
     },
