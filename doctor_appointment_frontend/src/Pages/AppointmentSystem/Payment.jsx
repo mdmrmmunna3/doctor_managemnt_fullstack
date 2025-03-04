@@ -3,8 +3,9 @@ import axios from 'axios'; // Import Axios for making the API request
 import ShareButton from '../../components/ShareButton/ShareButton';
 import { useAxios } from '../../Hooks/AxiosProvider';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
-const Payment = ({ nextStep, prevStep, updateFormData, formData }) => {
+const Payment = ({ prevStep, updateFormData, formData }) => {
     const [cardNumber, setCardNumber] = useState("");
     const [cardHolder, setCardHolder] = useState("");
     const [expiryDate, setExpiryDate] = useState("");
@@ -14,6 +15,8 @@ const Payment = ({ nextStep, prevStep, updateFormData, formData }) => {
     const [totalCost, setTotalCost] = useState(0);
     const axiosInstantApi = useAxios();
     const [paymentStatus, setPaymentStatus] = useState("pending");
+    // console.log(formData)
+    const navigate = useNavigate();
 
     const formatTime = (time) => {
         const [hour, minute] = time.split(":");
@@ -28,7 +31,7 @@ const Payment = ({ nextStep, prevStep, updateFormData, formData }) => {
 
     useEffect(() => {
         if (slot?.appointment_fee) {
-            const serviceFee = 250; // Base booking fee
+            const serviceFee = selectedService?.service_price; // Base booking fee
             const appointmentFee = parseInt(slot?.appointment_fee);
             const total = serviceFee + appointmentFee;
             setTotalCost(total);
@@ -90,11 +93,25 @@ const Payment = ({ nextStep, prevStep, updateFormData, formData }) => {
 
             if (response.status === 200) {
                 // Payment was successful, proceed to the next step
-                // setPaymentStatus('pending');
-                nextStep();
+                setPaymentStatus('paid');
+                Swal.fire({
+                    position: "top-middle",
+                    icon: "success",
+                    title: "Successfully appointment & Payment",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+                navigate('/dashboard/patientDashboard');
+
             } else {
                 console.log('Payment failed', response.data);
                 setPaymentStatus("failed");
+                Swal.fire({
+                    icon: "error",
+                    title: "There was an error create the payment ",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
             }
         } catch (error) {
             // Log detailed error message

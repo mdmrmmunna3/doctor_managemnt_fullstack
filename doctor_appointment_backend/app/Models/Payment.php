@@ -10,4 +10,10 @@ class Payment extends Model
 {
     use HasApiTokens, HasFactory;
     protected $table = 'payments';
+
+    protected $casts = [
+        'basic_info' => 'array', // Automatically cast JSON to an array
+        'selected_date_time' => 'array', // Automatically cast JSON to an array
+        'selected_service' => 'array', // Automatically cast JSON to an array
+    ];
 }

@@ -4,7 +4,7 @@ import AppointmentType from './AppointmentType';
 import DateTime from './DateTime';
 import BasicInfo from './BasicInfo';
 import Payment from './Payment';
-import Confirmation from './Confirmation';
+// import Confirmation from './Confirmation';
 import Specialty from './Specialty';
 import { useParams } from 'react-router-dom';
 import { useAxios } from '../../Hooks/AxiosProvider';
@@ -53,7 +53,6 @@ function AppointmentSystem() {
         "Date & Time",
         "Basic Information",
         "Payment",
-        "Confirmation"
     ];
 
     return (
@@ -113,7 +112,7 @@ function AppointmentSystem() {
                 {step === 3 && <DateTime nextStep={nextStep} prevStep={prevStep} updateFormData={updateFormData} />}
                 {step === 4 && <BasicInfo nextStep={nextStep} prevStep={prevStep} updateFormData={updateFormData} />}
                 {step === 5 && <Payment nextStep={nextStep} prevStep={prevStep} updateFormData={updateFormData} formData={formData} />}
-                {step === 6 && <Confirmation prevStep={prevStep} formData={formData} />}
+                {/* {step === 6 && <Confirmation prevStep={prevStep} formData={formData} />} */}
             </div>
         </div>
     );

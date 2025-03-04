@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAxios } from "../../Hooks/AxiosProvider";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
+import Loader from "../../Pages/Shared/Loader/Loader";
 
 const EditSpeciality = () => {
     const { id } = useParams();
