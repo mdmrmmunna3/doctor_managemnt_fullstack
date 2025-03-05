@@ -90,7 +90,7 @@ const AdminDashboard = () => {
     });
     return (
         <div className=''>
-            <h1 className="text-4xl font-semibold mb-6 text-center titel">Welcome To Admin Dashboard</h1>
+            <h1 className="text-4xl font-medium mb-6 text-center titel">Welcome To Admin Dashboard</h1>
             <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-5  p-5">
                 {stats.map((stat, index) => (
                     <div

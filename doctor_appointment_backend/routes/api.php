@@ -15,7 +15,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [UserController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/roleuser', function (Request $request) {
         return response()->json($request->user());
     });
@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Route::post('/logout', [AuthController::class, 'logout']);
 Route::get('/users', [UserRoleController::class, 'getAllUsers']);
+Route::get('users/{id}', [UserRoleController::class, 'indivisulaUser']);
 // Route::get('/users/{email}', [UserController::class, 'individualEmailUser']);
 
 // specilality route

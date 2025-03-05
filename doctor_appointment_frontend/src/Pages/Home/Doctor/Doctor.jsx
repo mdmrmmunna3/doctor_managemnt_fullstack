@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import ShareButton from '../../../components/ShareButton/ShareButton';
-import doctor1 from "../../../assets/doctor/doct1.jpg"
 import { FaGraduationCap } from 'react-icons/fa';
 import { MdLocationPin } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAxios } from '../../../Hooks/AxiosProvider';
 
 const Doctor = () => {
     const role = localStorage.getItem('role');
-    // console.log(role);
+    const token = localStorage.getItem('token');
+    const navigate = useNavigate();
     const [doctors, setDoctors] = useState([]);
     const axiosInstantApi = useAxios();
+
     const fetchDoctorData = async () => {
         try {
             const res = await axiosInstantApi.get('doctors');
-            // console.log(res);
-            const fetchdata = res?.data.map((doc) => {
-                // console.log(doc?.user);
-                return doc?.user;
-            })
+            const fetchdata = res?.data.map((doc) => doc?.user);
             setDoctors(fetchdata);
         } catch (error) {
             console.error('Error fetching doctor data:', error);
@@ -28,6 +25,16 @@ const Doctor = () => {
     useEffect(() => {
         fetchDoctorData();
     }, []);
+
+    const handleBookNowClick = (doctorId) => {
+        if (!token) {
+            // Pass the current route as state when navigating to login
+            navigate('/login', { state: { from: `/appointsystem/${doctorId}` } });
+        } else {
+            // If the user is authenticated, navigate to the appointment system
+            navigate(`/appointsystem/${doctorId}`);
+        }
+    };
 
     return (
         <div className='lg:px-16 pb-8 md:px-10 p-5'>
@@ -40,10 +47,7 @@ const Doctor = () => {
                 </p>
             </div>
 
-
             <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-4'>
-
-
                 {
                     doctors.map((doctor) => <div key={doctor?.id}>
                         <div
@@ -60,8 +64,7 @@ const Doctor = () => {
                                     <div>
                                         <h4 className='text-2xl'>{doctor?.name}</h4>
                                         <p className='text-xl py-2'>{doctor?.specialty}</p>
-
-                                        <p className='flex items-center space-x-2 text-xl'><span><FaGraduationCap /></span> <span className=''>{doctor?.qualification}</span></p>
+                                        <p className='flex items-center space-x-2 text-xl'><span><FaGraduationCap /></span> <span>{doctor?.qualification}</span></p>
                                     </div>
                                     <h4 className='text-xl'>Fees: <span>{doctor?.fees}</span></h4>
                                 </div>
@@ -70,14 +73,14 @@ const Doctor = () => {
                                     <p className='px-2 py-1 rounded-t-md text-[#17C3B2] bg-slate-50'>Available</p>
                                 </div>
                                 <div className="text-center">
-                                    {/* Pass the width directly as a prop */}
                                     {
-                                        role === 'admin' || role === 'doctor' ?
-                                            <div className='hidden'><ShareButton width="100%" >Book Now</ShareButton></div>
-                                            :
-                                            <Link to={`/appointsystem/${doctor?.id}`}>
+                                        role === 'admin' || role === 'doctor' ? (
+                                            <div className='hidden'><ShareButton width="100%">Book Now</ShareButton></div>
+                                        ) : (
+                                            <div onClick={() => handleBookNowClick(doctor?.id)}>
                                                 <ShareButton width="100%">Book Now</ShareButton>
-                                            </Link>
+                                            </div>
+                                        )
                                     }
                                 </div>
                             </div>
@@ -86,10 +89,8 @@ const Doctor = () => {
                 }
             </div>
 
-            <div
-
-                className='mt-5 uppercase text-center w-[300px] mx-auto'>
-                <Link to='/'><ShareButton >View All Dcotors</ShareButton></Link>
+            <div className='mt-5 uppercase text-center w-[300px] mx-auto'>
+                <Link to='/'><ShareButton>View All Doctors</ShareButton></Link>
             </div>
         </div>
     );

@@ -16,6 +16,7 @@ class CreatePaymentsTable extends Migration
             $table->string('cvv');
             $table->integer('booking_id')->nullable();
             $table->json('basic_info'); // Store basic_info as JSON
+            $table->string('appointment_type');
             $table->json('selected_date_time'); // Store selected_date_time as JSON
             $table->json('selected_service'); // Store selected_service as JSON
             $table->decimal('total_cost', 10, 2);

@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { useAxios } from '../../Hooks/AxiosProvider';
 
-const DoctorEditProfile = () => {
+const AdminEditProfile = () => {
     const { getUserData } = useAuthApi();
     const [formData, setFormData] = useState({
         id: "",
@@ -16,8 +16,6 @@ const DoctorEditProfile = () => {
         specialty: "",
         phone: "",
         address: "",
-        qualification: "",
-        fees: "",
         image: null,
     });
 
@@ -35,11 +33,8 @@ const DoctorEditProfile = () => {
                     name: userData?.name || "",
                     email: userData?.email || "",
                     age: userData?.age || "",
-                    specialty: userData?.specialty || "",
                     phone: userData?.phone || "",
                     address: userData?.address || "",
-                    qualification: userData?.qualification || "",
-                    fees: userData?.fees || "",
                     image: userData?.image || null,
                 });
 
@@ -130,7 +125,6 @@ const DoctorEditProfile = () => {
         }
     };
 
-
     return (
         <div className="flex justify-center pb-10">
             {
@@ -174,7 +168,7 @@ const DoctorEditProfile = () => {
                                 />
                             </div>
 
-                            <div className='grid md:grid-cols-2 gap-4'>
+                            <div className='grid md:grid-cols-3 gap-4'>
                                 <input
                                     type="text"
                                     className="w-full p-4 border bg-transparent rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -185,18 +179,6 @@ const DoctorEditProfile = () => {
                                     onChange={handleOnChange}
                                 />
 
-                                <input
-                                    type="text"
-                                    className="w-full p-4 border bg-transparent rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-                                    placeholder="Specialization"
-                                    name="specialty"
-                                    id="specialty"
-                                    value={formData?.specialty || ''}
-                                    onChange={handleOnChange}
-                                />
-                            </div>
-
-                            <div className='grid grid-cols-2 gap-4'>
                                 <input
                                     type="text"
                                     className="w-full p-4 border bg-transparent rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -213,29 +195,9 @@ const DoctorEditProfile = () => {
                                     name="address" id="address"
                                     value={formData?.address || ''}
                                     onChange={handleOnChange}
-                                    rows={2}
-                                />
-                            </div>
-                            <div className='grid grid-cols-2 gap-4'>
-                                <input
-                                    type="text"
-                                    className="w-full p-4 border bg-transparent rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-                                    placeholder="Enter Qualification"
-                                    name="qualification"
-                                    id="qualification"
-                                    value={formData?.qualification || ''}
-                                    onChange={handleOnChange}
+                                    rows={1}
                                 />
 
-                                <input
-                                    type="text"
-                                    className="w-full p-4 border bg-transparent rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-                                    placeholder="Enter Fees"
-                                    name="fees" id="fees"
-                                    value={formData?.fees || ""}
-                                    onChange={handleOnChange}
-                                    rows={2}
-                                />
                             </div>
 
                             <div className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center w-full">
@@ -273,4 +235,4 @@ const DoctorEditProfile = () => {
     );
 };
 
-export default DoctorEditProfile;
+export default AdminEditProfile;

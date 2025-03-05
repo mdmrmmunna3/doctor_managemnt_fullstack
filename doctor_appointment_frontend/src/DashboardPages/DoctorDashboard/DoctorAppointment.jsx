@@ -1,148 +1,153 @@
-import React from 'react';
-import img from "../../assets/social/Screenshot_1.png";
+import React, { useEffect, useState } from 'react';
+import { useAxios } from '../../Hooks/AxiosProvider';
+import { useAuthApi } from '../../Hooks/useAuthApi';
+import { FaCcMastercard, FaPhone, FaRegCalendarAlt } from 'react-icons/fa';
+import { MdMedicalServices } from 'react-icons/md';
+import { GiMoneyStack } from 'react-icons/gi';
+import { Link, useNavigate } from 'react-router-dom';
+import ShareButton from '../../components/ShareButton/ShareButton';
+import Loader from '../../Pages/Shared/Loader/Loader';
+
 const DoctorAppointment = () => {
-    const appointments = [
-        {
-            doctorName: "Dr. John Smith",
-            doctorImage: "https://static.vecteezy.com/system/resources/thumbnails/027/298/490/small/doctor-posing-portrait-free-photo.jpg",
-            specialty: "Cardiology",
-            patientName: "Jane Doe",
-            patientImage: "https://img.freepik.com/free-photo/content-handsome-young-man-blue-tshirt-pointing-aside_1262-17845.jpg",
-            appointmentTime: "2025-02-15T14:30:00",
-            status: "Scheduled",
-            amount: 150.00
-        },
-        {
-            doctorName: "Dr. Sarah Lee",
-            doctorImage: "https://static.vecteezy.com/system/resources/thumbnails/027/298/490/small/doctor-posing-portrait-free-photo.jpg",
-            specialty: "Dermatology",
-            patientName: "Robert Williams",
-            patientImage: "https://img.freepik.com/free-photo/content-handsome-young-man-blue-tshirt-pointing-aside_1262-17845.jpg",
-            appointmentTime: "2025-02-16T09:00:00",
-            status: "Completed",
-            amount: 120.00
-        },
-        {
-            doctorName: "Dr. Michael Brown",
-            doctorImage: "https://static.vecteezy.com/system/resources/thumbnails/027/298/490/small/doctor-posing-portrait-free-photo.jpg",
-            specialty: "Orthopedics",
-            patientName: "Emily Davis",
-            patientImage: "https://img.freepik.com/free-photo/content-handsome-young-man-blue-tshirt-pointing-aside_1262-17845.jpg",
-            appointmentTime: "2025-02-17T11:00:00",
-            status: "Scheduled",
-            amount: 200.00
-        },
-        {
-            doctorName: "Dr. Jessica Miller",
-            doctorImage: "https://static.vecteezy.com/system/resources/thumbnails/027/298/490/small/doctor-posing-portrait-free-photo.jpg",
-            specialty: "Pediatrics",
-            patientName: "Liam Johnson",
-            patientImage: "https://img.freepik.com/free-photo/content-handsome-young-man-blue-tshirt-pointing-aside_1262-17845.jpg",
-            appointmentTime: "2025-02-18T13:15:00",
-            status: "Cancelled",
-            amount: 90.00
-        },
-        {
-            doctorName: "Dr. Daniel Wilson",
-            doctorImage: "https://static.vecteezy.com/system/resources/thumbnails/027/298/490/small/doctor-posing-portrait-free-photo.jpg",
-            specialty: "Neurology",
-            patientName: "Sophia Moore",
-            patientImage: "https://img.freepik.com/free-photo/content-handsome-young-man-blue-tshirt-pointing-aside_1262-17845.jpg",
-            appointmentTime: "2025-02-19T16:00:00",
-            status: "Scheduled",
-            amount: 180.00
-        },
-        {
-            doctorName: "Dr. Olivia Taylor",
-            doctorImage: "https://static.vecteezy.com/system/resources/thumbnails/027/298/490/small/doctor-posing-portrait-free-photo.jpg",
-            specialty: "Psychiatry",
-            patientName: "James Harris",
-            patientImage: "https://img.freepik.com/free-photo/content-handsome-young-man-blue-tshirt-pointing-aside_1262-17845.jpg",
-            appointmentTime: "2025-02-20T10:30:00",
-            status: "Completed",
-            amount: 140.00
-        },
-        {
-            doctorName: "Dr. Brian Thomas",
-            doctorImage: "https://static.vecteezy.com/system/resources/thumbnails/027/298/490/small/doctor-posing-portrait-free-photo.jpg",
-            specialty: "ENT",
-            patientName: "Charlotte Clark",
-            patientImage: "https://img.freepik.com/free-photo/content-handsome-young-man-blue-tshirt-pointing-aside_1262-17845.jpg",
-            appointmentTime: "2025-02-21T08:45:00",
-            status: "Scheduled",
-            amount: 110.00
-        },
-        {
-            doctorName: "Dr. Nancy Walker",
-            doctorImage: "https://static.vecteezy.com/system/resources/thumbnails/027/298/490/small/doctor-posing-portrait-free-photo.jpg",
-            specialty: "Gastroenterology",
-            patientName: "Aiden Lewis",
-            patientImage: "https://img.freepik.com/free-photo/content-handsome-young-man-blue-tshirt-pointing-aside_1262-17845.jpg",
-            appointmentTime: "2025-02-22T12:00:00",
-            status: "Completed",
-            amount: 160.00
-        },
-        {
-            doctorName: "Dr. David Martinez",
-            doctorImage: "https://static.vecteezy.com/system/resources/thumbnails/027/298/490/small/doctor-posing-portrait-free-photo.jpg",
-            specialty: "Radiology",
-            patientName: "Mia Young",
-            patientImage: "https://img.freepik.com/free-photo/content-handsome-young-man-blue-tshirt-pointing-aside_1262-17845.jpg",
-            appointmentTime: "2025-02-23T15:30:00",
-            status: "Scheduled",
-            amount: 220.00
-        },
-        {
-            doctorName: "Dr. Laura White",
-            doctorImage: "https://static.vecteezy.com/system/resources/thumbnails/027/298/490/small/doctor-posing-portrait-free-photo.jpg",
-            specialty: "Gynecology",
-            patientName: "Ella King",
-            patientImage: "https://img.freepik.com/free-photo/content-handsome-young-man-blue-tshirt-pointing-aside_1262-17845.jpg",
-            appointmentTime: "2025-02-24T14:45:00",
-            status: "Scheduled",
-            amount: 250.00
+    const [appointments, setAppointments] = useState([]);
+    const [logedUser, setLogedUser] = useState({});
+    const axiosInstantApi = useAxios();
+    const { getUserData } = useAuthApi();
+    const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
+
+    // Function to fetch the logged-in user
+    const loggedUser = async () => {
+        const res = await getUserData();
+        setLogedUser(res);
+    };
+
+    // Fetch appointments after loggedUser is set
+    const fetchAppointments = async (userId) => {
+        try {
+            const res = await axiosInstantApi.get('payments');
+            const filteredAppointments = res?.data?.filter(
+                (payment) => payment?.selected_service?.doctor?.id === userId
+            );
+            setAppointments(filteredAppointments);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Error fetching appointments:', error);
+        } finally {
+            setIsLoading(false);
         }
-    ];
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await loggedUser(); // First, fetch the user
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (logedUser?.id) {
+            fetchAppointments(logedUser.id);
+        }
+    }, [logedUser]);
+
+    // Function to handle patient click
+    const handlePatientSelect = async (patientId, paymentId) => {
+        try {
+            const res = await axiosInstantApi.get(`users/${patientId}`);
+            const patientData = res?.data;
+            const paymentRes = await axiosInstantApi.get(`payments/${paymentId}`);
+            const paymentData = paymentRes?.data;
+
+            navigate(`/dashboard/doctorDashboard/doctorAppoint/${patientId}`, {
+                state: { patientDetails: patientData, paymentDetails: paymentData }
+            });
+        } catch (error) {
+            console.error('Error fetching patient details:', error);
+        }
+    };
+
     return (
         <div>
-            <div className="overflow-x-auto  px-4">
-                <h1 className="text-4xl font-medium mb-6 text-center titel">Appointment Information</h1>
-                <table className="min-w-full bg-white shadow-lg rounded-lg border-separate">
-                    <thead>
-                        <tr className="bg-gray-200 text-left">
-                            <th className="px-6 py-3 text-sm font-semibold text-gray-700">Doctor Name</th>
-                            <th className="px-6 py-3 text-sm font-semibold text-gray-700">Specialty</th>
-                            <th className="px-6 py-3 text-sm font-semibold text-gray-700">Patient Name</th>
-                            <th className="px-6 py-3 text-sm font-semibold text-gray-700">Appointment Time</th>
-                            <th className="px-6 py-3 text-sm font-semibold text-gray-700">Status</th>
-                            <th className="px-6 py-3 text-sm font-semibold text-gray-700">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {appointments.map((appointment, index) => (
-                            <tr key={index} className="border-t">
-                                <td className="px-6 py-2 text-sm text-gray-800 flex items-center">
-
-                                    {appointment.doctorName}
-                                </td>
-                                <td className="px-6 py-2 text-sm text-gray-800">{appointment.specialty}</td>
-                                <td className="px-6 py-2  text-sm text-gray-800 flex items-center">
-                                    <img src={appointment.patientImage} alt="Patient" className="w-12 h-12 rounded-full mr-3" />
-                                    {appointment.patientName}
-                                </td>
-                                <td className="px-6 py-2  text-sm text-gray-800">
-                                    {new Date(appointment.appointmentTime).toLocaleString()}
-                                </td>
-                                <td className="px-6 py-2  text-sm text-gray-800">
-                                    <span className={`font-semibold ${appointment.status === 'Scheduled' ? 'text-green-600' : appointment.status === 'Cancelled' ? 'text-red-600' : 'text-blue-600'}`}>
-                                        {appointment.status}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-2  text-sm text-gray-800">${appointment.amount.toFixed(2)}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div className="overflow-x-auto h-screen">
+                {isLoading ? (
+                    <div><Loader /></div>
+                ) : (
+                    <div>
+                        <h1 className="text-4xl font-medium mb-6 text-center titel">Appointment Information</h1>
+                        <div
+                            style={{
+                                boxShadow: `rgba(149, 157, 165, 0.2) 0px 2px 12px`,
+                            }}
+                            className="p-6 rounded-md"
+                        >
+                            <div className="space-y-4">
+                                {appointments.map((appointment) => (
+                                    <div
+                                        key={appointment?.id}
+                                        style={{
+                                            boxShadow: `rgba(149, 157, 165, 0.2) 0px 2px 12px`,
+                                        }}
+                                        className="lg:flex p-4 rounded-lg shadow-md"
+                                    >
+                                        <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-3 titel_content">
+                                            <div className="flex items-center gap-2">
+                                                <img
+                                                    src={`http://localhost:8000/storage/${appointment?.basic_info?.image}`}
+                                                    alt={appointment?.basic_info?.name}
+                                                    className="w-14 h-14 rounded-full border-2 border-blue-500"
+                                                />
+                                                <div>
+                                                    <h3>Patient: {appointment?.basic_info?.name}</h3>
+                                                    <p>Age: {appointment?.basic_info?.age}</p>
+                                                    <p className="flex items-center gap-3">
+                                                        <span><FaPhone /></span> {appointment?.basic_info?.phone}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <p className="">
+                                                    🕒 {appointment?.selected_date_time?.date &&
+                                                        new Date(appointment?.selected_date_time?.date).toLocaleString('en-US', {
+                                                            weekday: 'long',
+                                                            year: 'numeric',
+                                                            month: 'long',
+                                                            day: 'numeric',
+                                                            hour: '2-digit',
+                                                            minute: '2-digit',
+                                                            second: '2-digit',
+                                                        })}
+                                                </p>
+                                                <p className=" flex gap-2 items-center">
+                                                    <span><FaRegCalendarAlt /></span> Appointment Type | {appointment?.appointment_type}
+                                                </p>
+                                                <p className=" flex gap-2 items-center">
+                                                    <span><MdMedicalServices /></span> {appointment?.selected_service?.service_name} - {appointment?.selected_service?.service_price}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p className="flex items-center gap-3">Card Holder: <span><FaCcMastercard /></span>{appointment?.card_holder}</p>
+                                                <p className="flex items-center gap-3">Total Cost: <span><GiMoneyStack /></span>{appointment?.total_cost}</p>
+                                                <p className="mt-2">
+                                                    <span className="px-3 py-1 bg-green-500 rounded-sm font-bold text-white">{appointment?.payment_status}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center mt-3">
+                                            <div
+                                                onClick={() => handlePatientSelect(appointment?.basic_info?.patient_id, appointment?.id)}
+                                                className=" text-white"
+                                            >
+                                                <ShareButton> View Patient Health Report</ShareButton>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

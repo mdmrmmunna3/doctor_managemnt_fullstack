@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Doctor;
 
 class Payment extends Model
 {
@@ -16,4 +17,9 @@ class Payment extends Model
         'selected_date_time' => 'array', // Automatically cast JSON to an array
         'selected_service' => 'array', // Automatically cast JSON to an array
     ];
+
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class);
+    }
 }

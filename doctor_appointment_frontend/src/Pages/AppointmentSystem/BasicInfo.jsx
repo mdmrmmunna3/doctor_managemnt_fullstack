@@ -22,6 +22,7 @@ const BasicInfo = ({ nextStep, prevStep, updateFormData }) => {
                     age: patientData.age,
                     phone: patientData.phone,
                     address: patientData.address,
+                    image: patientData.image,
                     reason: reason,
                 };
 
@@ -47,6 +48,7 @@ const BasicInfo = ({ nextStep, prevStep, updateFormData }) => {
             age: patient?.age,
             phone: patient?.phone,
             address: patient?.address,
+            image: patient?.image,
             reason: newReason,
         });
     };

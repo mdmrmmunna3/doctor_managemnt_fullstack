@@ -21,6 +21,11 @@ import DoctorEditProfile from "../DashboardPages/DoctorDashboard/DoctorEditProfi
 import ErrorPage from "../Pages/Shared/ErrorPage/ErrorPage";
 import AvailableSlotTiming from "../DashboardPages/DoctorDashboard/AvailableSlotTiming";
 import AppointmentSystem from "../Pages/AppointmentSystem/AppointmentSystem";
+import PatientAppointment from "../DashboardPages/PatientDashboard/PatientAppointment";
+import PatienEditProfile from "../DashboardPages/PatientDashboard/PatienEditProfile";
+import AdminEditProfile from "../DashboardPages/AdminDashboard/AdminEditProfile";
+import PatientHealthReport from "../DashboardPages/DoctorDashboard/PatientHealthReport";
+import MyPatient from "../DashboardPages/DoctorDashboard/MyPatient";
 // import Gallery from "../Pages/Home/Gallery/Gallery";
 
 export const router = createBrowserRouter([
@@ -105,6 +110,10 @@ export const router = createBrowserRouter([
                 path: 'adminDashboard/patientList',
                 element: <PatientList />,
             },
+            {
+                path: 'adminDashboard/adminProfile',
+                element: <AdminEditProfile />,
+            },
 
             // For DoctorDashboard 
             {
@@ -116,9 +125,18 @@ export const router = createBrowserRouter([
                 element: <DoctorAppointment />,
             },
             {
+                path: 'doctorDashboard/doctorAppoint/:id',
+                element: <PatientHealthReport />,
+            },
+            {
                 path: 'doctorDashboard/avilableSlot',
                 element: <AvailableSlotTiming />,
             },
+            {
+                path: 'doctorDashboard/mypatients',
+                element: <MyPatient />,
+            },
+
             {
                 path: 'doctorDashboard/editProfile',
                 element: <DoctorEditProfile />,
@@ -128,6 +146,14 @@ export const router = createBrowserRouter([
             {
                 path: 'patientDashboard',
                 element: <PatientDashboard />,
+            },
+            {
+                path: 'patientDashboard/patient_appointments',
+                element: <PatientAppointment />,
+            },
+            {
+                path: 'patientDashboard/patientProfile',
+                element: <PatienEditProfile />,
             },
         ],
     },

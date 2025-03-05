@@ -97,7 +97,7 @@ export default function DashboardLayout() {
             <NavItem to="/dashboard/adminDashboard/patientList" icon={FaUserPlus} title="Patients" />
             <NavItem to="/dashboard/adminDashboard/transactions" icon={MdPayments} title="Transactions" />
             <NavItem to="/dashboard/adminDashboard/invoiceReports" icon={FaFileInvoice} title="Invoice Reports" />
-            <NavItem to="/dashboard/adminDashboard/profileedit" icon={CiSettings} title="Profile Setting" />
+            <NavItem to="/dashboard/adminDashboard/adminProfile" icon={CiSettings} title="Profile Setting" />
         </>
     );
 
@@ -108,7 +108,7 @@ export default function DashboardLayout() {
             <NavItem to="/dashboard/doctorDashboard/requests" icon={IoMdNotifications} title="Request" notifications={7} />
             <NavItem to="/dashboard/doctorDashboard/messages" icon={AiOutlineMessage} title="Messages" notifications={2} />
             <NavItem to="/dashboard/doctorDashboard/avilableSlot" icon={FaNotesMedical} title="Available Timing" />
-            <NavItem to="/dashboard/doctorDashboard/patients" icon={FaNotesMedical} title="My Patients" />
+            <NavItem to="/dashboard/doctorDashboard/mypatients" icon={FaNotesMedical} title="My Patients" />
             <NavItem to="/dashboard/doctorDashboard/editProfile" icon={CiSettings} title="Profile Setting" />
         </>
     );
@@ -116,11 +116,11 @@ export default function DashboardLayout() {
     const PatientMenu = () => (
         <>
             <NavItem to="/dashboard/patientDashboard" icon={RxDashboard} title="Dashboard" />
-            <NavItem to="/dashboard/patientDashboard/appointments" icon={MdOutlineDateRange} title="My Appointment" />
+            <NavItem to="/dashboard/patientDashboard/patient_appointments" icon={MdOutlineDateRange} title="My Appointment" />
             <NavItem to="/dashboard/patientDashboard/messages" icon={AiOutlineMessage} title="Messages" notifications={2} />
             <NavItem to="/dashboard/patientDashboard/notifications" icon={IoMdNotifications} title="Notifications" notifications={7} />
             <NavItem to="/dashboard/patientDashboard/reports" icon={FaNotesMedical} title="Medical Report" />
-            <NavItem to="/dashboard/patientDashboard/settings" icon={CiSettings} title="Profile Setting" />
+            <NavItem to="/dashboard/patientDashboard/patientProfile" icon={CiSettings} title="Profile Setting" />
         </>
     );
 

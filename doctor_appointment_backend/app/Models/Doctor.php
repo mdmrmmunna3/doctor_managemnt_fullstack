@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Slot;
 use App\Models\User;
+use App\Models\Payment;
 class Doctor extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -26,5 +27,10 @@ class Doctor extends Model
     public function slots()
     {
         return $this->hasMany(Slot::class);
+    }
+
+    public function payments()
+    {
+        return $this->belongsTo(Payment::class, 'doctor_id');
     }
 }

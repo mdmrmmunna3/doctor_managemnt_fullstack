@@ -74,8 +74,10 @@ const Payment = ({ prevStep, updateFormData, formData }) => {
             return;
         }
         const formattedExpiryDate = expiryDate ? expiryDate.split('-').reverse().join('/') : '';
+        // const randomId = 'ID' + Math.random().toString(36).substr(2, 9);
         // Construct the payment data object
         const paymentData = {
+            // booking_id: randomId,
             cardHolder,
             cardNumber,
             expiryDate: formattedExpiryDate,
@@ -85,7 +87,7 @@ const Payment = ({ prevStep, updateFormData, formData }) => {
             basicInfo,
             selectedService,
             totalCost,
-            paymentStatus
+            paymentStatus: 'paid',
         };
 
         try {
@@ -101,7 +103,7 @@ const Payment = ({ prevStep, updateFormData, formData }) => {
                     showConfirmButton: false,
                     timer: 2000,
                 });
-                navigate('/dashboard/patientDashboard');
+                navigate('/dashboard/patientDashboard/patient_appointments');
 
             } else {
                 console.log('Payment failed', response.data);
@@ -116,7 +118,14 @@ const Payment = ({ prevStep, updateFormData, formData }) => {
         } catch (error) {
             // Log detailed error message
             console.error('Error submitting payment:', error.response?.data || error.message);
-
+            setPaymentStatus('failed');
+            Swal.fire({
+                icon: "error",
+                title: "Payment error",
+                text: error.message,
+                showConfirmButton: false,
+                timer: 2000,
+            });
         }
     };
 

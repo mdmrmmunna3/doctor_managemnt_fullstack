@@ -107,7 +107,7 @@ function AppointmentSystem() {
                     )}
                 </div>
                 {/* Step Components */}
-                {step === 1 && <Specialty nextStep={nextStep} updateFormData={updateFormData} specialty={doctor?.specialty} />}
+                {step === 1 && <Specialty nextStep={nextStep} updateFormData={updateFormData} specialty={doctor?.specialty} doctor={doctor} />}
                 {step === 2 && <AppointmentType nextStep={nextStep} prevStep={prevStep} updateFormData={updateFormData} />}
                 {step === 3 && <DateTime nextStep={nextStep} prevStep={prevStep} updateFormData={updateFormData} />}
                 {step === 4 && <BasicInfo nextStep={nextStep} prevStep={prevStep} updateFormData={updateFormData} />}

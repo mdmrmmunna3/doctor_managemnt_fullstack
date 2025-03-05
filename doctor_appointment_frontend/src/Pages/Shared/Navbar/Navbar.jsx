@@ -10,7 +10,7 @@ const Navbar = () => {
     const [isDarkMode, handleToggleTheme] = useToogleTheme();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userRole, setUserRole] = useState(null);
-    const { getUserData } = useAuthApi();
+    const { getUserData, logout } = useAuthApi();
 
     useEffect(() => {
         const role = localStorage.getItem('role');
@@ -34,10 +34,19 @@ const Navbar = () => {
         }
     }, [getUserData]);
 
-    const handleLogout = () => {
-        localStorage.removeItem('role');
-        setIsLoggedIn(false);
-        setUserRole(null);
+    const handleLogout = async () => {
+        const token = localStorage.getItem('token');
+        try {
+            await logout();
+            if (token) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('role');
+                sessionStorage.clear();
+                navigate('/login', { replace: true });
+            }
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
     };
 
     const navOptions = (

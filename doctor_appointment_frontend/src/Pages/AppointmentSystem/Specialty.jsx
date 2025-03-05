@@ -3,12 +3,13 @@ import ShareButton from "../../components/ShareButton/ShareButton";
 import { useAxios } from "../../Hooks/AxiosProvider";
 import Swal from "sweetalert2";
 
-function Specialty({ nextStep, specialty, updateFormData }) {
+function Specialty({ nextStep, specialty, updateFormData, doctor }) {
     const axiosInstantApi = useAxios();
     const [specialties, setSpecialties] = useState([]);
     const [selectedSpecialty, setSelectedSpecialty] = useState(null);
     const [selectedService, setSelectedService] = useState(null);
     const [services, setServices] = useState([]);
+    // console.log(doctor.name);
 
     // Set specialties when props change
     useEffect(() => {
@@ -62,6 +63,7 @@ function Specialty({ nextStep, specialty, updateFormData }) {
         } else {
             const { id, name, price } = selectedService;
             updateFormData("selectedService", {
+                doctor: doctor,
                 specialty: selectedSpecialty,
                 service_id: id,
                 service_name: name,
