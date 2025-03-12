@@ -14,6 +14,7 @@ import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import { router } from './Routes/Routes'
 import AxiosProvider from './Hooks/AxiosProvider';
+import 'animate.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <StrictMode>

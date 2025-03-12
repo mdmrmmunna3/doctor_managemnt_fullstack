@@ -64,6 +64,7 @@ const Register = () => {
     formData.append('address', user.address);
     formData.append('role', selectedRole);
     if (user?.specialty) formData.append('specialty', user?.specialty);
+    // console.log("Image being appended:", user.image);
     if (user?.image) formData.append('image', user?.image); // Append the image file
 
     try {

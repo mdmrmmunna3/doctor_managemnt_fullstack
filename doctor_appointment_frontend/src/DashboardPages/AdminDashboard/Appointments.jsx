@@ -46,7 +46,7 @@ const Appointments = () => {
                             <th className="px-6 py-3 text-sm font-semibold ">Appointment Time</th>
                             <th className="px-6 py-3 text-sm font-semibold ">Status</th>
                             <th className="px-6 py-3 text-sm font-semibold ">Amount</th>
-                            <th className="px-6 py-3 text-sm font-semibold ">Action</th>
+                            {/* <th className="px-6 py-3 text-sm font-semibold ">Action</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -84,9 +84,9 @@ const Appointments = () => {
                                     <span>Scheduled</span>
                                 </td>
                                 <td className="px-6 py-2  text-sm">{appointment?.total_cost}</td>
-                                <td className="px-6 py-2 text-lg cursor-pointer" >
+                                {/* <td className="px-6 py-2 text-lg cursor-pointer" >
                                     <span className='flex items-center gap-2'>  <FaEdit />Invoice</span>
-                                </td>
+                                </td> */}
 
                             </tr>
                         ))}

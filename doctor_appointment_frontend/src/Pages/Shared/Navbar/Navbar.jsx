@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { GiBoomerangSun } from 'react-icons/gi';
 import { MdNightsStay } from 'react-icons/md';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import useToogleTheme from '../../../Hooks/useToogleTheme';
 import { useAuthApi } from '../../../Hooks/useAuthApi';
 
@@ -11,6 +11,7 @@ const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userRole, setUserRole] = useState(null);
     const { getUserData, logout } = useAuthApi();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const role = localStorage.getItem('role');

@@ -52,75 +52,79 @@ const PatientAppointment = () => {
         }
     }, [logedUser]);
 
-    console.log(appointments);
+    // console.log(appointments);
 
     return (
         <div className="h-screen">
+            <h2 className="text-4xl titel font-medium text-center mb-4">My Appointments</h2>
             {
                 isLoading ? (
                     <div><Loader /></div>
                 ) :
-                    <div>
-                        <h2 className="text-4xl titel font-medium text-center mb-4">My Appointments</h2>
-                        <div
-                            style={{
-                                boxShadow: `rgba(149, 157, 165, 0.2) 0px 2px 12px`
-                            }}
-                            className="p-6  rounded-md">
-                            <div className="space-y-4">
-                                {appointments.map((appointment) => (
-                                    <div
-                                        style={{
-                                            boxShadow: `rgba(149, 157, 165, 0.2) 0px 2px 12px`
-                                        }}
-                                        key={appointment?.id}
-                                        className="lg:flex p-4 rounded-lg shadow-md"
-                                    >
-                                        <div className="grid lg:grid-cols-3 md:grid-cols-2  gap-3 titel_content">
-                                            <div className='flex items-center gap-2'>
-                                                <img
-                                                    src={`http://localhost:8000/storage/${appointment?.selected_service?.doctor?.image}`}
-                                                    alt={appointment?.selected_service?.doctor?.name}
-                                                    className="w-14 h-14 rounded-full border-2 border-blue-500"
-                                                />
+                    appointments.length > 0 ? (
+                        <div>
+                            <div
+                                style={{
+                                    boxShadow: `rgba(149, 157, 165, 0.2) 0px 2px 12px`
+                                }}
+                                className="p-6 rounded-md">
+                                <div className="space-y-4">
+                                    {appointments.map((appointment) => (
+                                        <div
+                                            style={{
+                                                boxShadow: `rgba(149, 157, 165, 0.2) 0px 2px 12px`
+                                            }}
+                                            key={appointment?.id}
+                                            className="lg:flex p-4 rounded-lg shadow-md"
+                                        >
+                                            <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-3 titel_content">
+                                                <div className='flex items-center gap-2'>
+                                                    <img
+                                                        src={`http://localhost:8000/storage/${appointment?.selected_service?.doctor?.image}`}
+                                                        alt={appointment?.selected_service?.doctor?.name}
+                                                        className="w-14 h-14 rounded-full border-2 border-blue-500"
+                                                    />
+                                                    <div>
+                                                        <h3>Dr.{appointment?.selected_service?.doctor?.name}</h3>
+                                                        <p>{appointment?.selected_service?.doctor?.specialty}</p>
+                                                        <p>{appointment?.selected_service?.doctor?.qualification}</p>
+                                                    </div>
+                                                </div>
                                                 <div>
-                                                    <h3>Dr.{appointment?.selected_service?.doctor?.name}</h3>
-                                                    <p>{appointment?.selected_service?.doctor?.specialty}</p>
-                                                    <p>{appointment?.selected_service?.doctor?.qualification}</p>
+                                                    <p className="text-lg"> 🕒 {appointment?.selected_date_time?.date &&
+                                                        new Date(appointment?.selected_date_time?.date).toLocaleString('en-US', {
+                                                            weekday: 'long',
+                                                            year: 'numeric',
+                                                            month: 'long',
+                                                            day: 'numeric',
+                                                            hour: '2-digit',
+                                                            minute: '2-digit',
+                                                            second: '2-digit',
+                                                        })}</p>
+                                                    <p className="text-lg flex gap-2 items-center"><span><FaRegCalendarAlt /></span>Appointment Type | {appointment?.appointment_type}</p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-lg flex items-center gap-2"><span><MdMedicalServices /></span> {appointment?.selected_service?.service_name}</p>
+                                                    <p className="text-lg"><span>Service Price: $</span> {appointment?.selected_service?.service_price}</p>
+                                                    <p>Total Cost: $ {appointment?.total_cost}</p>
                                                 </div>
                                             </div>
-                                            <div>
-                                                {/* <p className="">  {appointment?.selected_date_time?.date &&
-                                                new Date(appointment?.selected_date_time?.date).toLocaleDateString()}</p> */}
-                                                <p className="text-lg"> 🕒 {appointment?.selected_date_time?.date &&
-                                                    new Date(appointment?.selected_date_time?.date).toLocaleString('en-US', {
-                                                        weekday: 'long',
-                                                        year: 'numeric',
-                                                        month: 'long',
-                                                        day: 'numeric',
-                                                        hour: '2-digit',
-                                                        minute: '2-digit',
-                                                        second: '2-digit',
-                                                    })}</p>
-                                                <p className="text-lg flex gap-2 items-center"><span><FaRegCalendarAlt /></span>Appointment Type | {appointment?.appointment_type}</p>
-                                            </div>
-                                            <div>
-                                                <p className="text-lg flex items-center gap-2"><span><MdMedicalServices /></span> {appointment?.selected_service?.service_name}</p>
-                                                <p className="text-lg"><span>Service Price: $</span> {appointment?.selected_service?.service_price}</p>
-                                                <p>Total Cost: $ {appointment?.total_cost}</p>
+                                            <div className="flex items-center">
+                                                <ShareButton width='100%'>Attend</ShareButton>
                                             </div>
                                         </div>
-                                        <div className="flex items-center">
-                                            {/* <button className="bg-blue-500 px-4 py-2 rounded-lg text-white">Attend</button> */}
-                                            <ShareButton width='100%'>Attend</ShareButton>
-                                        </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    ) : (
+                        <div className="text-center text-xl text-gray-500">
+                            No appointments found
+                        </div>
+                    )
             }
         </div>
+
     );
 };
 

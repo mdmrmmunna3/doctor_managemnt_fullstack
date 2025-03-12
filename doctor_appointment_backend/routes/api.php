@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\PatientReportController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SlotController;
@@ -43,3 +44,5 @@ Route::delete('slots/{day}', [SlotController::class, 'destroy']);
 // service api route 
 Route::resource('services', ServiceController::class);
 Route::resource('payments', PaymentController::class);
+Route::resource('patient_report', PatientReportController::class);
+Route::get('patient_report/{payment_id}', [PatientReportController::class, 'show']);
