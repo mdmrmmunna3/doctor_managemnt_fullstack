@@ -26,6 +26,7 @@ import PatienEditProfile from "../DashboardPages/PatientDashboard/PatienEditProf
 import AdminEditProfile from "../DashboardPages/AdminDashboard/AdminEditProfile";
 import PatientHealthReport from "../DashboardPages/DoctorDashboard/PatientHealthReport";
 import MyPatient from "../DashboardPages/DoctorDashboard/MyPatient";
+import MedicalReport from "../DashboardPages/PatientDashboard/MedicalReport";
 // import Gallery from "../Pages/Home/Gallery/Gallery";
 
 export const router = createBrowserRouter([
@@ -150,6 +151,10 @@ export const router = createBrowserRouter([
             {
                 path: 'patientDashboard/patient_appointments',
                 element: <PatientAppointment />,
+            },
+            {
+                path: 'patientDashboard/reports',
+                element: <MedicalReport />,
             },
             {
                 path: 'patientDashboard/patientProfile',
